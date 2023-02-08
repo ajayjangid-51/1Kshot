@@ -52,75 +52,20 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+struct ListNode
+{
+    int val;
+    ListNode *next;
+    ListNode(int x) : val(x), next(NULL) {}
+};
 void solve()
 {
-    // string s("3-256*27");
-    string s("3+2*2");
-    string signs;
-    vi nums;
-    string tmp;
-    for (int i = 0; i < size(s); i++)
-    {
-        if (s[i] >= '0' and s[i] <= '9')
-        {
-            tmp.push_back(s[i]);
-        }
-        else
-        {
-            nums.push_back(stoi(tmp));
-            tmp.clear();
-            signs.push_back(s[i]);
-        }
-    }
-    nums.push_back(stoi(tmp));
-    print(signs);
-    nline;
-    trav(nums) print(x);
-    linebreak1;
-
-    stack<int> stk;
-    stk.push(nums[0]);
-    int i = 1;
-    int j = 0;
-    // while(!stk.empty()){
-    while (i < size(nums))
-    {
-        if (signs[j] == '*' or signs[j] == '/')
-        {
-            int tp = stk.top();
-            stk.pop();
-            int sum = tp;
-            if (signs[j] == '*')
-            {
-                sum *= nums[i++];
-            }
-            else
-            {
-                sum /= nums[i++];
-            }
-            stk.push(sum);
-            j++;
-        }
-        else
-        {
-            if (signs[j] == '-')
-            {
-                stk.push(-nums[i++]);
-            }
-            else
-            {
-                stk.push(nums[i++]);
-            }
-            j++;
-        }
-    }
-    int ans = 0;
-    while (!stk.empty())
-    {
-        ans += stk.top();
-        stk.pop();
-    }
-    debline(ans);
+    ListNode *head = new ListNode(10);
+    head->next = new ListNode(14);
+    deb(head);
+    // int x = (*head)->val;
+    int x = (*head).val;
+    debline(x);
 }
 int main()
 {

@@ -1,10 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define lb lower_bound
-#define ub upper_bound
-#define size(x) x.size()
-
 #define ll long long
 #define pint unsigned int
 #define pb push_back
@@ -17,6 +13,7 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
+#define size(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
@@ -31,7 +28,9 @@ using namespace std;
 #define debline(x) cout << "👉Line-" << __LINE__ << ": " << #x << " = " << x << endl
 #define linebreak2(x) cout << "🟢" << #x << " = " << x << "________________🟢 " << endl
 #define all(x) x.begin() x.end()
-#define deb(x) cout << #x << " = " << x << endl
+#define deb(x) cout << #x << "= " << x << "\n"
+#define deb2(a, b) cout << #a << "= " << a << " | " << #b << "= " << b << "\n"
+#define deb3(a, b, c) cout << #a << "= " << a << " | " << #b << "= " << b << " | " << #c << "=" << c << "\n"
 #define debpair(pair) cout << #pair << ".first = " << pair.first << " " << #pair << ".second = " << pair.second << endl
 #define linebreak1 cout << "_______________________________" \
                         << "\n"                              \
@@ -52,76 +51,43 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+
 void solve()
 {
-    // string s("3-256*27");
-    string s("3+2*2");
-    string signs;
-    vi nums;
-    string tmp;
-    for (int i = 0; i < size(s); i++)
+    int n = 12;
+    vi ps;
+    int i = 1;
+    while (i * i <= n)
     {
-        if (s[i] >= '0' and s[i] <= '9')
-        {
-            tmp.push_back(s[i]);
-        }
-        else
-        {
-            nums.push_back(stoi(tmp));
-            tmp.clear();
-            signs.push_back(s[i]);
-        }
+        ps.push_back(i);
+        i++;
     }
-    nums.push_back(stoi(tmp));
-    print(signs);
-    nline;
-    trav(nums) print(x);
+    linebreak1;
+    trav(ps) print(x);
     linebreak1;
 
-    stack<int> stk;
-    stk.push(nums[0]);
-    int i = 1;
-    int j = 0;
-    // while(!stk.empty()){
-    while (i < size(nums))
+    vi dp(n + 1);
+    dp[0] = 0;
+    dp[1] = 1;
+    for (int i = 2; i <= n; i++)
     {
-        if (signs[j] == '*' or signs[j] == '/')
+        // dp[i] = max(dp[i])
+        int mini = INT_MAX;
+        for (auto x : ps)
         {
-            int tp = stk.top();
-            stk.pop();
-            int sum = tp;
-            if (signs[j] == '*')
+            if (i - (x * x) >= 0)
             {
-                sum *= nums[i++];
+                mini = min(mini, dp[i - (x * x)]);
             }
-            else
-            {
-                sum /= nums[i++];
-            }
-            stk.push(sum);
-            j++;
         }
-        else
-        {
-            if (signs[j] == '-')
-            {
-                stk.push(-nums[i++]);
-            }
-            else
-            {
-                stk.push(nums[i++]);
-            }
-            j++;
-        }
+        dp[i] = mini + 1;
     }
-    int ans = 0;
-    while (!stk.empty())
-    {
-        ans += stk.top();
-        stk.pop();
-    }
-    debline(ans);
+    debline(dp[n]);
+    linebreak1;
+    trav(dp) print(x);
+    linebreak1;
 }
+
 int main()
 {
     io_faster

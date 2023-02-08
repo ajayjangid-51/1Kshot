@@ -1,10 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define lb lower_bound
-#define ub upper_bound
-#define size(x) x.size()
-
 #define ll long long
 #define pint unsigned int
 #define pb push_back
@@ -17,6 +13,7 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
+#define size(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
@@ -31,7 +28,9 @@ using namespace std;
 #define debline(x) cout << "👉Line-" << __LINE__ << ": " << #x << " = " << x << endl
 #define linebreak2(x) cout << "🟢" << #x << " = " << x << "________________🟢 " << endl
 #define all(x) x.begin() x.end()
-#define deb(x) cout << #x << " = " << x << endl
+#define deb(x) cout << #x << "= " << x << "\n"
+#define deb2(a, b) cout << #a << "= " << a << " | " << #b << "= " << b << "\n"
+#define deb3(a, b, c) cout << #a << "= " << a << " | " << #b << "= " << b << " | " << #c << "=" << c << "\n"
 #define debpair(pair) cout << #pair << ".first = " << pair.first << " " << #pair << ".second = " << pair.second << endl
 #define linebreak1 cout << "_______________________________" \
                         << "\n"                              \
@@ -52,76 +51,47 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+
 void solve()
 {
-    // string s("3-256*27");
-    string s("3+2*2");
-    string signs;
-    vi nums;
-    string tmp;
-    for (int i = 0; i < size(s); i++)
+    // vi v = {1, 1, 1, 2, 2, 3};
+    // vi v = {1};
+    vi v = {4, 1, -1, 2, -1, 2, 3};
+    int k = 2;
+    // int k = 1;
+    int n = size(v);
+    int maxfreq = n;
+    vvi buckets(maxfreq + 1);
+    map<int, int> m;
+    trav(v) m[x]++;
+    trav(m) print(x.first), print(x.second), nline;
+    trav(m)
     {
-        if (s[i] >= '0' and s[i] <= '9')
-        {
-            tmp.push_back(s[i]);
-        }
-        else
-        {
-            nums.push_back(stoi(tmp));
-            tmp.clear();
-            signs.push_back(s[i]);
-        }
+        buckets[x.second].push_back(x.first);
     }
-    nums.push_back(stoi(tmp));
-    print(signs);
-    nline;
-    trav(nums) print(x);
     linebreak1;
-
-    stack<int> stk;
-    stk.push(nums[0]);
-    int i = 1;
-    int j = 0;
-    // while(!stk.empty()){
-    while (i < size(nums))
+    trav(buckets)
     {
-        if (signs[j] == '*' or signs[j] == '/')
-        {
-            int tp = stk.top();
-            stk.pop();
-            int sum = tp;
-            if (signs[j] == '*')
-            {
-                sum *= nums[i++];
-            }
-            else
-            {
-                sum /= nums[i++];
-            }
-            stk.push(sum);
-            j++;
-        }
-        else
-        {
-            if (signs[j] == '-')
-            {
-                stk.push(-nums[i++]);
-            }
-            else
-            {
-                stk.push(nums[i++]);
-            }
-            j++;
-        }
+        trav2(x) print(y);
+        nline;
     }
-    int ans = 0;
-    while (!stk.empty())
+    linebreak1;
+    vi ans;
+    for (int i = maxfreq; i >= 1 and k; i--)
     {
-        ans += stk.top();
-        stk.pop();
+        trav(buckets[i])
+        {
+            ans.push_back(x);
+            k--;
+        }
+        // if (size(buckets[i]) > 0)
+        // k--;
     }
-    debline(ans);
+    linebreak1;
+    trav(ans) print(x);
+    linebreak1;
 }
+
 int main()
 {
     io_faster

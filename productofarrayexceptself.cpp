@@ -54,73 +54,32 @@ void file()
 }
 void solve()
 {
-    // string s("3-256*27");
-    string s("3+2*2");
-    string signs;
-    vi nums;
-    string tmp;
-    for (int i = 0; i < size(s); i++)
+    vi v = {1, 2, 3, 4};
+    int n = size(v);
+    vi left(n);
+    left[0] = v[0];
+    vi right(n);
+    right[n - 1] = v[n - 1];
+    for (int i = 1; i < size(v); i++)
     {
-        if (s[i] >= '0' and s[i] <= '9')
-        {
-            tmp.push_back(s[i]);
-        }
-        else
-        {
-            nums.push_back(stoi(tmp));
-            tmp.clear();
-            signs.push_back(s[i]);
-        }
+        left[i] = left[i - 1] * v[i];
+        right[n - (i + 1)] = right[n - i] * v[n - i - 1];
     }
-    nums.push_back(stoi(tmp));
-    print(signs);
-    nline;
-    trav(nums) print(x);
     linebreak1;
-
-    stack<int> stk;
-    stk.push(nums[0]);
-    int i = 1;
-    int j = 0;
-    // while(!stk.empty()){
-    while (i < size(nums))
+    trav(left) print(x);
+    nline;
+    trav(right) print(x);
+    linebreak1;
+    vi ans(n);
+    ans[0] = right[1];
+    ans[n - 1] = left[n - 2];
+    for (int i = 1; i < n - 1; i++)
     {
-        if (signs[j] == '*' or signs[j] == '/')
-        {
-            int tp = stk.top();
-            stk.pop();
-            int sum = tp;
-            if (signs[j] == '*')
-            {
-                sum *= nums[i++];
-            }
-            else
-            {
-                sum /= nums[i++];
-            }
-            stk.push(sum);
-            j++;
-        }
-        else
-        {
-            if (signs[j] == '-')
-            {
-                stk.push(-nums[i++]);
-            }
-            else
-            {
-                stk.push(nums[i++]);
-            }
-            j++;
-        }
+        ans[i] = left[i - 1] * right[i + 1];
     }
-    int ans = 0;
-    while (!stk.empty())
-    {
-        ans += stk.top();
-        stk.pop();
-    }
-    debline(ans);
+    linebreak1;
+    trav(ans) print(x);
+    linebreak1;
 }
 int main()
 {

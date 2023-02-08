@@ -1,10 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define lb lower_bound
-#define ub upper_bound
-#define sz(x) x.size()
-
 #define ll long long
 #define pint unsigned int
 #define pb push_back
@@ -17,6 +13,7 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
+#define size(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
@@ -31,7 +28,9 @@ using namespace std;
 #define debline(x) cout << "👉Line-" << __LINE__ << ": " << #x << " = " << x << endl
 #define linebreak2(x) cout << "🟢" << #x << " = " << x << "________________🟢 " << endl
 #define all(x) x.begin() x.end()
-#define deb(x) cout << #x << " = " << x << endl
+#define deb(x) cout << #x << "= " << x << "\n"
+#define deb2(a, b) cout << #a << "= " << a << " | " << #b << "= " << b << "\n"
+#define deb3(a, b, c) cout << #a << "= " << a << " | " << #b << "= " << b << " | " << #c << "=" << c << "\n"
 #define debpair(pair) cout << #pair << ".first = " << pair.first << " " << #pair << ".second = " << pair.second << endl
 #define linebreak1 cout << "_______________________________" \
                         << "\n"                              \
@@ -53,94 +52,15 @@ void file()
 #endif
 }
 
-const int p = 31;
-const int m = 1e9 + 9;
-
-vector<int> prime_mapping(26);
-
-bool is_prime(int num)
-{
-    if (num <= 1)
-        return false;
-    for (int i = 2; i < num; i++)
-    {
-        if (num % i == 0)
-            return false;
-    }
-    return true;
-}
-
-void precompute_mapping()
-{
-    prime_mapping[0] = 2;
-    for (int i = 1; i < 26; i++)
-    {
-        prime_mapping[i] = prime_mapping[i - 1] + 1;
-        while (!is_prime(prime_mapping[i]))
-            prime_mapping[i]++;
-    }
-}
-
-vector<long long> compute_hash(string s)
-{
-    int n = s.length();
-    vector<long long> h(n + 1);
-    h[0] = 0;
-    for (int i = 0; i < n; i++)
-    {
-        h[i + 1] = (h[i] + (prime_mapping[s[i] - 'a'])) % m;
-    }
-    return h;
-}
-long long get_hash(int l, int r, vector<long long> &h)
-{
-    // return (h[r] - h[l - 1] + m) % m;
-    // deb(l);
-    // deb(r);
-    if (l == 0)
-        return h[r + 1];
-    // return (h[r] - h[l - 1] + m) % m;
-    return (h[r + 1] - h[l]);
-}
-
 void solve()
 {
-    string A("jdlidfa");
-    // string B("fad");
-    vector<string> B = {"daf", "ifd", "dxzjbltsmufythgm", "l"};
-    precompute_mapping();
-    vector<long long> ah = compute_hash(A);
-    linebreak1;
-    trav(ah) print(x);
-    linebreak1;
-
-    trav(B)
+    // int t = -2;
+    int t = 2147483635;
+    for (int i = 0; i < 32; i++)
     {
-        if (x.size() > A.size())
-        {
-            deb("0");
-            continue;
-        }
-        // deb(x);
-        vector<long long> bh = compute_hash(x);
-        trav(bh) print(x);
-        nline;
-        long long bhash = bh[x.size()];
-        // debline(bhash);
-        int cnt = 0;
-
-        for (int i = 0; i < A.size(); i++)
-        {
-            long long assh = get_hash(i, i + x.size() - 1, ah);
-            // deb(assh);
-            if (bhash == assh)
-            {
-                cnt++;
-            }
-        }
-
-        deb(cnt);
-        linebreak1;
+        int b = t & 1;
+        print(!b);
+        t >>= 1;
     }
 }
 

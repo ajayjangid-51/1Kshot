@@ -54,73 +54,35 @@ void file()
 }
 void solve()
 {
-    // string s("3-256*27");
-    string s("3+2*2");
-    string signs;
-    vi nums;
-    string tmp;
-    for (int i = 0; i < size(s); i++)
-    {
-        if (s[i] >= '0' and s[i] <= '9')
-        {
-            tmp.push_back(s[i]);
-        }
-        else
-        {
-            nums.push_back(stoi(tmp));
-            tmp.clear();
-            signs.push_back(s[i]);
-        }
-    }
-    nums.push_back(stoi(tmp));
-    print(signs);
-    nline;
-    trav(nums) print(x);
-    linebreak1;
+    vvi v = {{1, 4, 7, 11, 15},
+             {2, 5, 8, 12, 19},
+             {3, 6, 9, 16, 22},
+             {10, 13, 14, 17, 24},
+             {18, 21, 23, 26, 30}};
 
-    stack<int> stk;
-    stk.push(nums[0]);
-    int i = 1;
-    int j = 0;
-    // while(!stk.empty()){
-    while (i < size(nums))
+    int n = size(v);
+    int m = size(v[0]);
+    int t = 20;
+    int i = 0;
+    int j = size(v[0]) - 1;
+    while (i < n and j >= 0)
     {
-        if (signs[j] == '*' or signs[j] == '/')
+        if (t == v[i][j])
         {
-            int tp = stk.top();
-            stk.pop();
-            int sum = tp;
-            if (signs[j] == '*')
-            {
-                sum *= nums[i++];
-            }
-            else
-            {
-                sum /= nums[i++];
-            }
-            stk.push(sum);
-            j++;
+            print(i), print(j), print(smile2), nline;
+            debline("true");
+            return;
+        }
+        else if (t < v[i][j])
+        {
+            j--;
         }
         else
         {
-            if (signs[j] == '-')
-            {
-                stk.push(-nums[i++]);
-            }
-            else
-            {
-                stk.push(nums[i++]);
-            }
-            j++;
+            i++;
         }
     }
-    int ans = 0;
-    while (!stk.empty())
-    {
-        ans += stk.top();
-        stk.pop();
-    }
-    debline(ans);
+    debline("-1");
 }
 int main()
 {
