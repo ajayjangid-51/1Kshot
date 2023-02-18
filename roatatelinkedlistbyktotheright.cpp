@@ -13,7 +13,7 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
-// #define size(x) x.size()
+#define size(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
@@ -51,78 +51,72 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-#define pii pair<int, int>
-#define vi vector<int>
-void fn(int i, int j, vector<pii> &A, vector<int> &count)
+struct ListNode
 {
-    if (i >= j)
-    {
-        return;
-    }
-    int mid = (i + j) / 2;
-    fn(i, mid, A, count);
-    fn(mid + 1, j, A, count);
-    int i1 = 1, j1 = mid + 1;
-    int cnt = 0;
-    vector<pii> merged;
-    while (i1 <= mid and j1 <= j)
-    {
-        if (A[i1].first > A[j1].first)
-        {
-            cnt++;
-            merged.push_back(A[j1]);
-            j1++;
-        }
-        else
-        {
-            merged.push_back(A[i1]);
-            count[A[i1].second] += cnt;
-            i1++;
-        }
-    }
-    while (i1 <= mid)
-    {
-        count[A[i1].second] += cnt;
-        merged.push_back(A[i1++]);
-    }
-    while (j1 <= j)
-    {
-        merged.push_back(A[j1++]);
-    }
-    int k = i;
-    for (auto x : merged)
-    {
-        A[k++] = x;
-    }
-}
+    int val;
+    ListNode *next;
+    ListNode(int x) : val(x), next(NULL) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
 void solve()
 {
-    vi A = {1, 4, 9, 8, 3, 7, 6, 5, 2};
-    vector<pii> v;
-    for (int i = 0; i < A.size(); i++)
+    ListNode *head = new ListNode(1);
+    head->next = new ListNode(2);
+    // head->next->next = new ListNode(3);
+    // head->next->next->next = new ListNode(4);
+    // head->next->next->next->next = new ListNode(5);
+    int k = 0;
+
+    ListNode *p = head;
+    int n = 0;
+    while (p)
     {
-        v.push_back({A[i], i});
+        print(p->val);
+        n++;
+        p = p->next;
     }
-    int n = A.size();
-    vi count(n, 0);
-    fn(0, n - 1, v, count);
-    vi ans(n, 0);
-    for (int i = 0; i < n; i++)
+    deb(n);
+    int n1 = n - k;
+    deb(n1);
+    n = 0;
+    p = head;
+
+    ListNode *h2 = NULL;
+    ListNode *head2 = NULL;
+    while (p)
     {
-        int sr = count[i];
-        int sl = (A[i] - 1) - sr;
-        int gr = (n - 1 - i) - sr;
-        int gl = (n - A[i]) - gr;
-        int t = (sl * sr) - (gl * gr);
-        if (t >= 0)
-            ans[i] = 1;
-        else
-            ans[i] = -1;
+        n++;
+        if (n == n1)
+        {
+            deb(n);
+            deb(p->val);
+            h2 = p->next;
+            p->next = NULL;
+            break;
+        }
+        // if (!p->next)
+        //     head2 = p;
+        p = p->next;
+    }
+    // deb(p->val);
+    // h2->next = head;
+    p = h2;
+    while (h2)
+    {
+        if (!h2->next)
+        {
+            h2->next = head;
+            break;
+        }
+        h2 = h2->next;
     }
     linebreak1;
-    trav(ans) print(x);
+    while (p)
+    {
+        print(p->val);
+        p = p->next;
+    }
     linebreak1;
-    // return ans;
 }
 
 int main()

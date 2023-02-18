@@ -13,7 +13,7 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
-// #define size(x) x.size()
+#define size(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
@@ -51,78 +51,66 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-#define pii pair<int, int>
-#define vi vector<int>
-void fn(int i, int j, vector<pii> &A, vector<int> &count)
-{
-    if (i >= j)
-    {
-        return;
-    }
-    int mid = (i + j) / 2;
-    fn(i, mid, A, count);
-    fn(mid + 1, j, A, count);
-    int i1 = 1, j1 = mid + 1;
-    int cnt = 0;
-    vector<pii> merged;
-    while (i1 <= mid and j1 <= j)
-    {
-        if (A[i1].first > A[j1].first)
-        {
-            cnt++;
-            merged.push_back(A[j1]);
-            j1++;
-        }
-        else
-        {
-            merged.push_back(A[i1]);
-            count[A[i1].second] += cnt;
-            i1++;
-        }
-    }
-    while (i1 <= mid)
-    {
-        count[A[i1].second] += cnt;
-        merged.push_back(A[i1++]);
-    }
-    while (j1 <= j)
-    {
-        merged.push_back(A[j1++]);
-    }
-    int k = i;
-    for (auto x : merged)
-    {
-        A[k++] = x;
-    }
-}
+
 void solve()
 {
-    vi A = {1, 4, 9, 8, 3, 7, 6, 5, 2};
-    vector<pii> v;
-    for (int i = 0; i < A.size(); i++)
+    // vi v = {1, 3, 4, 2, 5, 3, 4, 2};
+    // vi v = {1, 2, 3, 4};
+    vi v = {3, 3, 4, 2, 4};
+    stack<int> s;
+    int n = size(v);
+    vi left(n);
+    left[0] = -1;
+    vi right(n);
+    right[n - 1] = n;
+    s.push(0);
+    for (int i = 1; i < n; i++)
     {
-        v.push_back({A[i], i});
+        while (!s.empty() and v[s.top()] >= v[i])
+        {
+            s.pop();
+        }
+        if (s.empty())
+            left[i] = -1;
+        else
+            left[i] = s.top();
+        s.push(i);
     }
-    int n = A.size();
-    vi count(n, 0);
-    fn(0, n - 1, v, count);
-    vi ans(n, 0);
+    linebreak1;
+    trav(left) print(x);
+    linebreak1;
+    while (!s.empty())
+        s.pop();
+    s.push(n - 1);
+    for (int i = n - 2; i >= 0; i--)
+    {
+        while (!s.empty() and v[s.top()] >= v[i])
+        {
+            s.pop();
+        }
+        if (s.empty())
+        {
+            right[i] = n;
+        }
+        else
+            right[i] = s.top();
+        s.push(i);
+    }
+    trav(right) print(x);
+    linebreak1;
+    vi ans(n, INT_MIN);
     for (int i = 0; i < n; i++)
     {
-        int sr = count[i];
-        int sl = (A[i] - 1) - sr;
-        int gr = (n - 1 - i) - sr;
-        int gl = (n - A[i]) - gr;
-        int t = (sl * sr) - (gl * gr);
-        if (t >= 0)
-            ans[i] = 1;
-        else
-            ans[i] = -1;
+        int len = right[i] - left[i] - 1;
+        ans[len - 1] = max(ans[len - 1], v[i]);
+    }
+    for (int i = n - 2; i >= 0; i--)
+    {
+        ans[i] = max(ans[i], ans[i + 1]);
     }
     linebreak1;
     trav(ans) print(x);
     linebreak1;
-    // return ans;
 }
 
 int main()

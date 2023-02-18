@@ -51,77 +51,103 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-#define pii pair<int, int>
-#define vi vector<int>
-void fn(int i, int j, vector<pii> &A, vector<int> &count)
-{
-    if (i >= j)
-    {
-        return;
-    }
-    int mid = (i + j) / 2;
-    fn(i, mid, A, count);
-    fn(mid + 1, j, A, count);
-    int i1 = 1, j1 = mid + 1;
-    int cnt = 0;
-    vector<pii> merged;
-    while (i1 <= mid and j1 <= j)
-    {
-        if (A[i1].first > A[j1].first)
-        {
-            cnt++;
-            merged.push_back(A[j1]);
-            j1++;
-        }
-        else
-        {
-            merged.push_back(A[i1]);
-            count[A[i1].second] += cnt;
-            i1++;
-        }
-    }
-    while (i1 <= mid)
-    {
-        count[A[i1].second] += cnt;
-        merged.push_back(A[i1++]);
-    }
-    while (j1 <= j)
-    {
-        merged.push_back(A[j1++]);
-    }
-    int k = i;
-    for (auto x : merged)
-    {
-        A[k++] = x;
-    }
-}
+
 void solve()
 {
-    vi A = {1, 4, 9, 8, 3, 7, 6, 5, 2};
-    vector<pii> v;
-    for (int i = 0; i < A.size(); i++)
+    // string a("1010"), b("111011");
+    string a("1111"), b("1111");
+    // string a("100"), b("110110");
+    // string a("110010"), b("10111");
+    int n1 = a.size(), n2 = b.size();
+    deb2(n1, n2);
+    int m = min(n1, n2);
+    string ms;
+    ms = (max(n1, n2) == n1) ? a : b;
+    deb(ms);
+    int i = n1 - 1, j = n2 - 1;
+    int c = 0;
+    // for(int )
+    string ans(max(n1, n2) + 1, '0');
+    int l = ans.size() - 1;
+    int k = 0;
+    debline(l);
+    for (; k < m; k++)
     {
-        v.push_back({A[i], i});
-    }
-    int n = A.size();
-    vi count(n, 0);
-    fn(0, n - 1, v, count);
-    vi ans(n, 0);
-    for (int i = 0; i < n; i++)
-    {
-        int sr = count[i];
-        int sl = (A[i] - 1) - sr;
-        int gr = (n - 1 - i) - sr;
-        int gl = (n - A[i]) - gr;
-        int t = (sl * sr) - (gl * gr);
-        if (t >= 0)
-            ans[i] = 1;
+        if (a[i] == '1' and b[j] == '1')
+        {
+            if (c)
+            {
+                ans[l--] = '1';
+                // c = 0;
+            }
+            else
+            {
+
+                ans[l--] = '0';
+                c = 1;
+            }
+        }
+        else if (a[i] == '0' and b[j] == '0')
+        {
+            if (c)
+            {
+                c = 0;
+                ans[l--] = '1';
+            }
+            else
+                ans[l--] = '0';
+        }
         else
-            ans[i] = -1;
+        {
+            if (c)
+            {
+                // c = 0;
+                ans[l--] = '0';
+            }
+            else
+            {
+                ans[l--] = '1';
+            }
+        }
+        i--;
+        j--;
     }
-    linebreak1;
-    trav(ans) print(x);
-    linebreak1;
+    debline(ans);
+    debline(l);
+    for (; k < max(n1, n2); k++)
+    {
+        if (c)
+        {
+            c = 0;
+            if (ms[l - 1] == '1')
+            {
+                ans[l--] = '0';
+                c = 1;
+            }
+            else
+            {
+                ans[l--] = '1';
+            }
+        }
+        else
+        {
+            ans[l] = ms[l - 1];
+
+            // debline(ans);
+            // deb4(ans, k, l, ms[l]);
+            deb(ms[l]);
+            deb3(ans, k, l);
+            linebreak1;
+            l--;
+        }
+    }
+    debline(ans);
+    if (c)
+        ans[l] = '1';
+    // else return ans.substr(1);
+    else
+        ans = ans.substr(1);
+    debline(ans);
     // return ans;
 }
 

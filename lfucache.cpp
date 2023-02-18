@@ -13,7 +13,7 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
-// #define size(x) x.size()
+#define size(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
@@ -51,78 +51,65 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-#define pii pair<int, int>
-#define vi vector<int>
-void fn(int i, int j, vector<pii> &A, vector<int> &count)
+class LFUCache
 {
-    if (i >= j)
+private:
+    map<int, int> valuem;
+    map<int, int> freqm;
+    map<int, list<int>> listm;
+    int minf = 0; // minimum avialable frequency.
+    int c = 0;
+
+public:
+    LFUCache(int capacity)
     {
-        return;
+        c = capacity;
     }
-    int mid = (i + j) / 2;
-    fn(i, mid, A, count);
-    fn(mid + 1, j, A, count);
-    int i1 = 1, j1 = mid + 1;
-    int cnt = 0;
-    vector<pii> merged;
-    while (i1 <= mid and j1 <= j)
+
+    int get(int key)
     {
-        if (A[i1].first > A[j1].first)
+        if (valuem.find(key) == valuem.end())
         {
-            cnt++;
-            merged.push_back(A[j1]);
-            j1++;
+            return -1;
         }
-        else
+        int f = freqm[key];
+        freqm[key]++;
+        listm[f].remove(key);
+        if (f == minf and size(listm[f]) == 0)
         {
-            merged.push_back(A[i1]);
-            count[A[i1].second] += cnt;
-            i1++;
+            minf++;
         }
+
+        listm[freqm[key]].push_back(key);
+
+        return valuem[key];
     }
-    while (i1 <= mid)
+
+    void put(int key, int value)
     {
-        count[A[i1].second] += cnt;
-        merged.push_back(A[i1++]);
+        if (c <= 0)
+            return;
+        // if key already present:-
+        if (valuem.find(key) != valuem.end())
+        {
+            valuem[key] = value;
+            get(key);
+            return;
+        }
+        // if cache is full
+        if (size(valuem) == c)
+        {
+            valuem.erase(listm[minf].front());
+            listm[minf].pop_front();
+        }
+        valuem[key] = value;
+        freqm[key] = 1;
+        minf = 1;
+        listm[freqm[key]].push_back(key);
     }
-    while (j1 <= j)
-    {
-        merged.push_back(A[j1++]);
-    }
-    int k = i;
-    for (auto x : merged)
-    {
-        A[k++] = x;
-    }
-}
+};
 void solve()
 {
-    vi A = {1, 4, 9, 8, 3, 7, 6, 5, 2};
-    vector<pii> v;
-    for (int i = 0; i < A.size(); i++)
-    {
-        v.push_back({A[i], i});
-    }
-    int n = A.size();
-    vi count(n, 0);
-    fn(0, n - 1, v, count);
-    vi ans(n, 0);
-    for (int i = 0; i < n; i++)
-    {
-        int sr = count[i];
-        int sl = (A[i] - 1) - sr;
-        int gr = (n - 1 - i) - sr;
-        int gl = (n - A[i]) - gr;
-        int t = (sl * sr) - (gl * gr);
-        if (t >= 0)
-            ans[i] = 1;
-        else
-            ans[i] = -1;
-    }
-    linebreak1;
-    trav(ans) print(x);
-    linebreak1;
-    // return ans;
 }
 
 int main()
