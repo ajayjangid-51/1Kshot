@@ -54,10 +54,36 @@ void file()
 
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    string s("cbaebabacd"), p("abc");
+    vi pf(26, 0);
+    vi sf(26, 0);
+    for (int i = 0; i < size(p); i++)
+    {
+        pf[p[i] - 'a']++;
+        sf[s[i] - 'a']++;
+    }
+    linebreak1;
+    trav(pf) print(x);
+    nline;
+    trav(sf) print(x);
+    linebreak1;
+    vector<int> ans;
+    int np = size(p);
+    int ns = size(s);
+    for (int i = np; i < ns; i++)
+    {
+        if (pf == sf)
+        {
+            ans.push_back(i - np);
+            // print(smile2);
+        }
+        deb2(s[i - np], s[np]);
+        sf[s[i - np] - 'a']--;
+        sf[s[i] - 'a']++;
+    }
+    linebreak1;
+    trav(ans) print(x);
+    linebreak1;
 }
 
 int main()

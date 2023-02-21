@@ -54,10 +54,56 @@ void file()
 
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    // string a("3[a2[c]]");
+    string a("[2[abc]3[cd]ef]");
+    int n = size(a);
+    string s("");
+    int t = 0;
+    string ans;
+    stack<pair<string, int>> stk;
+    for (int i = 0; i < n;)
+    {
+        while (i < n and a[i] >= '0' and a[i] <= '9')
+        {
+            t = t * 10 + (a[i] - '0');
+            i++;
+        }
+        if (a[i] == '[')
+        {
+            stk.push({s, t});
+            t = 0;
+            s = "";
+            i++;
+        }
+        while (i < n and a[i] >= 'a' and a[i] <= 'z')
+        {
+            s.push_back(a[i]);
+            i++;
+        }
+        if (a[i] == ']')
+        {
+            pair<string, int> p = stk.top();
+            deb2(p.first, p.second);
+            stk.pop();
+            debline(s);
+            string tmp = s;
+            for (int k = 0; k < p.second - 1; k++)
+            {
+                s = s + tmp;
+            }
+            debline(s);
+            s = p.first + s;
+
+            if (stk.empty())
+            {
+                ans = ans + s;
+                s = "";
+                t = 0;
+            }
+            i++;
+        }
+    }
+    debline(ans);
 }
 
 int main()

@@ -51,13 +51,68 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+struct TreeNode
+{
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
 
+bool b = 0;
+int fn(TreeNode *node)
+{
+    if (!node)
+        return 0;
+    if (!node->left and !node->right)
+        return 0;
+    int h1 = fn(node->left);
+    int h2 = fn(node->right);
+    if (abs(h1 - h2) > 1)
+        b = 1;
+    return (max(h1, h2) + 1);
+}
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    TreeNode *root = new TreeNode(1);
+    root->right = new TreeNode(2);
+    root->right->right = new TreeNode(3);
+    // root->right->left = new TreeNode(3);
+    // root->right->right = new TreeNode(3);
+    // root->right->left->left = new TreeNode(4);
+    // root->right->left->right = new TreeNode(4);
+    int t = fn(root->left);
+    int t2 = fn(root->right);
+    if (abs(t - t2) > 1)
+        b = 1;
+    debline(b);
+    debline(t);
+    debline(t2);
+    //    root->left->left = new TreeNode();
+    //    root->left->right = new TreeNode();
+    //    root->right->left = new TreeNode();
+    //    root->right->right = new TreeNode();
+
+    /*
+    queue<TreeNode *> q;
+       q.push(root);
+     map<TreeNode *, int> m;
+       m[root] = 0;
+       while (!q.empty())
+       {
+           TreeNode *f = q.front();
+           q.pop();
+           if (f->left)
+           {
+               m[f->left] = m[f] + 1;
+               q.push(f->left);
+           }
+           if (f->right)
+           {
+               m[f->right] = m[f] + 1;
+               q.push(f->right);
+           }
+       } */
 }
 
 int main()

@@ -51,13 +51,70 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
 
+    Node(int x)
+    {
+        data = x;
+        left = right = NULL;
+    }
+};
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+
+    Node *root = new Node(1);
+    root->left = new Node(3);
+    root->left->left = new Node(5);
+    root->left->right = new Node(2);
+    // root->left->right->left = new Node(10);
+    // root->left->right->right = new Node(14);
+    root->right = new Node(4);
+    root->right->left = new Node(7);
+    root->right->right = new Node(6);
+
+    if (!root)
+        return;
+    vi pre, in, post;
+
+    stack<pair<Node *, int>> s;
+    s.push({root, 1});
+    while (!s.empty())
+    {
+        if (s.top().second == 3)
+        {
+            post.push_back(s.top().first->data);
+            s.pop();
+        }
+        else if (s.top().second == 1) // 1 denotes that for firstly it will be element of pre.
+        {
+            pre.push_back(s.top().first->data);
+            s.top().second = 2;
+            if (s.top().first->left)
+            {
+                s.push({s.top().first->left, 1});
+            }
+            // s.push({})
+        }
+        else
+        {
+            in.push_back(s.top().first->data);
+            s.top().second = 3;
+            if (s.top().first->right) // we are on the mid-node means left is alreay traversed to now push the right one.
+            {
+                s.push({s.top().first->right, 1});
+            }
+        }
+    }
+    trav(pre) print(x);
+    nline;
+    trav(in) print(x);
+    nline;
+    trav(post) print(x);
+    nline;
 }
 
 int main()

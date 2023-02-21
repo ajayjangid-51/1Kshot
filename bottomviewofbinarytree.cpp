@@ -51,13 +51,56 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
 
+    Node(int x)
+    {
+        data = x;
+        left = right = NULL;
+    }
+};
+
+void fn(Node *node, int l, int x, map<int, set<pair<int, int>>> &m)
+{
+    m[x].insert({l, node->data});
+    if (node->left)
+        fn(node->left, l + 1, x - 1, m);
+    if (node->right)
+        fn(node->right, l + 1, x + 1, m);
+}
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    Node *root = new Node(20);
+    root->left = new Node(8);
+    root->left->left = new Node(5);
+    root->left->right = new Node(3);
+    root->left->right->left = new Node(10);
+    root->left->right->right = new Node(14);
+    root->right = new Node(22);
+    root->right->right = new Node(25);
+
+    map<int, set<pair<int, int>>> m;
+
+    fn(root, 0, 0, m);
+    vector<int> ans;
+    for (auto x : m)
+    {
+        ans.push_back(x.second.rbegin()->second);
+    }
+    // trav(m)
+    // {
+    //     print(x.first);
+    //     print(" - ");
+    //     trav2(x.second) print("{", "}");
+    //     linebreak1;
+    // }
+    linebreak1;
+    trav(ans) print(x);
+    linebreak1;
 }
 
 int main()

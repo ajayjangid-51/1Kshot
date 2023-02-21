@@ -32,7 +32,8 @@ using namespace std;
 #define deb2(a, b) cout << #a << "= " << a << " | " << #b << "= " << b << "\n"
 #define deb3(a, b, c) cout << #a << "= " << a << " | " << #b << "= " << b << " | " << #c << "=" << c << "\n"
 #define debpair(pair) cout << #pair << ".first = " << pair.first << " " << #pair << ".second = " << pair.second << endl
-#define linebreak1 cout << "_______________________________" \
+#define linebreak1 cout << "\n"                              \
+                        << "_______________________________" \
                         << "\n"                              \
                            "\n"
 #define forn(i, start, n) for (auto i = start; i < n; i++)
@@ -54,10 +55,44 @@ void file()
 
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    // so in bellman we will process the graph in its initial edgelist-representation only.
+    // so first edgelist with weight:-
+    vvi edgelist = {
+        {1, 2, 5},
+        {1, 4, 7},
+        {1, 3, 3},
+        {2, 4, 3},
+        {3, 4, 1},
+        {2, 5, 2},
+        {4, 5, 2}};
+    int S = 1;
+
+    int nodes = 5; // 1based indexing-value nodes.
+    vi dist(nodes + 1, 1e8);
+    dist[S] = 0;
+    bool isnegativelengthcyclepresent = 0;
+    for (int i = 0; i < nodes; i++)
+    {
+        for (auto x : edgelist)
+        {
+            int a = x[0], b = x[1], w = x[2];
+            if (i == nodes - 1)
+            {
+                if (dist[a] + w < dist[b])
+                {
+                    isnegativelengthcyclepresent = 1;
+
+                    break;
+                }
+            }
+
+            dist[b] = min(dist[b], dist[a] + w);
+        }
+    }
+
+    linebreak1;
+    trav(dist) print(x);
+    linebreak1;
 }
 
 int main()

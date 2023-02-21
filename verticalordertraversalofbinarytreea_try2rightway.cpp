@@ -51,13 +51,85 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
+
+    Node(int x)
+    {
+        data = x;
+        left = right = NULL;
+    }
+};
 
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+
+    Node *root = new Node(1);
+    root->left = new Node(2);
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+    // root->left->right->left = new Node(10);
+    // root->left->right->right = new Node(14);
+    root->right = new Node(3);
+    root->right->left = new Node(6);
+    root->right->right = new Node(7);
+
+    map<int, map<int, multiset<int>>> m;
+    queue<pair<Node *, pair<int, int>>> q;
+    q.push({root, {0, 0}});
+    while (!q.empty())
+    {
+        pair<Node *, pair<int, int>> f = q.front();
+        q.pop();
+        m[f.second.first][f.second.second].insert(f.first->data);
+        if (f.first->left)
+            q.push({f.first->left, {f.second.first - 1, f.second.second + 1}});
+        if (f.first->right)
+            q.push({f.first->right, {f.second.first + 1, f.second.second + 1}});
+    }
+    vector<vector<int>> ans;
+    linebreak1;
+
+    trav(m)
+    {
+        print(x.first);
+        print("---");
+        trav2(x.second)
+        {
+            print(y.first);
+            print("-");
+            for (auto z : y.second)
+                print(z);
+            nline;
+        }
+        nline;
+        nline;
+    }
+
+    linebreak1;
+    for (auto x : m)
+    {
+        vector<int> v;
+        for (auto y : x.second)
+        {
+            // v.push_back(vector<int>(y.second.begin(), y.second.end()));
+            for (auto z : y.second)
+            {
+                v.push_back(z);
+            }
+        }
+        ans.push_back(v);
+    }
+    linebreak1;
+    trav(ans)
+    {
+        trav2(x) print(y);
+        nline;
+    }
+    linebreak1;
 }
 
 int main()

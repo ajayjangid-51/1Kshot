@@ -54,10 +54,33 @@ void file()
 
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    string s("ababcbacadefegdehijhklij");
+    int n = size(s);
+    int i = 0, j = n - 1;
+    int l = 0, r = 0;
+    vector<int> ans;
+
+    while (i < n)
+    {
+
+        while (s[i] != s[j] and j >= r)
+        {
+            j--;
+        }
+        deb(j);
+        r = max(r, j);
+        if (i == r)
+        {
+            deb2(l, r);
+            ans.push_back((r - l) + 1);
+            l = r + 1;
+        }
+        i++;
+        j = n - 1;
+    }
+    linebreak1;
+    trav(ans) print(x);
+    linebreak1;
 }
 
 int main()

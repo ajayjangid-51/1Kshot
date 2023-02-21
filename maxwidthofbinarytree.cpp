@@ -51,13 +51,82 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
 
+    Node(int x)
+    {
+        data = x;
+        left = right = NULL;
+    }
+};
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+
+    /*   Node *root = new Node(1);
+      root->left = new Node(3);
+      root->left->left = new Node(5);
+      root->left->right = new Node(3);
+      // root->left->right->left = new Node(10);
+      // root->left->right->right = new Node(14);
+      root->right = new Node(2);
+      // root->right->left = new Node(6);
+      root->right->right = new Node(9); */
+
+    Node *root = new Node(1);
+    root->left = new Node(3);
+    root->left->left = new Node(5);
+    root->left->left->left = new Node(6);
+    // root->left->right->left = new Node(10);
+    // root->left->right->right = new Node(14);
+    root->right = new Node(2);
+    root->right->right = new Node(9);
+    root->right->right->left = new Node(7);
+
+    queue<Node *> q;
+    q.push(root);
+    int maxi = 0;
+    while (!q.empty())
+    {
+        int n = size(q);
+        vector<int> v(n);
+        for (int i = 0; i < n; i++)
+        {
+            Node *f = q.front();
+            q.pop();
+            if (f)
+            {
+                v[i] = 1;
+                q.push(f->left);
+                q.push(f->right);
+            }
+            else
+            {
+                q.push(NULL);
+                q.push(NULL);
+                v[i] = 0;
+            }
+        }
+
+        linebreak1;
+        trav(v) print(x);
+        linebreak1;
+        int j = 0, k = n - 1;
+        while (j < n and v[j] == 0)
+            j++;
+        while (k >= 0 and v[k] == 0)
+            k--;
+        deb2(j, k);
+        maxi = max(maxi, (k - j) + 1);
+        if (k < 0)
+            break;
+        if (j >= n)
+            break;
+    }
+    debline(maxi);
 }
 
 int main()

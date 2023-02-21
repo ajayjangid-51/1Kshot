@@ -51,13 +51,65 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
 
+    Node(int x)
+    {
+        data = x;
+        left = right = NULL;
+    }
+};
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    Node *root = new Node(1);
+    root->left = new Node(3);
+    root->left->left = new Node(5);
+    root->left->left->left = new Node(6);
+    root->right = new Node(2);
+    root->right->right = new Node(9);
+    root->right->right->left = new Node(7);
+
+    map<Node *, int> m;
+    queue<Node *> q;
+    q.push(root);
+    m[root] = 1;
+    int maxi = 0;
+    while (!q.empty())
+    {
+        int s = 0, e = 0;
+        int n = size(q);
+        for (int i = 0; i < n; i++)
+        {
+            Node *f = q.front();
+            q.pop();
+            if (i == 0)
+            {
+                s = m[f];
+            }
+            if (i == n - 1)
+            {
+                e = m[f];
+            }
+            if (f->left)
+            {
+
+                q.push(f->left);
+                m[f->left] = 2 * m[f];
+            }
+            if (f->right)
+            {
+
+                q.push(f->right);
+                m[f->right] = (2 * m[f]) + 1;
+            }
+        }
+        maxi = max(maxi, (e - s) + 1);
+    }
+    debline(maxi);
 }
 
 int main()

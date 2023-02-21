@@ -54,10 +54,26 @@ void file()
 
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    vi v = {4, 5, 6, 7, 0, 1, 2};
+    int i = 0, j = size(v) - 1;
+    while (i < j)
+    {
+        if (v[i] < v[j])
+        {
+            debline(v[i]);
+            return;
+        }
+        int mid = (i + j) / 2;
+        if (mid > v[j])
+        {
+            i = mid + 1;
+        }
+        else
+        {
+            j = mid;
+        }
+    }
+    debline(i);
 }
 
 int main()

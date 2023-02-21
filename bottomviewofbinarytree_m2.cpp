@@ -51,13 +51,57 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
 
+    Node(int x)
+    {
+        data = x;
+        left = right = NULL;
+    }
+};
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    Node *root = new Node(20);
+    root->left = new Node(8);
+    root->left->left = new Node(5);
+    root->left->right = new Node(3);
+    root->left->right->left = new Node(10);
+    root->left->right->right = new Node(14);
+    root->right = new Node(22);
+    root->right->left = new Node(4);
+    root->right->right = new Node(25);
+
+    // map<vertical , map<level, vector<int>>> // where vector<int> will contains same levels nodes in the order they apper in leverl-order-traversal.
+    map<int, map<int, vector<int>>> m;
+    queue<pair<Node *, pair<int, int>>> q;
+    q.push({root, {0, 0}});
+    while (!q.empty())
+    {
+        pair<Node *, pair<int, int>> f = q.front();
+        q.pop();
+        m[f.second.first][f.second.second].push_back(f.first->data);
+        if (f.first->left)
+            q.push({f.first->left, {f.second.first - 1, f.second.second + 1}});
+        if (f.first->right)
+            q.push({f.first->right, {f.second.first + 1, f.second.second + 1}});
+    }
+    vector<int> ans;
+    trav(m)
+    {
+        // deb(x.first);
+        // x.second.rbegin()
+        ans.push_back(x.second.rbegin()->second.back());
+        // deb(t->)
+        // vi v = *(x.second.rbegin());
+        // ans.push_back(v.back());
+    }
+    linebreak1;
+    trav(ans) print(x);
+    linebreak1;
 }
 
 int main()

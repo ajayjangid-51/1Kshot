@@ -54,10 +54,33 @@ void file()
 
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    // vi v = {6, 2, 4};
+    // vi v = {4, 11};
+    // vi v = {11, 12, 12};
+    vi v = {15, 13, 5, 3, 15};
+    int n = size(v);
+    int i = 0, j = n - 1;
+    int sum = 0;
+    while (i + 1 <= j and j - 1 >= i)
+    {
+        int a = 0, b = 0;
+        if (v[i] * v[i + 1] < v[j] * v[j - 1])
+        {
+            a = v[i];
+            b = v[i + 1];
+            i++;
+            v[i] = max(a, b);
+        }
+        else
+        {
+            a = v[j];
+            b = v[j - 1];
+            j--;
+            v[j] = max(a, b);
+        }
+        sum = sum + (a * b);
+    }
+    debline(sum);
 }
 
 int main()

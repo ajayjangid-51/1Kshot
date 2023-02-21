@@ -54,10 +54,47 @@ void file()
 
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
+    // int n = 11891;
+    int n = 90;
+    string s(to_string(n));
+    string s2(s);
+    deb(s);
+    // for max:-
+    int i = 0;
+    for (; i < size(s); i++)
+    {
+        if (s[i] != '9')
+            break;
+    }
+    deb(i);
+    char c = s[i];
+
+    for (auto &x : s)
+    {
+        // deb(x);
+        // deb(s[i]);
+        if (x == c)
+            x = '9';
+    }
+    deb(s);
+    i = 0;
     debline(s2);
+    for (; i < size(s); i++)
+    {
+        if (s2[i] != '0')
+            break;
+    }
+    deb(i);
+    c = s2[i];
+    deb(c);
+    for (auto &x : s2)
+    {
+        if (x == c)
+            x = '0';
+    }
+    deb(s2);
+    int ans = stoi(s) - stoi(s2);
+    debline(ans);
 }
 
 int main()

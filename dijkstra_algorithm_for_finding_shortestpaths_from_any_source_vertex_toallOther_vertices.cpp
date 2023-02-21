@@ -32,7 +32,8 @@ using namespace std;
 #define deb2(a, b) cout << #a << "= " << a << " | " << #b << "= " << b << "\n"
 #define deb3(a, b, c) cout << #a << "= " << a << " | " << #b << "= " << b << " | " << #c << "=" << c << "\n"
 #define debpair(pair) cout << #pair << ".first = " << pair.first << " " << #pair << ".second = " << pair.second << endl
-#define linebreak1 cout << "_______________________________" \
+#define linebreak1 cout << "\n"                              \
+                        << "_______________________________" \
                         << "\n"                              \
                            "\n"
 #define forn(i, start, n) for (auto i = start; i < n; i++)
@@ -54,10 +55,39 @@ void file()
 
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    int n = 5;
+    vector<vvi> adj(n + 1);
+    adj[1] = {{4, 9}, {5, 1}, {2, 5}};
+    adj[2] = {{3, 2}, {1, 5}};
+    adj[3] = {{4, 6}, {2, 2}};
+    adj[4] = {{3, 6}, {1, 9}};
+    adj[5] = {{1, 1}, {4, 2}};
+
+    //
+    vi dist(n + 1, INFINITY);
+    // vi dist(n + 1, 100000);
+    dist[1] = 0;
+    vi visited(n + 1, 0);
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    pq.push({0, 1});
+    while (!pq.empty())
+    {
+        pair<int, int> f = pq.top();
+        pq.pop();
+        visited[f.second] = 1;
+        for (auto x : adj[f.second])
+        {
+            if (!visited[x[0]])
+            {
+
+                dist[x[0]] = min(dist[x[0]], f.first + x[1]);
+                pq.push({dist[x[0]], x[0]});
+            }
+        }
+    }
+    linebreak1;
+    trav(dist) print(x);
+    linebreak1;
 }
 
 int main()

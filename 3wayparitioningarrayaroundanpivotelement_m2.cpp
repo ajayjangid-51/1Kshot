@@ -54,10 +54,38 @@ void file()
 
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    vi v = {1, 3, 2, 2, 3, 1};
+    int n = size(v);
+    // first do the 3waypartitioning aroud the median as a pivot.
+    // first get the median;
+    auto midindex = v.begin() + (n / 2);
+    nth_element(v.begin(), midindex, v.end());
+    int mid = *midindex;
+
+    // 3wayparitioning:-
+    int i = 0, j = 0, e = n - 1;
+    // here we will keep 0 to i-1 bigger elements
+    // and i to j-1 equal elements
+    // and j to e smaller elements
+
+    while (j <= e)
+    {
+        if (v[j] > mid) // means the unkonws elements seems to greater than median so, put it in 0 to i-1 area. so for that we have bring this current element to 0 to i-1 area so to do that we first increase the (0 to i-1) window by increasing i++ and swaping that the current element that position with our current position and now at our current position will contain equal element bcoz we know ki previously i to j-1 range is containing equal elements as we have mentioned above in line 67to71.
+        {
+            swap(v[i], v[j]);
+            i++;
+            j++;
+        }
+        else if (v[j] < mid)
+        {
+            swap(v[j], v[e]);
+            e--;
+        }
+        else
+            j++;
+    }
+    trav(v) print(x);
+    nline;
 }
 
 int main()

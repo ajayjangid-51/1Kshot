@@ -52,12 +52,47 @@ void file()
 #endif
 }
 
+struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
+
+    Node(int x)
+    {
+        data = x;
+        left = right = NULL;
+    }
+};
+
+void fn(Node *node, int x, map<int, multiset<int>> &m)
+{
+    m[x].insert(node->data);
+    if (node->left)
+        fn(node->left, x - 1, m);
+    if (node->right)
+        fn(node->right, x + 1, m);
+}
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    Node *root = new Node(1);
+    root->left = new Node(2);
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+    // root->left->right->left = new Node(10);
+    // root->left->right->right = new Node(14);
+    root->right = new Node(3);
+    root->right->left = new Node(6);
+    root->right->right = new Node(7);
+
+    map<int, multiset<int>> m;
+    fn(root, 0, m);
+
+    trav(m)
+    {
+        trav2(x.second) print(y);
+        nline;
+    }
 }
 
 int main()

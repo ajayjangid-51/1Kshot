@@ -54,10 +54,32 @@ void file()
 
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    vi v = {1, 3, 2, 2, 3, 1};
+    int n = size(v);
+    // first do the 3waypartitioning aroud the median as a pivot.
+    // first get the median;
+    int mid = 2;
+
+    int i = 0, j = 0, e = n - 1;
+    // 0 to j-1 smaller elemnts:-
+    // j to i-1 bigger elements:-
+    // i to e unknownn elements( unknown means not speicified wherther it is bigger or smaaller then median).
+    // so after all we will get partioningway = (smaller or equal then bigger elements);
+    while (i < n)
+    {
+        if (v[i] > mid)
+        {
+            i++;
+        }
+        else
+        {
+            swap(v[i], v[j]);
+            i++;
+            j++;
+        }
+    }
+    trav(v) print(x);
+    nline;
 }
 
 int main()

@@ -32,7 +32,8 @@ using namespace std;
 #define deb2(a, b) cout << #a << "= " << a << " | " << #b << "= " << b << "\n"
 #define deb3(a, b, c) cout << #a << "= " << a << " | " << #b << "= " << b << " | " << #c << "=" << c << "\n"
 #define debpair(pair) cout << #pair << ".first = " << pair.first << " " << #pair << ".second = " << pair.second << endl
-#define linebreak1 cout << "_______________________________" \
+#define linebreak1 cout << "\n"                              \
+                        << "_______________________________" \
                         << "\n"                              \
                            "\n"
 #define forn(i, start, n) for (auto i = start; i < n; i++)
@@ -54,10 +55,51 @@ void file()
 
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    // so floydwarshall algorithm apn ek 2darray banateh hai joki contains the information about shortest distances between every nodes. and firstly the distances are assigned as the direct edge between the nodes and then we simply take all nodes(one by one) as a intermediate node inbetween the paths of every node. mtlb one by one we will try to include all nodes betwen then path of 2 nodes and then check for the reduction in the distance.
+    // on round1 the node1 will be new intermediate node from now on between all the paths but point to be notes if the intermedidate node reduce the distance the only we will consider that node as intermediate node in that path otherwise it is obvious not included:-
+
+    // graph edgelist:-
+    vvi edgelist = {
+        {2, 3, 2},
+        {3, 4, 7},
+        {4, 1, 9},
+        {2, 1, 5},
+        {4, 5, 2},
+        {1, 5, 1}};
+    int nodes = 5; // 1based indexingvalue
+    // so first create 2darray which represents edgeweight between node (i,j);
+    vvi v(nodes + 1, vi(nodes + 1, 1e8));
+    for (auto x : edgelist)
+    {
+        v[x[0]][x[0]] = 0;
+        v[x[1]][x[1]] = 0;
+        v[x[0]][x[1]] = x[2];
+        v[x[1]][x[0]] = x[2];
+    }
+    linebreak1;
+    trav(v)
+    {
+        trav2(x) print(y);
+        nline;
+    }
+    linebreak1;
+    for (int k = 1; k <= nodes; k++)
+    {
+        for (int i = 0; i <= nodes; i++)
+        {
+            for (int j = 0; j < nodes + 1; j++)
+            {
+                v[i][j] = min(v[i][j], (v[i][k] + v[k][j]));
+            }
+        }
+    }
+    linebreak1;
+    trav(v)
+    {
+        trav2(x) print(y);
+        nline;
+    }
+    linebreak1;
 }
 
 int main()

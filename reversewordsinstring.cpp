@@ -54,10 +54,27 @@ void file()
 
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    string s("the  sky is   blue");
+    int i = 0, j = 0;
+    int n = size(s);
+    string a;
+    string ans;
+    while (j < n)
+    {
+        while (i < n and s[i] == ' ')
+            i++;
+        j = i;
+        while (j < n and s[j] != ' ')
+            a.push_back(s[j++]);
+        i = j;
+
+        ans = " " + a + ans;
+        a = "";
+    }
+    deb(ans);
+    ans = ans.substr(1);
+    deb(ans[0]);
+    deb(ans[1]);
 }
 
 int main()

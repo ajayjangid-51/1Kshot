@@ -52,12 +52,58 @@ void file()
 #endif
 }
 
+int countNeighbours(vvi &A, int i, int j, int m, int n)
+{
+    int cnt = 0;
+    for (int i1 = max(i - 1, 0); i1 <= min(i + 1, m - 1); i1++)
+    {
+        for (int j1 = max(j - 1, 0); j1 <= min(j + 1, n - 1); j1++)
+        {
+            cnt += ((A[i1][j1]) & 1);
+            // deb2(i1, j1);
+        }
+    }
+    cnt -= A[i][j] & 1;
+    // deb(cnt);
+    return cnt;
+}
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    vvi A = {{0, 1, 0}, {0, 0, 1}, {1, 1, 1}, {0, 0, 0}};
+    int m = size(A);
+    int n = size(A[0]);
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            int livenbrs = countNeighbours(A, i, j, m, n);
+            // int livenbrs = 0;
+            if (A[i][j] == 0 and livenbrs == 3)
+            {
+                A[i][j] = 2;
+            }
+            else if (A[i][j] == 1 and (livenbrs == 2 or livenbrs == 3))
+            {
+                A[i][j] = 3;
+            }
+        }
+    }
+    print("heii");
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            A[i][j] >>= 1;
+        }
+    }
+
+    linebreak1;
+    trav(A)
+    {
+        trav2(x) print(y);
+        nline;
+    }
+    linebreak1;
 }
 
 int main()

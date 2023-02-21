@@ -51,13 +51,36 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-
+struct TreeNode
+{
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+bool dfs(TreeNode *root1, TreeNode *root2)
+{
+    if (!root1 and !root2)
+        return 1;
+    if ((!root1 and root2) or (root1 and !root2))
+        return 0;
+    if (root1->val != root2->val)
+        return 0;
+    bool ans = dfs(root1->left, root2->left) and dfs(root1->right, root2->right);
+    return ans;
+}
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    TreeNode *root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+
+    TreeNode *root2 = new TreeNode(1);
+    // root2->left = new TreeNode(5);
+    root2->right = new TreeNode(3);
+
+    bool ans = dfs(root, root2);
+    debline(ans);
 }
 
 int main()

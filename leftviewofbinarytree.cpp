@@ -51,13 +51,49 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
 
+    Node(int x)
+    {
+        data = x;
+        left = right = NULL;
+    }
+};
 void solve()
 {
-    string s("ab");
-    string s2(5, s);
-    // s = 5 * s;
-    debline(s2);
+    Node *root = new Node(1);
+    root->left = new Node(2);
+    root->left->left = new Node(4);
+    root->left->left->left = new Node(8);
+    root->left->right = new Node(5);
+    root->right = new Node(3);
+    root->right->left = new Node(6);
+    root->right->right = new Node(7);
+
+    if (!root)
+        return;
+    queue<Node *> q;
+    q.push(root);
+    vi ans;
+    while (!q.empty())
+    {
+        int n = size(q);
+        ans.push_back(q.front()->data);
+        for (int i = 0; i < n; i++)
+        {
+            Node *f = q.front();
+            q.pop();
+            if (f->left)
+                q.push(f->left);
+            if (f->right)
+                q.push(f->right);
+        }
+    }
+    trav(ans) print(x);
 }
 
 int main()
