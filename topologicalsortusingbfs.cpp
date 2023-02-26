@@ -1,3 +1,5 @@
+// notepoint:- toposort not possible via pure bfs , we have a "kahn's algorithms" which not actually bfs, if we see it from higher height, then we somewhat feels that it is like bfs means it like trav q while it is not empty and push and pop from queue.. somewhat similar....
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -13,7 +15,7 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
-// #define size(x) x.size()
+#define siz(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
@@ -52,93 +54,85 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-#include <bits/stdc++.h>
 
-struct TrieNode
-{
-    TrieNode *v[26] = {NULL};
-    int prefixCount = 0;
-    int wordends = 0;
-};
-class Trie
-{
-
-private:
-    TrieNode *root = NULL;
-
-public:
-    Trie()
-    {
-        // Write your code here.
-        root = new TrieNode;
-    }
-
-    void insert(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind])
-                p->v[ind] = new TrieNode;
-            p = p->v[ind];
-            p->prefixCount++;
-        }
-        p->wordends++;
-    }
-
-    int countWordsEqualTo(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
-                return 0;
-            p = p->v[ind];
-        }
-
-        return p->wordends;
-    }
-
-    int countWordsStartingWith(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
-                return 0;
-            p = p->v[ind];
-        }
-        // return 10;
-        return p->prefixCount;
-    }
-
-    void erase(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            p = p->v[ind];
-            p->prefixCount--;
-        }
-        p->wordends--;
-    }
-};
 void solve()
 {
+    // vi adj[] = {
+    //     {},
+    //     {3},
+    //     {3},
+    //     {},
+    //     {0, 1},
+    //     {0, 2}};
+    // vi adj[] = {
+    //     {},
+    //     {0},
+    //     {0},
+    //     {0},
+    // };
+    vi adj[] = {
+        {2}, {}, {}, {0, 2}};
+    int n = 4;
+    vb visited(n, 0);
+    // for (int i = 0; i < n; i++)
+    // {
+    //     if (siz(adj[i]))
+    //     {
+    //         visited[i] = 0;
+    //         trav2(adj[i]) visited[y] = 0;
+    //     }
+    // }
+    stack<int> s;
+    queue<int> q;
+    vvi ans2;
+    for (int i = 0; i < n; i++)
+    {
+        if (!visited[i])
+        {
+            q.push(i);
+            s.push(i);
+            vi ans;
+            while (!q.empty())
+            {
+                int f = q.front();
+                q.pop();
+                // if (visited[f])
+                //     continue;
+                visited[f] = 1;
+                // s.push(f);
+                for (auto x : adj[f])
+                {
+                    if (!visited[x])
+                    {
 
-    Trie t;
-    string s1("coding");
-    t.insert(s1);
-    string s2("ninja");
-    t.insert(s2);
-    string s3("nin");
-    deb(t.countWordsEqualTo(s2));
-    deb(t.countWordsEqualTo(s1));
-    deb(t.countWordsStartingWith(s3));
+                        s.push(x);
+                        q.push(x);
+                    }
+                }
+            }
+            while (!s.empty())
+            {
+                ans.push_back(s.top());
+                s.pop();
+            }
+            reverse(range(ans));
+            ans2.push_back(ans);
+        }
+    }
+    trav(ans2)
+    {
+        trav2(x) print(y);
+        nline;
+    }
+    vi ans;
+    for (int i = siz(ans2) - 1; i >= 0; i--)
+    {
+        for (auto x : ans2[i])
+            ans.push_back(x);
+    }
+    linebreak1;
+    trav(ans) print(x);
+    linebreak1;
 }
 
 int main()

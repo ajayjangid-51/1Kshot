@@ -13,7 +13,7 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
-// #define size(x) x.size()
+#define siz(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
@@ -52,93 +52,70 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-#include <bits/stdc++.h>
-
-struct TrieNode
+struct TreeNode
 {
-    TrieNode *v[26] = {NULL};
-    int prefixCount = 0;
-    int wordends = 0;
+    int key;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : key(x), left(NULL), right(NULL) {}
 };
-class Trie
+
+void findPreSuc(TreeNode *root, TreeNode *&pre, TreeNode *&suc, int k)
 {
 
-private:
-    TrieNode *root = NULL;
-
-public:
-    Trie()
+    // Your code goes here
+    if (pre and suc)
+        return;
+    if (!root)
+        return;
+    findPreSuc(root->left, pre, suc, k);
+    if (root->key < k)
     {
-        // Write your code here.
-        root = new TrieNode;
-    }
-
-    void insert(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
+        debline(root->key);
+        if (!pre)
+            pre = root;
+        else
         {
-            int ind = word[i] - 'a';
-            if (!p->v[ind])
-                p->v[ind] = new TrieNode;
-            p = p->v[ind];
-            p->prefixCount++;
+            if (pre->key < root->key)
+            {
+                pre = root;
+            }
         }
-        p->wordends++;
     }
-
-    int countWordsEqualTo(string &word)
+    else
     {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
+        // debline(root->key);
+        if (suc)
+            return;
+        if (root->key == k)
         {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
-                return 0;
-            p = p->v[ind];
+            suc = root->right;
         }
-
-        return p->wordends;
-    }
-
-    int countWordsStartingWith(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
+        else
         {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
-                return 0;
-            p = p->v[ind];
+            suc = root;
         }
-        // return 10;
-        return p->prefixCount;
+        // if(pre and suc) return;
     }
-
-    void erase(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            p = p->v[ind];
-            p->prefixCount--;
-        }
-        p->wordends--;
-    }
-};
+    findPreSuc(root->right, pre, suc, k);
+}
 void solve()
 {
-
-    Trie t;
-    string s1("coding");
-    t.insert(s1);
-    string s2("ninja");
-    t.insert(s2);
-    string s3("nin");
-    deb(t.countWordsEqualTo(s2));
-    deb(t.countWordsEqualTo(s1));
-    deb(t.countWordsStartingWith(s3));
+    TreeNode *root = new TreeNode(78);
+    root->left = new TreeNode(34);
+    root->right = new TreeNode(97);
+    root->left->left = new TreeNode(12);
+    root->left->right = new TreeNode(45);
+    //    root->right->left = new TreeNode();
+    // root->right->right = new TreeNode(85);
+    //    root->left->left->left = new TreeNode();
+    //    root->left->left->right = new TreeNode();
+    //    root->left->right->left = new TreeNode();
+    //    root->left->right->right = new TreeNode();
+    TreeNode *pre = NULL, *suc = NULL;
+    findPreSuc(root, pre, suc, 34);
+    deb2(pre, suc);
+    deb2(pre->key, suc->key);
 }
 
 int main()

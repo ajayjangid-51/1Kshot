@@ -13,7 +13,7 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
-// #define size(x) x.size()
+#define siz(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
@@ -52,93 +52,47 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-#include <bits/stdc++.h>
 
-struct TrieNode
+bool dfs(int node, vvi &adj, vb &visited, vi &color)
 {
-    TrieNode *v[26] = {NULL};
-    int prefixCount = 0;
-    int wordends = 0;
-};
-class Trie
-{
-
-private:
-    TrieNode *root = NULL;
-
-public:
-    Trie()
+    visited[node] = 1;
+    bool b = 1;
+    for (auto x : adj[node])
     {
-        // Write your code here.
-        root = new TrieNode;
-    }
-
-    void insert(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
+        if (visited[x])
         {
-            int ind = word[i] - 'a';
-            if (!p->v[ind])
-                p->v[ind] = new TrieNode;
-            p = p->v[ind];
-            p->prefixCount++;
-        }
-        p->wordends++;
-    }
-
-    int countWordsEqualTo(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
+            if (color[node] == color[x])
+            {
                 return 0;
-            p = p->v[ind];
+            }
         }
-
-        return p->wordends;
-    }
-
-    int countWordsStartingWith(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
+        // if (!visited[x] )
+        else
         {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
-                return 0;
-            p = p->v[ind];
+            color[x] = !color[node];
+            b = b and dfs(x, adj, visited, color);
         }
-        // return 10;
-        return p->prefixCount;
     }
-
-    void erase(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            p = p->v[ind];
-            p->prefixCount--;
-        }
-        p->wordends--;
-    }
-};
+    return b;
+}
 void solve()
 {
-
-    Trie t;
-    string s1("coding");
-    t.insert(s1);
-    string s2("ninja");
-    t.insert(s2);
-    string s3("nin");
-    deb(t.countWordsEqualTo(s2));
-    deb(t.countWordsEqualTo(s1));
-    deb(t.countWordsStartingWith(s3));
+    // 0based inndexing nodenaming is used.
+    // vvi adj = {
+    //     {1, 2, 3},
+    //     {0, 2},
+    //     {0, 1, 3},
+    //     {0, 2}};
+    vvi adj = {
+        {1, 3},
+        {0, 2},
+        {1, 3},
+        {0, 2}};
+    int n = 4;
+    vb visited(n, 0);
+    vi color(n, -1); // -1 means nocolor , 0 meas redcolor , 1 mean blackred.
+    color[0] = 0;    // 0th node is of redcolor.
+    debline(dfs(0, adj, visited, color));
 }
 
 int main()

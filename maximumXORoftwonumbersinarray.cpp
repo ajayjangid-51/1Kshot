@@ -13,7 +13,7 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
-// #define size(x) x.size()
+#define siz(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
@@ -52,93 +52,66 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-#include <bits/stdc++.h>
-
 struct TrieNode
 {
-    TrieNode *v[26] = {NULL};
-    int prefixCount = 0;
-    int wordends = 0;
+    TrieNode *v[2] = {NULL};
 };
 class Trie
 {
-
 private:
-    TrieNode *root = NULL;
-
 public:
+    TrieNode *root = NULL;
     Trie()
     {
-        // Write your code here.
         root = new TrieNode;
     }
-
-    void insert(string &word)
+    void insert(int n)
     {
         TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
+        for (int i = 31; i >= 0; i--)
         {
-            int ind = word[i] - 'a';
-            if (!p->v[ind])
-                p->v[ind] = new TrieNode;
-            p = p->v[ind];
-            p->prefixCount++;
+            bool t = n & (1 << i);
+            // print(t);
+            if (!p->v[t])
+            {
+                p->v[t] = new TrieNode;
+            }
+            p = p->v[t];
         }
-        p->wordends++;
+        // nline;
     }
-
-    int countWordsEqualTo(string &word)
+    int findmaxXOR(int n)
     {
         TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
+        int cnt = 0;
+        int ans = 0;
+        for (int i = 31; i >= 0; i--)
         {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
-                return 0;
-            p = p->v[ind];
+            bool t = n & (1 << i);
+            if (p->v[!t])
+            {
+                // cnt++;
+                ans = ans + (1 << i);
+                p = p->v[!t];
+            }
+            else
+                p = p->v[t];
         }
-
-        return p->wordends;
-    }
-
-    int countWordsStartingWith(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
-                return 0;
-            p = p->v[ind];
-        }
-        // return 10;
-        return p->prefixCount;
-    }
-
-    void erase(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            p = p->v[ind];
-            p->prefixCount--;
-        }
-        p->wordends--;
+        return ans;
     }
 };
 void solve()
 {
-
+    vi v = {3, 10, 5, 25, 2, 8};
     Trie t;
-    string s1("coding");
-    t.insert(s1);
-    string s2("ninja");
-    t.insert(s2);
-    string s3("nin");
-    deb(t.countWordsEqualTo(s2));
-    deb(t.countWordsEqualTo(s1));
-    deb(t.countWordsStartingWith(s3));
+    for (auto x : v)
+        t.insert(x);
+    int maxi = 0;
+    for (auto x : v)
+    {
+        maxi = max(maxi, t.findmaxXOR(x));
+    }
+    debline(maxi);
 }
 
 int main()

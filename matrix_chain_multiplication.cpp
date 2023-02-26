@@ -13,7 +13,7 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
-// #define size(x) x.size()
+#define siz(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
@@ -52,93 +52,38 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-#include <bits/stdc++.h>
 
-struct TrieNode
-{
-    TrieNode *v[26] = {NULL};
-    int prefixCount = 0;
-    int wordends = 0;
-};
-class Trie
-{
-
-private:
-    TrieNode *root = NULL;
-
-public:
-    Trie()
-    {
-        // Write your code here.
-        root = new TrieNode;
-    }
-
-    void insert(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind])
-                p->v[ind] = new TrieNode;
-            p = p->v[ind];
-            p->prefixCount++;
-        }
-        p->wordends++;
-    }
-
-    int countWordsEqualTo(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
-                return 0;
-            p = p->v[ind];
-        }
-
-        return p->wordends;
-    }
-
-    int countWordsStartingWith(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
-                return 0;
-            p = p->v[ind];
-        }
-        // return 10;
-        return p->prefixCount;
-    }
-
-    void erase(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            p = p->v[ind];
-            p->prefixCount--;
-        }
-        p->wordends--;
-    }
-};
 void solve()
 {
+    //           A   B   C   D
+    // vi v = {40, 20, 30, 10, 30};
+    vi v = {10, 30, 5, 60};
+    int n = siz(v) - 1;
+    vvi dp(n, vi(n, INT_MAX)); // where dp[i][j] stores the no.of-multiplicaton of multiplying the matrices from itoj.
+    for (int l = 0; l < n; l++)
+    {
+        for (int i = 0; i < (n - l); i++)
+        {
+            int j = i + l;
+            if (l == 0)
+            {
+                // dp[i][j] = v[i] * v[i + 1];
+                dp[i][j] = 0;
+            }
+            else
+            {
 
-    Trie t;
-    string s1("coding");
-    t.insert(s1);
-    string s2("ninja");
-    t.insert(s2);
-    string s3("nin");
-    deb(t.countWordsEqualTo(s2));
-    deb(t.countWordsEqualTo(s1));
-    deb(t.countWordsStartingWith(s3));
+                for (int k = i; k <= (j - 1); k++)
+                {
+                    int p = dp[i][k] + dp[k + 1][j];
+                    // p += v[i - 1] * v[k] * v[j];
+                    p += v[i] * v[k + 1] * v[j + 1];
+                    dp[i][j] = min(dp[i][j], p);
+                }
+            }
+        }
+    }
+    debline(dp[0][n - 1]);
 }
 
 int main()

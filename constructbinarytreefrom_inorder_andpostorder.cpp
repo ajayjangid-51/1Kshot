@@ -13,7 +13,7 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
-// #define size(x) x.size()
+#define siz(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
@@ -52,93 +52,64 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-#include <bits/stdc++.h>
-
-struct TrieNode
+struct TreeNode
 {
-    TrieNode *v[26] = {NULL};
-    int prefixCount = 0;
-    int wordends = 0;
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
-class Trie
+TreeNode *fn(int &p, int i, int j, vi &in, vi &po)
 {
-
-private:
-    TrieNode *root = NULL;
-
-public:
-    Trie()
+    debline(p);
+    if (i > j)
+        return NULL;
+    if (i == j)
     {
-        // Write your code here.
-        root = new TrieNode;
+        deb2(smile, p);
+        TreeNode *t = new TreeNode(po[p]);
+        // p--;
+        return t;
     }
-
-    void insert(string &word)
+    TreeNode *t = new TreeNode(po[p]);
+    debline(t->val);
+    for (int i1 = i; i1 <= j; i1++)
     {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
+        // if (in[i1] == po[p + 1])
+        if (in[i1] == po[p])
         {
-            int ind = word[i] - 'a';
-            if (!p->v[ind])
-                p->v[ind] = new TrieNode;
-            p = p->v[ind];
-            p->prefixCount++;
-        }
-        p->wordends++;
-    }
+            p--;
 
-    int countWordsEqualTo(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
-                return 0;
-            p = p->v[ind];
+            deb(i1);
+            // p--;
+            t->right = fn(p, i1 + 1, j, in, po);
+            // if (t->right)
+            //     p--;
+            t->left = fn(p, i, i1 - 1, in, po);
         }
-
-        return p->wordends;
     }
+    // return NULL;
+    return t;
 
-    int countWordsStartingWith(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
-                return 0;
-            p = p->v[ind];
-        }
-        // return 10;
-        return p->prefixCount;
-    }
+    // t->left = fn()
+}
 
-    void erase(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            p = p->v[ind];
-            p->prefixCount--;
-        }
-        p->wordends--;
-    }
-};
+void dfs(TreeNode *node)
+{
+    if (!node)
+        return;
+    print(node->val);
+    dfs(node->left);
+    dfs(node->right);
+}
 void solve()
 {
-
-    Trie t;
-    string s1("coding");
-    t.insert(s1);
-    string s2("ninja");
-    t.insert(s2);
-    string s3("nin");
-    deb(t.countWordsEqualTo(s2));
-    deb(t.countWordsEqualTo(s1));
-    deb(t.countWordsStartingWith(s3));
+    vi in = {9, 3, 15, 20, 7};
+    vi po = {9, 15, 7, 20, 3};
+    int n = siz(in);
+    int p = n - 1;
+    TreeNode *root = fn(p, 0, n - 1, in, po);
+    dfs(root);
 }
 
 int main()

@@ -54,91 +54,94 @@ void file()
 }
 #include <bits/stdc++.h>
 
-struct TrieNode
+class Node
 {
-    TrieNode *v[26] = {NULL};
-    int prefixCount = 0;
-    int wordends = 0;
+public:
+    char data;
+    Node *child[26];
+    int wordEnd;
+    int wordCount;
+    Node(char data)
+    {
+        // char data = '/';
+        wordEnd = 0;
+        wordCount = 0;
+        // this->data = data;
+        for (int i = 0; i < 26; i++)
+        {
+            child[i] = NULL;
+        }
+    }
 };
 class Trie
 {
 
 private:
-    TrieNode *root = NULL;
+    Node *root = NULL;
 
 public:
     Trie()
     {
         // Write your code here.
-        root = new TrieNode;
+        root = new Node('/');
     }
 
     void insert(string &word)
     {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
+        Node *curr = root;
+        for (int i = 0; i < word.length(); i++)
         {
             int ind = word[i] - 'a';
-            if (!p->v[ind])
-                p->v[ind] = new TrieNode;
-            p = p->v[ind];
-            p->prefixCount++;
+            if (curr->child[ind] == NULL)
+            {
+                curr->child[ind] = new Node(word[i]);
+            }
+            curr = curr->child[ind];
+            curr->wordCount++;
         }
-        p->wordends++;
+        curr->wordEnd++;
     }
 
     int countWordsEqualTo(string &word)
     {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
+        Node *curr = root;
+        for (int i = 0; i < word.length(); i++)
         {
             int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
+            if (!curr->child[ind] || curr->child[ind]->wordCount <= 0)
                 return 0;
-            p = p->v[ind];
+            curr = curr->child[ind];
         }
-
-        return p->wordends;
+        return curr->wordEnd;
     }
 
     int countWordsStartingWith(string &word)
     {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
+        Node *curr = root;
+        for (int i = 0; i < word.length(); i++)
         {
             int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
+            if (curr->child[ind] == NULL || curr->child[ind]->wordCount <= 0)
                 return 0;
-            p = p->v[ind];
+            curr = curr->child[ind];
         }
-        // return 10;
-        return p->prefixCount;
+        return curr->wordCount;
     }
 
     void erase(string &word)
     {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
+        Node *curr = root;
+        for (int i = 0; i < word.length(); i++)
         {
             int ind = word[i] - 'a';
-            p = p->v[ind];
-            p->prefixCount--;
+            curr = curr->child[ind];
+            curr->wordCount--;
         }
-        p->wordends--;
+        curr->wordEnd--;
     }
 };
 void solve()
 {
-
-    Trie t;
-    string s1("coding");
-    t.insert(s1);
-    string s2("ninja");
-    t.insert(s2);
-    string s3("nin");
-    deb(t.countWordsEqualTo(s2));
-    deb(t.countWordsEqualTo(s1));
-    deb(t.countWordsStartingWith(s3));
 }
 
 int main()

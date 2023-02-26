@@ -13,7 +13,7 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
-// #define size(x) x.size()
+#define siz(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
@@ -52,93 +52,88 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-#include <bits/stdc++.h>
-
-struct TrieNode
+struct TreeNode
 {
-    TrieNode *v[26] = {NULL};
-    int prefixCount = 0;
-    int wordends = 0;
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
-class Trie
+
+void ino(TreeNode *node, vector<TreeNode *> &v)
 {
-
-private:
-    TrieNode *root = NULL;
-
-public:
-    Trie()
-    {
-        // Write your code here.
-        root = new TrieNode;
-    }
-
-    void insert(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind])
-                p->v[ind] = new TrieNode;
-            p = p->v[ind];
-            p->prefixCount++;
-        }
-        p->wordends++;
-    }
-
-    int countWordsEqualTo(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
-                return 0;
-            p = p->v[ind];
-        }
-
-        return p->wordends;
-    }
-
-    int countWordsStartingWith(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
-                return 0;
-            p = p->v[ind];
-        }
-        // return 10;
-        return p->prefixCount;
-    }
-
-    void erase(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            p = p->v[ind];
-            p->prefixCount--;
-        }
-        p->wordends--;
-    }
-};
+    if (!node)
+        return;
+    ino(node->left, v);
+    v.push_back(node);
+    ino(node->right, v);
+}
 void solve()
 {
+    TreeNode *root = new TreeNode(78);
+    root->left = new TreeNode(24);
+    root->right = new TreeNode(80);
+    root->left->left = new TreeNode(18);
+    root->left->right = new TreeNode(55);
+    // root->right->left = new TreeNode();
+    root->right->right = new TreeNode(85);
+    // root->left->left->left = new TreeNode();
+    // root->left->left->right = new TreeNode();
+    // root->left->right->left = new TreeNode();
+    // root->left->right->right = new TreeNode();
+    vector<TreeNode *> v;
+    v.push_back(NULL);
 
-    Trie t;
-    string s1("coding");
-    t.insert(s1);
-    string s2("ninja");
-    t.insert(s2);
-    string s3("nin");
-    deb(t.countWordsEqualTo(s2));
-    deb(t.countWordsEqualTo(s1));
-    deb(t.countWordsStartingWith(s3));
+    ino(root, v);
+    v.push_back(NULL);
+    trav(v)
+    {
+        if (x)
+            print(x->val);
+        else
+            print("NULL");
+        // deb(x);
+    }
+    int key = 40;
+    TreeNode *pre = NULL, *suc = NULL;
+    for (int i = 1; i < v.size(); i++)
+    {
+        if (v[i] and key == v[i]->val)
+        {
+            pre = v[i - 1];
+            suc = v[i + 1];
+            // break;
+            // return;
+        }
+        if (v[i] and key < v[i]->val)
+        {
+            if (v[i - 1])
+            {
+                if (key > v[i - 1]->val)
+                {
+                    pre = v[i - 1];
+                    suc = v[i];
+                    break;
+                }
+            }
+            else
+            {
+
+                suc = v[i];
+                break;
+            }
+        }
+        else if (!v[i])
+        {
+            // debline(v[i]);
+            pre = v[i - 1];
+
+            deb2(smile2, v[i]->val);
+        }
+    }
+    // debline(pre->val);
+    // debline(suc->val);
+    deb2(pre->val, suc->val);
 }
 
 int main()

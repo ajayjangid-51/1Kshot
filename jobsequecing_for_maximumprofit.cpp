@@ -13,7 +13,7 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
-// #define size(x) x.size()
+#define siz(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
@@ -52,93 +52,59 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-#include <bits/stdc++.h>
-
-struct TrieNode
+struct Job
 {
-    TrieNode *v[26] = {NULL};
-    int prefixCount = 0;
-    int wordends = 0;
-};
-class Trie
-{
-
-private:
-    TrieNode *root = NULL;
-
-public:
-    Trie()
-    {
-        // Write your code here.
-        root = new TrieNode;
-    }
-
-    void insert(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind])
-                p->v[ind] = new TrieNode;
-            p = p->v[ind];
-            p->prefixCount++;
-        }
-        p->wordends++;
-    }
-
-    int countWordsEqualTo(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
-                return 0;
-            p = p->v[ind];
-        }
-
-        return p->wordends;
-    }
-
-    int countWordsStartingWith(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
-                return 0;
-            p = p->v[ind];
-        }
-        // return 10;
-        return p->prefixCount;
-    }
-
-    void erase(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            p = p->v[ind];
-            p->prefixCount--;
-        }
-        p->wordends--;
-    }
+    int id;     // Job Id
+    int dead;   // Deadline of job
+    int profit; // Profit if job is over before or on deadline
 };
 void solve()
 {
+    // vector<Job> v = {{1, 4, 20},
+    //                  {2, 1, 10},
+    //                  {3, 1, 40},
+    //                  {4, 1, 30}};
+    vector<Job> v = {{1, 2, 100},
+                     {2, 1, 19},
+                     {3, 2, 27},
+                     {4, 1, 25},
+                     {5, 1, 15}};
 
-    Trie t;
-    string s1("coding");
-    t.insert(s1);
-    string s2("ninja");
-    t.insert(s2);
-    string s3("nin");
-    deb(t.countWordsEqualTo(s2));
-    deb(t.countWordsEqualTo(s1));
-    deb(t.countWordsStartingWith(s3));
+    int maxslotavl = 0;
+    trav(v)
+    {
+        deb3(x.id, x.dead, x.profit);
+        maxslotavl = max(maxslotavl, x.dead);
+    }
+    sort(range(v), [](Job j1, Job j2)
+         { 
+        if(j1.profit<j2.profit) return 0;
+        return 1; });
+
+    linebreak1;
+    trav(v)
+    {
+        deb3(x.id, x.dead, x.profit);
+    }
+    debline(maxslotavl);
+    vi ans(maxslotavl, -1);
+    int t = 0;
+    int cnt = 0;
+    trav(v)
+    {
+        int i = x.dead;
+        while (i >= 1 and ans[i - 1] != -1)
+            i--;
+        if (i != 0)
+        {
+
+            ans[i - 1] = x.profit;
+            t += x.profit;
+            cnt++;
+        }
+    }
+    debline(cnt);
+    debline(t);
 }
 
 int main()

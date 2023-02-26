@@ -13,7 +13,7 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
-// #define size(x) x.size()
+#define siz(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
@@ -52,93 +52,87 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-#include <bits/stdc++.h>
-
 struct TrieNode
 {
     TrieNode *v[26] = {NULL};
-    int prefixCount = 0;
-    int wordends = 0;
+    bool end = 0;
 };
 class Trie
 {
-
 private:
-    TrieNode *root = NULL;
-
 public:
+    TrieNode *root = NULL;
     Trie()
     {
-        // Write your code here.
         root = new TrieNode;
     }
-
-    void insert(string &word)
+    void insert(string word)
     {
         TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
+        for (int i = 0; i < siz(word); i++)
         {
+            // deb(word[i]);
             int ind = word[i] - 'a';
+            // deb(ind);
             if (!p->v[ind])
                 p->v[ind] = new TrieNode;
             p = p->v[ind];
-            p->prefixCount++;
         }
-        p->wordends++;
+        p->end = 1;
     }
-
-    int countWordsEqualTo(string &word)
+    bool find(string word)
     {
         TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
+        for (int i = 0; i < siz(word); i++)
         {
             int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
+            if (!p->v[ind])
                 return 0;
             p = p->v[ind];
-        }
-
-        return p->wordends;
-    }
-
-    int countWordsStartingWith(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!p->v[ind] or p->v[ind]->prefixCount <= 0)
+            if (!p->end)
                 return 0;
-            p = p->v[ind];
         }
-        // return 10;
-        return p->prefixCount;
-    }
-
-    void erase(string &word)
-    {
-        TrieNode *p = root;
-        for (int i = 0; i < word.size(); i++)
-        {
-            int ind = word[i] - 'a';
-            p = p->v[ind];
-            p->prefixCount--;
-        }
-        p->wordends--;
+        return p->end;
     }
 };
+
 void solve()
 {
-
+    // vector<string> v = {"n", "ni", "nin", "ninj", "ninja", "ninga"};
+    // vector<string> v = {"ak", "szhkb", "a", "g", "hy"};
+    vector<string> v = {"vfjq", "kez", "vfj", "dotkr", "vfjqo"};
     Trie t;
-    string s1("coding");
-    t.insert(s1);
-    string s2("ninja");
-    t.insert(s2);
-    string s3("nin");
-    deb(t.countWordsEqualTo(s2));
-    deb(t.countWordsEqualTo(s1));
-    deb(t.countWordsStartingWith(s3));
+    deb(t.root);
+
+    trav(v)
+    {
+        // deb(x);
+        t.insert(x);
+    }
+    bool f = 0;
+    string ans;
+    trav(v)
+    {
+        if (t.find(x))
+        {
+            f = 1;
+            if (siz(x) == siz(ans))
+            {
+                deb2(x, ans);
+                ans = min(ans, x);
+            }
+            else
+            {
+                // ans = max(ans, x);
+                if (siz(x) > siz(ans))
+                    ans = x;
+            }
+        }
+    }
+    if (f)
+        debline(ans);
+    else
+        debline("None");
 }
 
 int main()
