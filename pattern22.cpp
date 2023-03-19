@@ -55,8 +55,32 @@ void file()
 
 void solve()
 {
-    print("hello whats:");
+    int n = 4;
+    int s = (n * 2) - 1;
+    deb(s);
+    int t;
+    for (int i = 0; i < s; i++)
+    {
+        for (int j = 0; j < s; j++)
+        {
+            if (i == j)
+            {
+                t = n - (j % n);
+                print(t);
+                t = n - (i % n);
+                // print(n - (j % n));
+            }
+            else
+            {
+                // t = n - (i % n);
+                print(t);
+                // print(n - (i % n));
+            }
+        }
+        nline;
+    }
 }
+
 int main()
 {
     io_faster

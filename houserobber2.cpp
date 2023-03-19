@@ -55,8 +55,60 @@ void file()
 
 void solve()
 {
-    print("hello whats:");
+    int n;
+    cin >> n;
+    vi v(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> v[i];
+    }
+    vi v1(n - 1), v2(n - 1);
+    v1[n - 2] = v[n - 2];
+    v2[n - 2] = v[n - 1];
+    // int maxi = 0;
+    int maxi = max(v1[n - 2], v2[n - 2]);
+
+    // int n2 = v1[i + 2], n1 = v1[i + 1];
+    int n2 = v1[n - 2], n1 = v1[n - 2];
+    for (int i = n - 3; i >= 0; i--)
+    {
+        // v1[i] = max(v1[i+2]+)
+        if (i + 2 <= n - 2)
+            // v1[i] = max(v[i] + v1[i + 2], v1[i + 1]);
+            v1[i] = max(v[i] + n2, n1);
+        else
+            // v1[i] = max(v[i], v1[i + 1]);
+            v1[i] = max(v[i], n1);
+        // v1[i] = max(v[i], v1[i + 1]);
+
+        n2 = n1;
+        n1 = v1[i];
+
+        maxi = max(v1[i], maxi);
+    }
+
+    n2 = v2[n - 2], n1 = v2[n - 2];
+
+    for (int i = n - 3; i >= 0; i--)
+    {
+        // v1[i] = max(v1[i+2]+)
+        if (i + 2 <= n - 2)
+            // v2[i] = max(v[i + 1] + v2[i + 2], v2[i + 1]);
+            v2[i] = max(v[i + 1] + n2, n1);
+        else
+            // v2[i] = max(v[i + 1], v2[i + 1]);
+            v2[i] = max(v[i + 1], n1);
+        // v2[i] = max(v[i + 1], v2[i + 1]);
+        n2 = n1;
+        n1 = v2[i];
+        maxi = max(v2[i], maxi);
+    }
+    debline(maxi);
+    trav(v1) print(x);
+    nline;
+    trav(v2) print(x);
 }
+
 int main()
 {
     io_faster

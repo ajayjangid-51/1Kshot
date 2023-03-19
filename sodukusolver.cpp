@@ -53,10 +53,76 @@ void file()
 #endif
 }
 
+bool isokay(int k, int row, int col, vvi &v)
+{
+    for (int i = 0; i < 9; i++)
+    {
+        if (v[row][i] != 0 and v[row][i] == k)
+            return 0;
+        if (v[i][col] != 0 and v[i][col] == k)
+            return 0;
+        if (v[(row / 3) * 3 + (i / 3)][(col / 3) * 3 + (i % 3)] != 0 and v[(row / 3) * 3 + (i / 3)][(col / 3) * 3 + (i % 3)] == k)
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+bool fn(vvi &v)
+{
+    for (int i = 0; i < siz(v); i++)
+    {
+        for (int j = 0; j < siz(v[0]); j++)
+        {
+            if (v[i][j] == 0)
+            {
+
+                for (int k = 1; k <= 9; k++)
+                {
+
+                    if (isokay(k, i, j, v))
+                    {
+                        v[i][j] = k;
+                        if (fn(v))
+                            return 1;
+                        else
+                            v[i][j] = 0;
+                    }
+                }
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 void solve()
 {
-    print("hello whats:");
+    vvi v = {
+        {5, 3, 0, 0, 7, 0, 0, 0, 0},
+        {6, 0, 0, 1, 9, 5, 0, 0, 0},
+        {0, 9, 8, 0, 0, 0, 0, 6, 0},
+        {8, 0, 0, 0, 6, 0, 0, 0, 3},
+        {4, 0, 0, 8, 0, 3, 0, 0, 1},
+        {7, 0, 0, 0, 2, 0, 0, 0, 6},
+        {0, 6, 0, 0, 0, 0, 2, 8, 0},
+        {0, 0, 0, 4, 1, 9, 0, 0, 5},
+        {0, 0, 0, 0, 8, 0, 0, 7, 9}};
+
+    fn(v);
+
+    print("hello");
+
+    linebreak1;
+    trav(v)
+    {
+        trav2(x) print(y);
+        nline;
+    }
+    linebreak1;
 }
+
 int main()
 {
     io_faster

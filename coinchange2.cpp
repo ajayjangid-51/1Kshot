@@ -55,8 +55,48 @@ void file()
 
 void solve()
 {
-    print("hello whats:");
+    int n;
+    cin >> n;
+    vi v(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> v[i];
+    }
+    int tsum;
+    cin >> tsum;
+
+    vvi dp(tsum + 1, vi(n, 1));
+    trav(dp)
+    {
+        trav2(x) print(y);
+        nline;
+    }
+
+    for (int i = 1; i <= tsum; i++)
+    {
+        for (int j = n - 1; j >= 0; j--)
+        {
+            // print(i), print(j), nline;
+            int a = 0;
+            if (j + 1 < n)
+                a = dp[i][j + 1];
+
+            int b = 0;
+            if (i - v[j] >= 0)
+                b = dp[i - v[j]][j];
+            dp[i][j] = b + a;
+        }
+    }
+    debline(dp[tsum][0]);
+
+    linebreak1;
+    trav(dp)
+    {
+        trav2(x) print(y);
+        nline;
+    }
 }
+
 int main()
 {
     io_faster

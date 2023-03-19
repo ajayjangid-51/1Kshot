@@ -55,8 +55,21 @@ void file()
 
 void solve()
 {
-    print("hello whats:");
+    int N = 22074;
+    int cnt = 0;
+    int n = N;
+    while (n)
+    {
+        int l = n % 10;
+        deb(l);
+        if (N % l == 0)
+            cnt++;
+        n /= 10;
+    }
+    // return cnt;
+    debline(cnt);
 }
+
 int main()
 {
     io_faster

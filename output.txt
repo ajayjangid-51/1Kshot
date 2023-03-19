@@ -1,16 +1,3 @@
-
-_______________________________
-
-x.first= 900 | x.second= 910
-x.first= 940 | x.second= 1200
-x.first= 950 | x.second= 1120
-x.first= 1100 | x.second= 1130
-x.first= 1500 | x.second= 1900
-x.first= 1800 | x.second= 2000
-
-_______________________________
-
-👉Line-84: pq.top() = 910
-👉Line-84: pq.top() = 1120
-👉Line-84: pq.top() = 1130
-👉Line-93: size(pq) = 3
+👉Line-104: maxi = 14
+14 11 10 10 5 3 
+11 10 10 6 3 1 

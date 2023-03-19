@@ -53,8 +53,41 @@ void file()
 #endif
 }
 
+void fn(int i, int sum, vi &v, vi &ans)
+{
+    if (i >= v.size())
+    {
+        ans.push_back(sum);
+        return;
+    }
+    fn(i + 1, sum, v, ans);
+    fn(i + 1, sum + v[i], v, ans);
+}
+
 void solve()
 {
+    // vi v = {2, 3};
+    vi v = {2, 5, 8, 11, 13};
+    /* // this is code for sums of all subarrays of array, but we want sums of all subsets.
+     vi sums;
+     sums.push_back(0);
+     int n = siz(v);
+     for (int i = 0; i < n; i++)
+     {
+         int t = 0;
+         for (int j = i; j < n; j++)
+         {
+             t += v[j];
+             sums.push_back(t);
+         }
+     }
+     trav(sums) print(x); */
+    vector<vector<int>> t;
+    vector<int> ans;
+    fn(0, 0, v, ans);
+    debline(ans.size());
+    trav(ans) print(x);
+    linebreak1;
 }
 
 int main()

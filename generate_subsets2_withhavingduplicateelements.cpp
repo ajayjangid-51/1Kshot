@@ -53,10 +53,30 @@ void file()
 #endif
 }
 
+void fn(int i, vi &v, vi &t, vvi &res)
+{
+    trav(t) print(x);
+    linebreak1;
+    res.push_back(t);
+    for (int j = i; j < siz(v); j++)
+    {
+        if (j == i or v[j - 1] != v[j])
+        {
+
+            t.push_back(v[j]);
+            fn(j + 1, v, t, res);
+            t.pop_back();
+        }
+    }
+}
 void solve()
 {
-    print("hello whats:");
+    vi v = {1, 2, 2};
+    vvi res;
+    vi t;
+    fn(0, v, t, res);
 }
+
 int main()
 {
     io_faster

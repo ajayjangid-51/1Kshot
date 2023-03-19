@@ -55,8 +55,78 @@ void file()
 
 void solve()
 {
-    print("hello whats:");
+    // vvi edges = {{0, 1},
+    //              {0, 3},
+    //              {3, 4},
+    //              {4, 5},
+    //              {5, 6},
+    //              {1, 2},
+    //              {2, 6},
+    //              {6, 7},
+    //              {7, 8},
+    //              {6, 8}};
+    int n, e;
+    cin >> n >> e;
+    vvi edges;
+    for (int i = 0; i < e; i++)
+    {
+        vi edge(2);
+        cin >> edge[0] >> edge[1];
+        edges.push_back(edge);
+    }
+    // trav(edges) deb2(x[0], x[1]);
+    vvi adj(n);
+    for (auto x : edges)
+    {
+        adj[x[0]].push_back(x[1]);
+        adj[x[1]].push_back(x[0]);
+    }
+    linebreak1;
+    int i = 0;
+    trav(adj)
+    {
+        print(i++), print("-");
+        trav2(x) print(y);
+        nline;
+    }
+    linebreak1;
+    // now perfrom bfs:-
+    vi dist(n, -1);
+    queue<pair<int, int>> q;
+    q.push({0, 0});
+    int level = 0;
+    while (!q.empty())
+    {
+        pair<int, int> t = q.front();
+        q.pop();
+
+        // if (dist[t.first] != -1)
+        //     dist[t.first] = min(dist[t.first], t.second);
+        // else
+        deb3(smile2, t.first, t.second);
+        if (dist[t.first] == -1)
+            dist[t.first] = t.second;
+        else
+            dist[t.first] = min(dist[t.first], t.second);
+        for (auto x : adj[t.first])
+        {
+            if (dist[x] == -1)
+            {
+                q.push({x, t.second + 1});
+            }
+            else
+            {
+                debline(x);
+                debline(dist[x]);
+                dist[x] = min(dist[x], t.second + 1);
+            }
+        }
+    }
+    linebreak1;
+    trav(dist) print(x);
+    linebreak1;
 }
+
 int main()
 {
     io_faster

@@ -55,8 +55,20 @@ void file()
 
 void solve()
 {
-    print("hello whats:");
+    string str("character");
+
+    // switch (str)
+    // {
+    // case "character":
+    //     print("hello");
+    //     break;
+    // default:
+    //     print("bye...");
+    // }
+    int s = sizeof(long);
+    deb(s);
 }
+
 int main()
 {
     io_faster

@@ -52,11 +52,73 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+string s;
+vector<string> ans;
+//          u d l r
+int x[4] = {-1, 1, 0, 0};
+int y[4] = {0, 0, -1, 1};
+int Nn;
+void fn(int i, int j, vvi &m)
+{
+    m[i][j] = 0;
+
+    if ((i == Nn - 1) and (j == Nn - 1))
+    {
+        deb3(smile, i, j);
+        debline(s);
+        ans.push_back(s);
+        m[i][j] = 1;
+        return;
+    }
+    for (int d = 0; d < 4; d++)
+    {
+        int i1 = i + x[d];
+        int j1 = j + y[d];
+        // deb2(i1, j1);
+
+        if (i1 >= 0 and i1 < Nn and j1 >= 0 and j1 < Nn and m[i1][j1] == 1)
+        {
+            deb3(i1, j1, d);
+            if (d == 0)
+                s.push_back('U');
+            else if (d == 1)
+                s.push_back('D');
+            else if (d == 2)
+                s.push_back('L');
+            else
+                s.push_back('R');
+            deb2(s, smile2);
+
+            fn(i1, j1, m);
+
+            s.pop_back();
+        }
+    }
+    m[i][j] = 1;
+}
 
 void solve()
 {
-    print("hello whats:");
+
+    vvi m = {
+        {1, 0, 0, 0},
+        {1, 1, 0, 1},
+        {1, 1, 0, 0},
+        {0, 1, 1, 1}};
+    int n = siz(m);
+    Nn = n;
+    if (m[0][0] == 0)
+    {
+        debline("false");
+        return;
+    }
+    debline(Nn);
+    fn(0, 0, m);
+    debline("ans");
+    debline(ans.size());
+    trav(ans) print(x);
 }
+
 int main()
 {
     io_faster
