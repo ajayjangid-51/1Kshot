@@ -52,62 +52,51 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+int parition(int s, int e, vi &v)
+{
+    int i = s - 1;
+    for (int j = s; j < e; j++)
+    {
+        if (v[j] <= v[e])
+        {
+            debline(v[j]);
+            i++;
+            swap(v[j], v[i]);
+        }
+    }
+    i++;
+    swap(v[i], v[e]);
+    return i;
+}
+void quicksort(int s, int e, vi &v)
+{
+    if (s > e)
+        return;
+    if (s == e)
+        return;
+    int pi = parition(s, e, v); // where pi is pivot-element's correct index in sortedarray.
+    // i will be used for storing smaller elements than pivortelements in leftside.
+    debline(pi);
+    quicksort(s, pi - 1, v);
+    quicksort(pi + 1, e, v);
 
+    // return v;
+    // return {};
+}
 void solve()
 {
-    // patterns-making problems meh apnko bas pattern observe krna and then simply usko phir implement krdena hai. pattern observer krna mtlb ki jaise i j ki enn values pr yeh value aarhi hai then ... etc.. something like this..
     int n;
     cin >> n;
-    vvi p(2 * n - 1, vi(2 * n - 1));
-    int m = (2 * n) - 1;
-    for (int i = 0; i < m; i++)
+    vi v(n);
+    for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < m; j++)
-        {
-            if (i >= n)
-            {
-                if (j >= n)
-                {
-                    // deb2(i, j);
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j - (2 * ((j % n) + 1))];
-                    // debline(p[i][j]);
-                }
-                else
-                {
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j];
-                }
-            }
-            else
-            {
-                if (j >= n)
-                {
-                    p[i][j] = p[i][j - (2 * ((j % n) + 1))];
-                }
-                else
-                {
-                    // p[i][j] = p[n - i][n - j];
-                    if (i == 0)
-                        p[i][j] = n;
-                    else
-                    {
-                        int smaller = min(i, j);
-                        p[i][j] = n - smaller;
-                    }
-                }
-            }
-        }
+        cin >> v[i];
     }
-
+    // we will take last element as pivot element:-
+    quicksort(0, n - 1, v);
     linebreak1;
-
-    trav(p)
-    {
-        trav2(x)
-        {
-            print(y);
-        }
-        nline;
-    }
+    trav(v) print(x);
+    linebreak1;
 }
 
 int main()
@@ -115,7 +104,7 @@ int main()
     io_faster
     file();
     int t = 1;
-    cin >> t;
+    //	cin >> t;
     while (t--)
     {
         solve();

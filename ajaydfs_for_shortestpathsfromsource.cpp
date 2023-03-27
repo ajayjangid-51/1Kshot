@@ -52,62 +52,50 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-
+void dfs(int i, vi &dist, vector<vector<pii>> &adj)
+{
+    for (auto x : adj[i])
+    {
+        if (dist[x.first] > dist[i] + x.second)
+        {
+            dist[x.first] = dist[i] + x.second;
+            dfs(x.first, dist, adj);
+        }
+    }
+    // okay the reason gotit why this ajaydfsforshortestpath is giving tle as  q ki dfs meh ek node multiple times visits hoskta hai as q ki voh nodes multiple times decreament hosktehh hai. jaise see this photoexample.
+    // https://drive.google.com/file/d/15OW-umXpRb6eFbetzhtmqEPyKNjnXA5a/view?usp=share_link
+}
 void solve()
 {
-    // patterns-making problems meh apnko bas pattern observe krna and then simply usko phir implement krdena hai. pattern observer krna mtlb ki jaise i j ki enn values pr yeh value aarhi hai then ... etc.. something like this..
-    int n;
-    cin >> n;
-    vvi p(2 * n - 1, vi(2 * n - 1));
-    int m = (2 * n) - 1;
-    for (int i = 0; i < m; i++)
+    int n, e; // "n" means no.ofnodes and "e" stands for no.ofedges and here nodes are indexed zero-based.
+    cin >> n >> e;
+
+    vector<vector<pii>> adj(n);
+    for (int i = 0; i < e; i++)
     {
-        for (int j = 0; j < m; j++)
-        {
-            if (i >= n)
-            {
-                if (j >= n)
-                {
-                    // deb2(i, j);
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j - (2 * ((j % n) + 1))];
-                    // debline(p[i][j]);
-                }
-                else
-                {
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j];
-                }
-            }
-            else
-            {
-                if (j >= n)
-                {
-                    p[i][j] = p[i][j - (2 * ((j % n) + 1))];
-                }
-                else
-                {
-                    // p[i][j] = p[n - i][n - j];
-                    if (i == 0)
-                        p[i][j] = n;
-                    else
-                    {
-                        int smaller = min(i, j);
-                        p[i][j] = n - smaller;
-                    }
-                }
-            }
-        }
+        int a, b, w;
+        cin >> a >> b >> w;
+        adj[a].push_back({b, w});
+        adj[b].push_back({a, w});
     }
-
+    print("-:👉🏻graph Adjlist👈🏻:-");
     linebreak1;
-
-    trav(p)
+    for (int i = 0; i < n; i++)
     {
-        trav2(x)
-        {
-            print(y);
-        }
+        print(i), print("-");
+        trav(adj[i]) print("{"), print(x.first), print(','), print(x.second), print('}'), print(",");
         nline;
     }
+    linebreak1;
+    vi dist(n, 1e8);
+    int s = 1;
+    dist[s] = 0;
+
+    dfs(s, dist, adj);
+
+    linebreak1;
+    trav(dist) print(x);
+    linebreak1;
 }
 
 int main()

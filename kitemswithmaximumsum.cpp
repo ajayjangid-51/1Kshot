@@ -55,59 +55,27 @@ void file()
 
 void solve()
 {
-    // patterns-making problems meh apnko bas pattern observe krna and then simply usko phir implement krdena hai. pattern observer krna mtlb ki jaise i j ki enn values pr yeh value aarhi hai then ... etc.. something like this..
-    int n;
-    cin >> n;
-    vvi p(2 * n - 1, vi(2 * n - 1));
-    int m = (2 * n) - 1;
-    for (int i = 0; i < m; i++)
+    int a = 3, b = 2, c = 0;
+    int k = 4;
+    int ans = 0;
+    while (a and k)
     {
-        for (int j = 0; j < m; j++)
-        {
-            if (i >= n)
-            {
-                if (j >= n)
-                {
-                    // deb2(i, j);
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j - (2 * ((j % n) + 1))];
-                    // debline(p[i][j]);
-                }
-                else
-                {
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j];
-                }
-            }
-            else
-            {
-                if (j >= n)
-                {
-                    p[i][j] = p[i][j - (2 * ((j % n) + 1))];
-                }
-                else
-                {
-                    // p[i][j] = p[n - i][n - j];
-                    if (i == 0)
-                        p[i][j] = n;
-                    else
-                    {
-                        int smaller = min(i, j);
-                        p[i][j] = n - smaller;
-                    }
-                }
-            }
-        }
+        a--;
+        k--;
+        ans++;
     }
-
-    linebreak1;
-
-    trav(p)
+    while (b and k)
     {
-        trav2(x)
-        {
-            print(y);
-        }
-        nline;
+        b--;
+        k--;
     }
+    while (c and k)
+    {
+        c--;
+        k--;
+        ans--;
+    }
+    debline(ans);
 }
 
 int main()

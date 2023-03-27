@@ -55,59 +55,34 @@ void file()
 
 void solve()
 {
-    // patterns-making problems meh apnko bas pattern observe krna and then simply usko phir implement krdena hai. pattern observer krna mtlb ki jaise i j ki enn values pr yeh value aarhi hai then ... etc.. something like this..
     int n;
     cin >> n;
-    vvi p(2 * n - 1, vi(2 * n - 1));
-    int m = (2 * n) - 1;
-    for (int i = 0; i < m; i++)
+    vi v(n);
+    for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < m; j++)
+        cin >> v[i];
+    }
+
+    for (int i = 0; i < n - 1; i++)
+    {
+        // compare v[i] and v[i +1]
+        // if v[i] > v[i+1] then we will swap and also compare with previos elements:-
+        if (v[i] > v[i + 1])
         {
-            if (i >= n)
+            swap(v[i], v[i + 1]);
+            for (int j = i - 1; j >= 0; j--)
             {
-                if (j >= n)
+                if (v[j] > v[j + 1])
                 {
-                    // deb2(i, j);
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j - (2 * ((j % n) + 1))];
-                    // debline(p[i][j]);
-                }
-                else
-                {
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j];
-                }
-            }
-            else
-            {
-                if (j >= n)
-                {
-                    p[i][j] = p[i][j - (2 * ((j % n) + 1))];
-                }
-                else
-                {
-                    // p[i][j] = p[n - i][n - j];
-                    if (i == 0)
-                        p[i][j] = n;
-                    else
-                    {
-                        int smaller = min(i, j);
-                        p[i][j] = n - smaller;
-                    }
+                    swap(v[j], v[j + 1]);
+                    // break;
                 }
             }
         }
     }
-
     linebreak1;
-
-    trav(p)
-    {
-        trav2(x)
-        {
-            print(y);
-        }
-        nline;
-    }
+    trav(v) print(x);
+    linebreak1;
 }
 
 int main()
@@ -115,7 +90,7 @@ int main()
     io_faster
     file();
     int t = 1;
-    cin >> t;
+    //	cin >> t;
     while (t--)
     {
         solve();

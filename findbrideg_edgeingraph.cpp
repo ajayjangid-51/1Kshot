@@ -52,62 +52,68 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+void dfsForBridge(int &at, int i, int p, vi &ToA, vi &ENCbV, vb &visited, vvi &adj)
+{
+    ToA[i] = at;
+    ENCbV[i] = at;
+    visited[i] = 1;
+    for (auto x : adj[i])
+    {
+        if (!visited[x])
+        {
 
+            dfsForBridge(++at, x, i, ToA, ENCbV, visited, adj);
+            // now check for bridge edge(i,x):-
+
+            ENCbV[i] = min(ENCbV[i], ENCbV[x]);
+        }
+    }
+
+    for (auto x : adj[i])
+    {
+        if (x != p)
+        {
+            ENCbV[i] = min(ENCbV[i], ENCbV[x]);
+        }
+    }
+}
 void solve()
 {
-    // patterns-making problems meh apnko bas pattern observe krna and then simply usko phir implement krdena hai. pattern observer krna mtlb ki jaise i j ki enn values pr yeh value aarhi hai then ... etc.. something like this..
-    int n;
-    cin >> n;
-    vvi p(2 * n - 1, vi(2 * n - 1));
-    int m = (2 * n) - 1;
-    for (int i = 0; i < m; i++)
+    int n, e;
+    cin >> n >> e;
+
+    vvi adj(n);
+    for (int i = 0; i < e; i++)
     {
-        for (int j = 0; j < m; j++)
-        {
-            if (i >= n)
-            {
-                if (j >= n)
-                {
-                    // deb2(i, j);
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j - (2 * ((j % n) + 1))];
-                    // debline(p[i][j]);
-                }
-                else
-                {
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j];
-                }
-            }
-            else
-            {
-                if (j >= n)
-                {
-                    p[i][j] = p[i][j - (2 * ((j % n) + 1))];
-                }
-                else
-                {
-                    // p[i][j] = p[n - i][n - j];
-                    if (i == 0)
-                        p[i][j] = n;
-                    else
-                    {
-                        int smaller = min(i, j);
-                        p[i][j] = n - smaller;
-                    }
-                }
-            }
-        }
+        int a, b;
+        cin >> a >> b;
+        adj[a].push_back(b);
+        adj[b].push_back(a);
     }
-
     linebreak1;
-
-    trav(p)
+    trav(adj)
     {
-        trav2(x)
-        {
-            print(y);
-        }
+        trav2(x) print(y);
         nline;
     }
+    int c, d;
+    cin >> c >> d;
+    vi ToA(n);   // ToA[i] stands for Time of Arrival of time of insertion for the node i.
+    vi ENCbV(n); // ENCbV[i] stands for "earliest node can be visited by the node i."
+    int at = 0;
+    vb visited(n, 0);
+    for (int i = 0; i < n; i++)
+    {
+
+        dfsForBridge(at, i, -1, ToA, ENCbV, visited, adj);
+        if (ENCbV[d] > ToA[c] or ENCbV[c] > ToA[d])
+        {
+            // ans.push_back({i, x});
+            debline("yes");
+            return;
+        }
+    }
+    debline("no");
 }
 
 int main()

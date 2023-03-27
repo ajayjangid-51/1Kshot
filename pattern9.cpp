@@ -55,56 +55,32 @@ void file()
 
 void solve()
 {
-    // patterns-making problems meh apnko bas pattern observe krna and then simply usko phir implement krdena hai. pattern observer krna mtlb ki jaise i j ki enn values pr yeh value aarhi hai then ... etc.. something like this..
     int n;
     cin >> n;
-    vvi p(2 * n - 1, vi(2 * n - 1));
-    int m = (2 * n) - 1;
+    int m = (2 * n);
     for (int i = 0; i < m; i++)
     {
-        for (int j = 0; j < m; j++)
+        if (i < n)
         {
-            if (i >= n)
+            for (int j = 0; j < (n - (i + 1)); j++)
             {
-                if (j >= n)
-                {
-                    // deb2(i, j);
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j - (2 * ((j % n) + 1))];
-                    // debline(p[i][j]);
-                }
-                else
-                {
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j];
-                }
+                cout << " ";
             }
-            else
+            for (int j = 0; j < i + 1; j++)
             {
-                if (j >= n)
-                {
-                    p[i][j] = p[i][j - (2 * ((j % n) + 1))];
-                }
-                else
-                {
-                    // p[i][j] = p[n - i][n - j];
-                    if (i == 0)
-                        p[i][j] = n;
-                    else
-                    {
-                        int smaller = min(i, j);
-                        p[i][j] = n - smaller;
-                    }
-                }
+                cout << "* ";
             }
         }
-    }
-
-    linebreak1;
-
-    trav(p)
-    {
-        trav2(x)
+        else
         {
-            print(y);
+            for (int j = 0; j < ((i % n)); j++)
+            {
+                cout << " ";
+            }
+            for (int j = 0; j < (i - ((2 * (i % n)))); j++)
+            {
+                cout << "* ";
+            }
         }
         nline;
     }

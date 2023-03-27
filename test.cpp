@@ -55,14 +55,15 @@ void file()
 
 void solve()
 {
-    print("hello whats:");
+    deb(INT_MAX);
 }
+
 int main()
 {
     io_faster
     file();
     int t = 1;
-    //	cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();

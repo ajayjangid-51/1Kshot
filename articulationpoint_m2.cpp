@@ -52,62 +52,116 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+void fn(int i, int p, vvi &adj, vi &toa, vi &low, vb &visited, int &at, vi &ans)
+{
+    toa[i] = at;
+    low[i] = at;
+    visited[i] = 1;
+    for (auto x : adj[i])
+    {
+        if (!visited[x])
+        {
+            fn(x, i, adj, toa, low, visited, ++at, ans);
 
+            low[i] = min(low[i], low[x]);
+        }
+        else
+        {
+            // if (p != -1)
+            // low[x] = min(low[i], low[x]);
+        }
+    }
+    // now here node i is fully visited,so now we will check that this node i is articulationpoint or not.
+    bool ap = 1;
+    if (p != -1)
+    {
+
+        for (auto x : adj[i])
+        {
+            if (x != i and x != p and p != -1)
+            {
+
+                if (low[x] < toa[i]) // then i is ap.
+                {
+                    ap = ap and 1;
+                }
+                else
+                {
+                    if (x != i)
+                        ap = 0;
+                }
+            }
+        }
+    }
+
+    if (p == -1)
+    {
+        int t = 1;
+        if (adj[i].size() > 1)
+        {
+            t = 1;
+
+            for (auto x : adj[i])
+            {
+                if (low[x] != 0)
+                    t = 0;
+            }
+        }
+        if (t == 0)
+            // if (adj[i].size() > 1)
+            ans.push_back(i);
+        // else if (ap == 0)
+        //     ans.push_back(i);
+    }
+    else if (ap == 0)
+    {
+
+        // else
+        // {
+
+        ans.push_back(i);
+        // }
+    }
+    for (auto x : adj[i])
+    {
+        if (x != p)
+        {
+            low[i] = min(low[i], toa[x]);
+        }
+    }
+}
 void solve()
 {
-    // patterns-making problems meh apnko bas pattern observe krna and then simply usko phir implement krdena hai. pattern observer krna mtlb ki jaise i j ki enn values pr yeh value aarhi hai then ... etc.. something like this..
-    int n;
-    cin >> n;
-    vvi p(2 * n - 1, vi(2 * n - 1));
-    int m = (2 * n) - 1;
-    for (int i = 0; i < m; i++)
+    int n, e; // "n" means no.ofnodes and "e" stands for no.ofedges and here nodes are indexed zero-based.
+    cin >> n >> e;
+
+    vvi adj(n);
+    for (int i = 0; i < e; i++)
     {
-        for (int j = 0; j < m; j++)
-        {
-            if (i >= n)
-            {
-                if (j >= n)
-                {
-                    // deb2(i, j);
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j - (2 * ((j % n) + 1))];
-                    // debline(p[i][j]);
-                }
-                else
-                {
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j];
-                }
-            }
-            else
-            {
-                if (j >= n)
-                {
-                    p[i][j] = p[i][j - (2 * ((j % n) + 1))];
-                }
-                else
-                {
-                    // p[i][j] = p[n - i][n - j];
-                    if (i == 0)
-                        p[i][j] = n;
-                    else
-                    {
-                        int smaller = min(i, j);
-                        p[i][j] = n - smaller;
-                    }
-                }
-            }
-        }
+        int a, b;
+        cin >> a >> b;
+        adj[a].push_back(b);
+        adj[b].push_back(a);
     }
-
+    print("-:👉🏻graph Adjlist👈🏻:-");
     linebreak1;
-
-    trav(p)
+    for (int i = 0; i < n; i++)
     {
-        trav2(x)
-        {
-            print(y);
-        }
+        print(i), print("-");
+        trav(adj[i]) print(x);
         nline;
     }
+    linebreak1;
+
+    vi toa(n);
+    vi low(n);
+    vb visited(n, 0);
+    int at = 0;
+    vi ans;
+    fn(0, -1, adj, toa, low, visited, at, ans);
+    linebreak1;
+    trav(ans) print(x);
+    linebreak1;
 }
 
 int main()

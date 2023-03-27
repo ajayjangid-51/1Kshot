@@ -53,61 +53,78 @@ void file()
 #endif
 }
 
+void prime(vi &p)
+{
+
+    int low = 1, high = 1000, i;
+    bool is_prime = true;
+
+    while (low < high)
+    {
+        is_prime = true;
+
+        // 0 and 1 are not prime numbers
+        if (low == 0 || low == 1)
+        {
+            is_prime = false;
+        }
+
+        for (i = 2; i <= low / 2; ++i)
+        {
+            if (low % i == 0)
+            {
+                is_prime = false;
+                break;
+            }
+        }
+
+        if (is_prime)
+            p.push_back(low);
+
+        ++low;
+    }
+    linebreak1;
+    trav(p) print(x);
+    linebreak1;
+}
+
 void solve()
 {
-    // patterns-making problems meh apnko bas pattern observe krna and then simply usko phir implement krdena hai. pattern observer krna mtlb ki jaise i j ki enn values pr yeh value aarhi hai then ... etc.. something like this..
-    int n;
-    cin >> n;
-    vvi p(2 * n - 1, vi(2 * n - 1));
-    int m = (2 * n) - 1;
-    for (int i = 0; i < m; i++)
+    // vi v = {4, 9, 6, 10};
+    vi v = {5, 8, 3};
+    int n = v.size();
+    vi p;
+    prime(p);
+    for (int i = n - 2; i >= 0; i--)
     {
-        for (int j = 0; j < m; j++)
+        if (v[i] < v[i + 1])
+            continue;
+
+        int x = v[i] - v[i + 1];
+        deb(x);
+        int b = 0;
+
+        for (auto y : p)
         {
-            if (i >= n)
+            if (y > x and y != v[i])
             {
-                if (j >= n)
-                {
-                    // deb2(i, j);
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j - (2 * ((j % n) + 1))];
-                    // debline(p[i][j]);
-                }
-                else
-                {
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j];
-                }
+                deb(y);
+                b = 1;
+                v[i] -= y;
+                break;
             }
-            else
-            {
-                if (j >= n)
-                {
-                    p[i][j] = p[i][j - (2 * ((j % n) + 1))];
-                }
-                else
-                {
-                    // p[i][j] = p[n - i][n - j];
-                    if (i == 0)
-                        p[i][j] = n;
-                    else
-                    {
-                        int smaller = min(i, j);
-                        p[i][j] = n - smaller;
-                    }
-                }
-            }
+        }
+        if (!b)
+        {
+            debline("false");
+            return;
         }
     }
 
+    debline("true");
     linebreak1;
-
-    trav(p)
-    {
-        trav2(x)
-        {
-            print(y);
-        }
-        nline;
-    }
+    trav(v) print(x);
+    linebreak1;
 }
 
 int main()

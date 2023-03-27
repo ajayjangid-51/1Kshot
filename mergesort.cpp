@@ -52,62 +52,67 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+vi merge(vi &v1, vi &v2)
+{
 
+    vi v(v1.size() + v2.size());
+    int k = 0;
+    int i = 0, j = 0;
+    while (i < v1.size() and j < v2.size())
+    {
+        if (v1[i] < v2[j])
+        {
+            v[k++] = v1[i++];
+        }
+        else
+        {
+            v[k++] = v2[j++];
+        }
+    }
+    while (i < v1.size())
+    {
+        v[k++] = v1[i++];
+    }
+    while (j < v2.size())
+    {
+        v[k++] = v2[j++];
+    }
+    // linebreak1;
+    // trav(v) print(x);
+    // linebreak1;
+    // debline(v.size());
+    return v;
+}
+vi mergesort(int s, int e, vi &v)
+{
+    if (s == e)
+        return {v[s]};
+    int mid = (s + e) / 2;
+    vi v1 = mergesort(s, mid, v);
+    vi v2 = mergesort(mid + 1, e, v);
+    return merge(v1, v2);
+    // return merge(mergesort(s, mid, v), mergesort(mid + 1, e, v));
+}
 void solve()
 {
-    // patterns-making problems meh apnko bas pattern observe krna and then simply usko phir implement krdena hai. pattern observer krna mtlb ki jaise i j ki enn values pr yeh value aarhi hai then ... etc.. something like this..
     int n;
     cin >> n;
-    vvi p(2 * n - 1, vi(2 * n - 1));
-    int m = (2 * n) - 1;
-    for (int i = 0; i < m; i++)
+    vi v(n);
+    for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < m; j++)
-        {
-            if (i >= n)
-            {
-                if (j >= n)
-                {
-                    // deb2(i, j);
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j - (2 * ((j % n) + 1))];
-                    // debline(p[i][j]);
-                }
-                else
-                {
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j];
-                }
-            }
-            else
-            {
-                if (j >= n)
-                {
-                    p[i][j] = p[i][j - (2 * ((j % n) + 1))];
-                }
-                else
-                {
-                    // p[i][j] = p[n - i][n - j];
-                    if (i == 0)
-                        p[i][j] = n;
-                    else
-                    {
-                        int smaller = min(i, j);
-                        p[i][j] = n - smaller;
-                    }
-                }
-            }
-        }
+        cin >> v[i];
     }
 
+    // vi v1 = {1, 2, 5};
+    // vi v2 = {4, 6, 10};
+    // vi v3 = merge(v1, v2);
+    // print("helli");
+
+    vi ans = mergesort(0, n - 1, v);
     linebreak1;
-
-    trav(p)
-    {
-        trav2(x)
-        {
-            print(y);
-        }
-        nline;
-    }
+    trav(ans) print(x);
+    linebreak1;
+    print("hello");
 }
 
 int main()
@@ -115,7 +120,7 @@ int main()
     io_faster
     file();
     int t = 1;
-    cin >> t;
+    //	cin >> t;
     while (t--)
     {
         solve();

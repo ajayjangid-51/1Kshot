@@ -52,62 +52,87 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+int ans;
+vi merge(vi &v1, vi &v2)
+{
 
+    vi v(v1.size() + v2.size());
+    int k = 0;
+    int i = 0, j = 0;
+    while (i < v1.size() and j < v2.size())
+    {
+        if (v1[i] < v2[j])
+        {
+            v[k++] = v1[i++];
+        }
+        else
+        {
+            v[k++] = v2[j++];
+        }
+    }
+    while (i < v1.size())
+    {
+        v[k++] = v1[i++];
+    }
+    while (j < v2.size())
+    {
+        v[k++] = v2[j++];
+    }
+    // linebreak1;
+    // trav(v) print(x);
+    // linebreak1;
+    // debline(v.size());
+    return v;
+}
+vi reversepairs(int s, int e, vi &v)
+{
+    if (s > e)
+        return {};
+
+    if (s == e)
+    {
+        return {v[s]};
+    }
+
+    int mid = (s + e) / 2;
+    vi v1 = reversepairs(s, mid, v);
+    vi v2 = reversepairs(mid + 1, e, v);
+    // compare
+    int i = 0, j = 0;
+    while (i < v1.size())
+    {
+        if (v1[i] > 2 * v2[j])
+        {
+            j++;
+        }
+        else
+        {
+            ans += j;
+            i++;
+        }
+    }
+
+    // merge
+    return merge(v1, v2);
+}
 void solve()
 {
-    // patterns-making problems meh apnko bas pattern observe krna and then simply usko phir implement krdena hai. pattern observer krna mtlb ki jaise i j ki enn values pr yeh value aarhi hai then ... etc.. something like this..
     int n;
     cin >> n;
-    vvi p(2 * n - 1, vi(2 * n - 1));
-    int m = (2 * n) - 1;
-    for (int i = 0; i < m; i++)
+    vi v(n);
+    for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < m; j++)
-        {
-            if (i >= n)
-            {
-                if (j >= n)
-                {
-                    // deb2(i, j);
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j - (2 * ((j % n) + 1))];
-                    // debline(p[i][j]);
-                }
-                else
-                {
-                    p[i][j] = p[i - (2 * ((i % n) + 1))][j];
-                }
-            }
-            else
-            {
-                if (j >= n)
-                {
-                    p[i][j] = p[i][j - (2 * ((j % n) + 1))];
-                }
-                else
-                {
-                    // p[i][j] = p[n - i][n - j];
-                    if (i == 0)
-                        p[i][j] = n;
-                    else
-                    {
-                        int smaller = min(i, j);
-                        p[i][j] = n - smaller;
-                    }
-                }
-            }
-        }
+        cin >> v[i];
     }
+    // find reversepairs , mtlb (i,j) is reversepair if v[i]>2*v[j] and i<j(mtlb j should be in rightside of i).
+    // give timecomplexity is nlogn, so mtlb here logn mtlb we have do divide-and-conquer startergy bcoz by this only we can achive logn time. so divide the array in two-parts and then see what can be done further:-
+    // eg. 1 3 2 3 1
+    // 1 3 2   and  3 1
+    // now we can again use the same stargegy bcoz nothing has changed, bs array ki size choti huyi hai, mtlb we are on the subproblem of the given problem. so mtlb we can solve it recursively mtlb whereas "recursively" ka mtlb same logic bar-bar choti-se-choti subproblem meh lagana..
 
-    linebreak1;
-
-    trav(p)
-    {
-        trav2(x)
-        {
-            print(y);
-        }
-        nline;
-    }
+    ans = 0;
+    reversepairs(0, n - 1, v);
+    debline(ans);
 }
 
 int main()
