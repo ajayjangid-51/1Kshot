@@ -52,93 +52,96 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-tuple<int, int, vvi> takematrixinput()
-{
-    int n, m;
-    cin >> n >> m;
-    vvi mat(n, vi(m, 0));
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            cin >> mat[i][j];
-        }
-    }
-    return {n, m, mat};
-}
-void printmatrix(vvi &mat)
-{
-    int row = mat.size();
-    if (row == 0)
-    {
-        print("empty matrix:");
-        return;
-    }
-    int column = mat[0].size();
-    nline;
-    for (int i = 0; i < row; i++)
-    {
-        for (int j = 0; j < column; j++)
-        {
-            print(mat[i][j]);
-        }
-        nline;
-    }
-}
-
-//          up down left right
-//          ⬆️⬇️⬅️➡️ ↖️↗️ ↙️↘️
-//           0 1  2 3   4 5   6 7
-int x[8] = {-1, +1, 0, 0, -1, +1, -1, +1};
-int y[8] = {0, 0, -1, +1, -1, -1, +1, +1};
 
 void solve()
 {
-    int n, m;
-    vvi v;
-    tie(n, m, v) = takematrixinput();
-    printmatrix(v);
-    pii s, dd;
-    cin >> s.first >> s.second >> dd.first >> dd.second;
+    string b, e;
+    cin >> b >> e;
 
-    // simply perfrom bfs:-
-    vvb visited(n, vb(m, 0));
-    queue<vi> q;
-    q.push({s.first, s.second, 0});
-    bool bb = 0;
+    vs wordlist;
+    string s;
+    while (cin >> s)
+    {
+        wordlist.push_back(s);
+    }
+    linebreak1;
+    trav(wordlist) print(x);
+    linebreak1;
+    set<string> st;
+    trav(wordlist) st.insert(x);
+    // st.insert(e);
+
+    linebreak1;
+    trav(st) print(x);
+    linebreak1;
+
+    vector<vs> ans;
+    queue<vs> q;
+    int currlevel = 1;
+    int shortestlevel = INT_MAX;
+    q.push({b});
+    vs visitedwordsincurrentlevel;
 
     while (!q.empty())
     {
-        vi f = q.front();
+        vs f = q.front();
+
         q.pop();
-        int i = f[0], j = f[1];
-        visited[i][j] = 1;
-
-        for (int d = 0; d < 8; d++)
+        if (f.size() > currlevel) // it means level is increased, mtlb now we are on the next level ,as we have finished the currentlevel.
         {
-            int i1 = i + x[d];
-            int j1 = j + y[d];
-            if (i1 >= 0 and i1 < v.size() and j1 >= 0 and j1 < v[0].size() and v[i1][j1] == 1)
+            for (auto x : visitedwordsincurrentlevel)
             {
-                if (i1 == dd.first and j1 == dd.second)
-                {
-                    deb("hi");
-                    bb = 1;
-                }
-                if (!visited[i1][j1])
-                {
+                st.erase(x);
+            }
+            visitedwordsincurrentlevel.clear();
+            if (f.size() > shortestlevel)
+                break;
+            else
+                currlevel = f.size();
 
-                    // deb(v[i1][j1]);
-                    v[i1][j1] = f[2] + 1;
+            // break;
+        }
+        // debline(t);
+        string t = f.back();
 
-                    q.push({i1, j1, f[2] + 1});
+        // deb2(smile2, t);
+        for (int i = 0; i < t.size(); i++)
+        {
+            t = f.back();
+
+            for (char c = 'a'; c <= 'z'; c++)
+            {
+                t[i] = c;
+                // debline(t);
+                if (st.find(t) != st.end())
+                {
+                    vs tmpv = f;
+                    tmpv.push_back(t);
+                    if (t != e)
+                    {
+                        debline(t);
+
+                        // st.erase(t); // don't directly erase it, just put it in any bucket and erease all in bucket when particular level is over.
+                        visitedwordsincurrentlevel.push_back(t);
+                        q.push(tmpv);
+                    }
+                    else
+                    {
+                        // shortestlevel = tmpv.size();
+                        shortestlevel = currlevel;
+                        ans.push_back(tmpv);
+                    }
                 }
             }
+            linebreak1;
         }
     }
-    if (bb == 0)
-        debline("-1");
-    debline(v[dd.first][dd.second]);
+    debline(ans.size());
+    trav(ans)
+    {
+        trav2(x) print(y);
+        nline;
+    }
 }
 
 int main()

@@ -52,93 +52,58 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-tuple<int, int, vvi> takematrixinput()
-{
-    int n, m;
-    cin >> n >> m;
-    vvi mat(n, vi(m, 0));
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            cin >> mat[i][j];
-        }
-    }
-    return {n, m, mat};
-}
-void printmatrix(vvi &mat)
-{
-    int row = mat.size();
-    if (row == 0)
-    {
-        print("empty matrix:");
-        return;
-    }
-    int column = mat[0].size();
-    nline;
-    for (int i = 0; i < row; i++)
-    {
-        for (int j = 0; j < column; j++)
-        {
-            print(mat[i][j]);
-        }
-        nline;
-    }
-}
-
-//          up down left right
-//          ⬆️⬇️⬅️➡️ ↖️↗️ ↙️↘️
-//           0 1  2 3   4 5   6 7
-int x[8] = {-1, +1, 0, 0, -1, +1, -1, +1};
-int y[8] = {0, 0, -1, +1, -1, -1, +1, +1};
 
 void solve()
 {
-    int n, m;
-    vvi v;
-    tie(n, m, v) = takematrixinput();
-    printmatrix(v);
-    pii s, dd;
-    cin >> s.first >> s.second >> dd.first >> dd.second;
+    vvi adj = {{1, 2}, {2, 3}, {5}, {0}, {5}, {}, {}};
+    trav(adj)
+    {
+        trav2(x) print(y);
+        nline;
+    }
+    // now reverse the edges:-
+    int n = adj.size();
+    vvi adj2(n);
+    queue<int> q;
 
-    // simply perfrom bfs:-
-    vvb visited(n, vb(m, 0));
-    queue<vi> q;
-    q.push({s.first, s.second, 0});
-    bool bb = 0;
+    for (int i = 0; i < adj.size(); i++)
+    {
+        if (adj[i].size() == 0)
+            q.push(i);
+        trav(adj[i])
+        {
+            adj2[x].push_back(i);
+        }
+    }
+    linebreak1;
+    vi indeg(n, 0);
+    trav(adj2)
+    {
+        trav2(x) indeg[y]++;
+        // nline;
+    }
+    linebreak1;
+    trav(indeg) print(x);
+    linebreak1;
+
+    vi ans;
 
     while (!q.empty())
     {
-        vi f = q.front();
+        int f = q.front();
         q.pop();
-        int i = f[0], j = f[1];
-        visited[i][j] = 1;
-
-        for (int d = 0; d < 8; d++)
+        ans.push_back(f);
+        for (auto x : adj2[f])
         {
-            int i1 = i + x[d];
-            int j1 = j + y[d];
-            if (i1 >= 0 and i1 < v.size() and j1 >= 0 and j1 < v[0].size() and v[i1][j1] == 1)
-            {
-                if (i1 == dd.first and j1 == dd.second)
-                {
-                    deb("hi");
-                    bb = 1;
-                }
-                if (!visited[i1][j1])
-                {
-
-                    // deb(v[i1][j1]);
-                    v[i1][j1] = f[2] + 1;
-
-                    q.push({i1, j1, f[2] + 1});
-                }
-            }
+            indeg[x]--;
+            if (indeg[x] == 0)
+                q.push(x);
         }
     }
-    if (bb == 0)
-        debline("-1");
-    debline(v[dd.first][dd.second]);
+    sort(range(ans));
+    linebreak1;
+    trav(ans) print(x);
+    linebreak1;
 }
 
 int main()

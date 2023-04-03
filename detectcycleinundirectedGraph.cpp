@@ -52,93 +52,73 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-tuple<int, int, vvi> takematrixinput()
+void inputgraph(int &n, int &e, vvi &adj)
 {
-    int n, m;
-    cin >> n >> m;
-    vvi mat(n, vi(m, 0));
-    for (int i = 0; i < n; i++)
+    // 0 based indexing nodes.
+    print("input the no. of nodes and no.of edges and then edges");
+    cin >> n >> e;
+    adj.resize(n);
+    for (int i = 0; i < e; i++)
     {
-        for (int j = 0; j < m; j++)
-        {
-            cin >> mat[i][j];
-        }
-    }
-    return {n, m, mat};
-}
-void printmatrix(vvi &mat)
-{
-    int row = mat.size();
-    if (row == 0)
-    {
-        print("empty matrix:");
-        return;
-    }
-    int column = mat[0].size();
-    nline;
-    for (int i = 0; i < row; i++)
-    {
-        for (int j = 0; j < column; j++)
-        {
-            print(mat[i][j]);
-        }
-        nline;
+        int a, b;
+        cin >> a >> b;
+        adj[a].push_back(b);
+        adj[b].push_back(a);
     }
 }
+bool fn(int i, int p, vb &vstart, vi &vdone, vvi &adj)
+{
 
-//          up down left right
-//          ⬆️⬇️⬅️➡️ ↖️↗️ ↙️↘️
-//           0 1  2 3   4 5   6 7
-int x[8] = {-1, +1, 0, 0, -1, +1, -1, +1};
-int y[8] = {0, 0, -1, +1, -1, -1, +1, +1};
+    bool cycle = 0;
+    vstart[i] = 1;
+    for (auto x : adj[i])
+    {
+        if (x == p)
+            continue;
+        deb3(x, i, smile2);
+        if (vstart[x])
+        {
 
+            cycle = 1;
+        }
+        else if (vdone[x] != -1)
+            cycle = cycle or vdone[x];
+        else
+            cycle = cycle or fn(x, i, vstart, vdone, adj);
+    }
+
+    vstart[i] = 0;
+    vdone[i] = cycle;
+    return cycle;
+}
 void solve()
 {
-    int n, m;
-    vvi v;
-    tie(n, m, v) = takematrixinput();
-    printmatrix(v);
-    pii s, dd;
-    cin >> s.first >> s.second >> dd.first >> dd.second;
-
-    // simply perfrom bfs:-
-    vvb visited(n, vb(m, 0));
-    queue<vi> q;
-    q.push({s.first, s.second, 0});
-    bool bb = 0;
-
-    while (!q.empty())
+    int n, e;
+    vvi adj;
+    inputgraph(n, e, adj);
+    linebreak1;
+    trav(adj)
     {
-        vi f = q.front();
-        q.pop();
-        int i = f[0], j = f[1];
-        visited[i][j] = 1;
+        trav2(x) print(y);
+        nline;
+    }
 
-        for (int d = 0; d < 8; d++)
+    vb vstart(n, 0); // vstart(visitstart)
+    vi vdone(n, -1); // vdone(visitdone)
+    bool cycle = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (vdone[i] == -1)
         {
-            int i1 = i + x[d];
-            int j1 = j + y[d];
-            if (i1 >= 0 and i1 < v.size() and j1 >= 0 and j1 < v[0].size() and v[i1][j1] == 1)
-            {
-                if (i1 == dd.first and j1 == dd.second)
-                {
-                    deb("hi");
-                    bb = 1;
-                }
-                if (!visited[i1][j1])
-                {
-
-                    // deb(v[i1][j1]);
-                    v[i1][j1] = f[2] + 1;
-
-                    q.push({i1, j1, f[2] + 1});
-                }
-            }
+            bool b = fn(i, -1, vstart, vdone, adj);
+            deb(b);
+            cycle = cycle or b;
+            // fn(i, vstart, vdone, adj);
+            debline(cycle);
         }
     }
-    if (bb == 0)
-        debline("-1");
-    debline(v[dd.first][dd.second]);
+
+    debline(cycle);
 }
 
 int main()

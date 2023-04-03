@@ -52,93 +52,96 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-tuple<int, int, vvi> takematrixinput()
+//
+vector<vector<string>> ans;
+
+void dfs(vs v, unordered_map<string, int> &m, unordered_set<string> &st, string &b)
 {
-    int n, m;
-    cin >> n >> m;
-    vvi mat(n, vi(m, 0));
-    for (int i = 0; i < n; i++)
+    // if (v.back() == b)
+    // {
+
+    //     return;
+    // }
+    for (int i = 0; i < v.back().size(); i++)
     {
-        for (int j = 0; j < m; j++)
+        string t = v.back();
+        debline(t);
+
+        for (char c = 'a'; c <= 'z'; c++)
         {
-            cin >> mat[i][j];
-        }
-    }
-    return {n, m, mat};
-}
-void printmatrix(vvi &mat)
-{
-    int row = mat.size();
-    if (row == 0)
-    {
-        print("empty matrix:");
-        return;
-    }
-    int column = mat[0].size();
-    nline;
-    for (int i = 0; i < row; i++)
-    {
-        for (int j = 0; j < column; j++)
-        {
-            print(mat[i][j]);
-        }
-        nline;
-    }
-}
-
-//          up down left right
-//          ⬆️⬇️⬅️➡️ ↖️↗️ ↙️↘️
-//           0 1  2 3   4 5   6 7
-int x[8] = {-1, +1, 0, 0, -1, +1, -1, +1};
-int y[8] = {0, 0, -1, +1, -1, -1, +1, +1};
-
-void solve()
-{
-    int n, m;
-    vvi v;
-    tie(n, m, v) = takematrixinput();
-    printmatrix(v);
-    pii s, dd;
-    cin >> s.first >> s.second >> dd.first >> dd.second;
-
-    // simply perfrom bfs:-
-    vvb visited(n, vb(m, 0));
-    queue<vi> q;
-    q.push({s.first, s.second, 0});
-    bool bb = 0;
-
-    while (!q.empty())
-    {
-        vi f = q.front();
-        q.pop();
-        int i = f[0], j = f[1];
-        visited[i][j] = 1;
-
-        for (int d = 0; d < 8; d++)
-        {
-            int i1 = i + x[d];
-            int j1 = j + y[d];
-            if (i1 >= 0 and i1 < v.size() and j1 >= 0 and j1 < v[0].size() and v[i1][j1] == 1)
+            t[i] = c;
+            if (t == b)
             {
-                if (i1 == dd.first and j1 == dd.second)
+                vs vtmp = v;
+                vtmp.push_back(t);
+                reverse(range(vtmp));
+                ans.push_back(vtmp);
+            }
+            else if (st.find(t) != st.end())
+            {
+                if (m[t] < m[v.back()])
                 {
-                    deb("hi");
-                    bb = 1;
-                }
-                if (!visited[i1][j1])
-                {
-
-                    // deb(v[i1][j1]);
-                    v[i1][j1] = f[2] + 1;
-
-                    q.push({i1, j1, f[2] + 1});
+                    vs vtmp = v;
+                    vtmp.push_back(t);
+                    dfs(vtmp, m, st, b);
                 }
             }
         }
     }
-    if (bb == 0)
-        debline("-1");
-    debline(v[dd.first][dd.second]);
+}
+void solve()
+{
+    string b, e;
+    cin >> b >> e;
+    vs wordlist;
+    string s;
+    while (cin >> s)
+    {
+        wordlist.push_back(s);
+    }
+    unordered_set<string> st;
+    trav(wordlist) st.insert(x);
+    //
+    trav(wordlist) print(x);
+    nline;
+    // step1:-
+    unordered_map<string, int> m;
+    queue<pair<string, int>> q;
+    q.push({b, 0});
+    while (!q.empty())
+    {
+        pair<string, int> f = q.front();
+        m[f.first] = f.second;
+        q.pop();
+        for (int i = 0; i < f.first.size(); i++)
+        {
+            string t = f.first;
+            for (char c = 'a'; c <= 'z'; c++)
+            {
+                t[i] = c;
+                if (st.find(t) != st.end())
+                {
+                    // if (t == e)
+                    //     continue;
+                    st.erase(t);
+                    q.push({t, f.second + 1});
+                }
+            }
+        }
+    }
+
+    trav(m) deb2(x.first, x.second);
+    trav(wordlist) st.insert(x);
+
+    dfs({e}, m, st, b);
+    debline(ans.size());
+
+    linebreak1;
+    trav(ans)
+    {
+        trav2(x) print(y);
+        nline;
+    }
 }
 
 int main()

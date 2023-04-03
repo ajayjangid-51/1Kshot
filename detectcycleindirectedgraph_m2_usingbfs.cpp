@@ -52,93 +52,74 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-tuple<int, int, vvi> takematrixinput()
+void inputgraph(int &n, int &e, vvi &adj)
 {
-    int n, m;
-    cin >> n >> m;
-    vvi mat(n, vi(m, 0));
-    for (int i = 0; i < n; i++)
+    // 0 based indexing nodes.
+    print("input the no. of nodes and no.of edges and then edges");
+    cin >> n >> e;
+    adj.resize(n);
+    for (int i = 0; i < e; i++)
     {
-        for (int j = 0; j < m; j++)
-        {
-            cin >> mat[i][j];
-        }
-    }
-    return {n, m, mat};
-}
-void printmatrix(vvi &mat)
-{
-    int row = mat.size();
-    if (row == 0)
-    {
-        print("empty matrix:");
-        return;
-    }
-    int column = mat[0].size();
-    nline;
-    for (int i = 0; i < row; i++)
-    {
-        for (int j = 0; j < column; j++)
-        {
-            print(mat[i][j]);
-        }
-        nline;
+        int a, b;
+        cin >> a >> b;
+        adj[a].push_back(b);
     }
 }
-
-//          up down left right
-//          ⬆️⬇️⬅️➡️ ↖️↗️ ↙️↘️
-//           0 1  2 3   4 5   6 7
-int x[8] = {-1, +1, 0, 0, -1, +1, -1, +1};
-int y[8] = {0, 0, -1, +1, -1, -1, +1, +1};
-
 void solve()
 {
-    int n, m;
-    vvi v;
-    tie(n, m, v) = takematrixinput();
-    printmatrix(v);
-    pii s, dd;
-    cin >> s.first >> s.second >> dd.first >> dd.second;
-
-    // simply perfrom bfs:-
-    vvb visited(n, vb(m, 0));
-    queue<vi> q;
-    q.push({s.first, s.second, 0});
-    bool bb = 0;
-
-    while (!q.empty())
+    // the idea for bfs is that ki agr koi node apne parent se upr wale level meh ja rha hai then mtlb surely cycle hai.
+    // this pure bfs will not work efficiently , mtlb we have to first check for undirected edge in graph and also check for all nodes as starting nodes.
+    // allover this bfs wil not work, bcoz levels of nodes are can be from -inifinty to +infinity instead from 0 to +inifiniy.
+    // so as per the bfs we can do it by via kahn's bfs algo for toposort, q ki as we know in directedcyclicgraph toposort can't be constructed so mtlb in via kahn's algorithm our toposort array will not be of size of no.ofnodes if the graph has cycle init.
+    int n, e;
+    vvi adj;
+    inputgraph(n, e, adj);
+    linebreak1;
+    for (int i = 0; i < n; i++)
     {
-        vi f = q.front();
-        q.pop();
-        int i = f[0], j = f[1];
-        visited[i][j] = 1;
+        print(i), print("-");
+        trav(adj[i]) print(x);
+        nline;
+    }
 
-        for (int d = 0; d < 8; d++)
+    vi level(n, -1);
+    vi visit(n, 0);
+    for (int i = 0; i < n; i++)
+    {
+        if (visit[i])
         {
-            int i1 = i + x[d];
-            int j1 = j + y[d];
-            if (i1 >= 0 and i1 < v.size() and j1 >= 0 and j1 < v[0].size() and v[i1][j1] == 1)
+            deb(i);
+            continue;
+        }
+        queue<int> q; // pair<node>
+        q.push(i);
+        level[i] = 0;
+        while (!q.empty())
+        {
+            int f = q.front();
+            visit[f] = 1;
+            q.pop();
+            for (auto x : adj[f])
             {
-                if (i1 == dd.first and j1 == dd.second)
+                if (x == f)
                 {
-                    deb("hi");
-                    bb = 1;
+                    debline("yes");
+                    return;
                 }
-                if (!visited[i1][j1])
+                if (level[x] != -1 and level[x] < level[f])
                 {
-
-                    // deb(v[i1][j1]);
-                    v[i1][j1] = f[2] + 1;
-
-                    q.push({i1, j1, f[2] + 1});
+                    debline("yes");
+                    return;
                 }
+                if (level[x] == level[f])
+                    continue;
+                level[x] = level[f] + 1;
+                q.push(x);
             }
         }
     }
-    if (bb == 0)
-        debline("-1");
-    debline(v[dd.first][dd.second]);
+
+    debline("no cycle");
 }
 
 int main()

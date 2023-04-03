@@ -52,118 +52,6 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-
-/* 0️⃣ */
-/*take graph input by its no.ofnodes, no.ofedges, and its edgelist and form adjlist of graph. */
-// void getgraphinput()
-// take input undirected weighted graph
-void takegraphinput(int &n, int &e, vector<vvi> &adj)
-{
-    // "n" means no.ofnodes and "e" stands for no.ofedges and here nodes are indexed zero-based.
-    cin >> n >> e;
-    adj.resize(n);
-
-    for (int i = 0; i < e; i++)
-    {
-        int a, b, w;
-        cin >> a >> b >> w;
-        adj[a].push_back({b, w});
-        // adj[b].push_back({a, w});
-    }
-    print("-:👉🏻graph Adjlist👈🏻:-");
-    linebreak1;
-    for (int i = 0; i < n; i++)
-    {
-        print(i), print("-");
-        trav(adj[i]) print("{"), print(x[0]), print(','), print(x[1]), print('}'), print(",");
-        nline;
-    }
-    linebreak1;
-}
-
-// take input simple directed graph:-
-void inputgraph(int &n, int &e, vvi &adj)
-{
-    // 0 based indexing nodes.
-    print("input the no. of nodes and no.of edges and then edges");
-    cin >> n >> e;
-    adj.resize(n);
-    for (int i = 0; i < e; i++)
-    {
-        int a, b;
-        cin >> a >> b;
-        adj[a].push_back(b);
-    }
-}
-
-// tip:- we can make class templates... as based upon on the problem type, paradigmtype, input type.. etc..etc..
-// take input matrix:-
-void inputMatrix(int &n, int &m, vvi &M)
-{
-    cin >> n >> m;
-    M.resize(n, vi(m));
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            cin >> M[i][j];
-        }
-    }
-}
-
-// print matrix:
-void printmatrix(vvi &mat)
-{
-    int row = mat.size();
-    if (row == 0)
-    {
-        print("empty matrix:");
-        return;
-    }
-    int column = mat[0].size();
-    nline;
-    for (int i = 0; i < row; i++)
-    {
-        for (int j = 0; j < column; j++)
-        {
-            print(mat[i][j]);
-        }
-        nline;
-    }
-}
-
-// trav matrix
-void travMatrix(int &n, int &m, vvi &v)
-{
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-        }
-    }
-}
-
-// 4direction in matrix:
-void fourdirections()
-{
-    //          up down left right
-    //         ⬆️⬇️⬅️➡️
-    //          0 1  2 3
-    // x show affect in horizontal if some move is taken and here -1,+1 are denoting change in rownumber and column number.
-    int x[4] = {-1, +1, 0, 0};
-    int y[4] = {0, 0, -1, +1}; // affect in vertical
-}
-// 8direction in matrix:
-void eightDirection()
-{
-    //          up down left right
-    //          ⬆️⬇️⬅️➡️ ↖️↗️ ↙️↘️
-    //           0 1  2 3   4 5   6 7
-    int x[8] = {-1, +1, 0, 0, -1, +1, -1, +1};
-    int y[8] = {0, 0, -1, +1, -1, -1, +1, +1};
-}
-
-// dsu disjoint set union find structure:-
 class dsu
 {
 private:
@@ -175,10 +63,10 @@ public:
     vi justparent;
     vi size;
 
-    dsu(int N)
+    dsu(int N, int C)
     {
         n = N; // no.of individual nodes in graph:-
-        noofcomponents = N;
+        noofcomponents = C;
         justparent.resize(n);
         for (int i = 0; i < n; i++)
             justparent[i] = i;
@@ -199,7 +87,7 @@ public:
 
     void unite(int nodea, int nodeb)
     {
-        deb2(nodea, nodeb);
+        // deb2(nodea, nodeb);
         if (areinsame(nodea, nodeb))
         {
             xtraedges++;
@@ -221,11 +109,70 @@ public:
         return size[component];
     }
 };
+int x[4] = {-1, +1, 0, 0};
+int y[4] = {0, 0, -1, +1};
+void solve()
+{
+    int n, m, q0;
+    cin >> n >> m >> q0;
+    vvi q;
+    for (int i = 0; i < q0; i++)
+    {
+        int a, b;
+        cin >> a >> b;
+        q.push_back({a, b});
+    }
+    vvi mat(n, vi(m, 0));
+    dsu d1(n * m, -1);
+    int cnt = 0;
+    vector<int> ans;
+    for (auto z : q)
+    {
+        cnt++;
+        int i = z[0], j = z[1];
+        int c0 = (i * m) + j;
+        mat[i][j] = 1;
+        // deb3("👉🏻", i, j);
+        for (int d = 0; d < 4; d++)
+        {
+            int i1 = i + x[d], j1 = j + y[d];
+            // deb3("❤️", i1, j1);
+            if (i1 >= 0 and i1 < n and j1 >= 0 and j1 < m and mat[i1][j1] == 1)
+            {
+                int c = (i1 * m) + j1;
+                if (d1.areinsame(c0, c))
+                {
+                    // deb2(i1, j1);
+                    continue;
+                    // cnt--;
+                }
+                // else
+                // {
+                d1.unite(c0, c);
+                cnt--;
+                // }
+            }
+            // else
+            // cnt--;
+        }
+        // deb(cnt);
+        // linebreak1;
+        ans.push_back(cnt);
+    }
+    // linebreak1;
+    trav(ans) print(x);
+    nline;
+}
 
 int main()
 {
     io_faster
     file();
-
+    int t = 1;
+    cin >> t;
+    while (t--)
+    {
+        solve();
+    }
     return 0;
 }

@@ -8,8 +8,10 @@ using namespace std;
 #define vi vector<int>
 #define vs vector<string>
 #define vvi vector<vi>
+#define vvl vector<vector<long long>>
 #define vvb vector<vb>
 #define pii pair<int, int>
+#define pll pair<long long, long long>
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
@@ -52,93 +54,74 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-tuple<int, int, vvi> takematrixinput()
+void takegraphinput(long long &n, long long &e, vector<vvl> &adj)
 {
-    int n, m;
-    cin >> n >> m;
-    vvi mat(n, vi(m, 0));
+    // "n" means no.ofnodes and "e" stands for no.ofedges and here nodes are indexed zero-based.
+    cin >> n >> e;
+    adj.resize(n);
+
+    for (int i = 0; i < e; i++)
+    {
+        int a, b, w;
+        cin >> a >> b >> w;
+        adj[a].push_back({b, w});
+        adj[b].push_back({a, w});
+    }
+    print("-:👉🏻graph Adjlist👈🏻:-");
+    linebreak1;
     for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < m; j++)
-        {
-            cin >> mat[i][j];
-        }
-    }
-    return {n, m, mat};
-}
-void printmatrix(vvi &mat)
-{
-    int row = mat.size();
-    if (row == 0)
-    {
-        print("empty matrix:");
-        return;
-    }
-    int column = mat[0].size();
-    nline;
-    for (int i = 0; i < row; i++)
-    {
-        for (int j = 0; j < column; j++)
-        {
-            print(mat[i][j]);
-        }
+        print(i), print("-");
+        trav(adj[i]) print("{"), print(x[0]), print(','), print(x[1]), print('}'), print(",");
         nline;
     }
+    linebreak1;
 }
-
-//          up down left right
-//          ⬆️⬇️⬅️➡️ ↖️↗️ ↙️↘️
-//           0 1  2 3   4 5   6 7
-int x[8] = {-1, +1, 0, 0, -1, +1, -1, +1};
-int y[8] = {0, 0, -1, +1, -1, -1, +1, +1};
-
 void solve()
 {
-    int n, m;
-    vvi v;
-    tie(n, m, v) = takematrixinput();
-    printmatrix(v);
-    pii s, dd;
-    cin >> s.first >> s.second >> dd.first >> dd.second;
+    long long n, e;
+    vector<vector<vector<long long>>> adj;
+    takegraphinput(n, e, adj);
+    // pq<distance , node>
+    priority_queue<pll, vector<pll>, greater<pll>> pq;
+    long long shortestlen = 201 * 10e9;
+    pq.push({0, 0});
+    vector<long long> dist(n, shortestlen);
+    vector<long long> ways(n, 0);
+    long long cnt = 0;
+    dist[0] = 0;
+    ways[0] = 1;
 
-    // simply perfrom bfs:-
-    vvb visited(n, vb(m, 0));
-    queue<vi> q;
-    q.push({s.first, s.second, 0});
-    bool bb = 0;
-
-    while (!q.empty())
+    while (!pq.empty())
     {
-        vi f = q.front();
-        q.pop();
-        int i = f[0], j = f[1];
-        visited[i][j] = 1;
+        pll f = pq.top();
+        pq.pop();
 
-        for (int d = 0; d < 8; d++)
+        for (auto x : adj[f.second])
         {
-            int i1 = i + x[d];
-            int j1 = j + y[d];
-            if (i1 >= 0 and i1 < v.size() and j1 >= 0 and j1 < v[0].size() and v[i1][j1] == 1)
+            if (dist[x[0]] >= f.first + x[1])
             {
-                if (i1 == dd.first and j1 == dd.second)
+                if (dist[x[0]] == f.first + x[1])
                 {
-                    deb("hi");
-                    bb = 1;
+                    ways[x[0]] += ways[f.second];
+                    continue;
                 }
-                if (!visited[i1][j1])
-                {
 
-                    // deb(v[i1][j1]);
-                    v[i1][j1] = f[2] + 1;
-
-                    q.push({i1, j1, f[2] + 1});
-                }
+                dist[x[0]] = f.first + x[1];
+                ways[x[0]] += ways[f.second];
+                // if (x[0] == n - 1)
+                // {
+                //     if (dist[x[0]] > shortestlen)
+                //         continue;
+                //     shortestlen = dist[x[0]];
+                //     cnt++;
+                // }
+                // else
+                pq.push({dist[x[0]], x[0]});
             }
         }
     }
-    if (bb == 0)
-        debline("-1");
-    debline(v[dd.first][dd.second]);
+    debline(ways[n - 1]);
 }
 
 int main()

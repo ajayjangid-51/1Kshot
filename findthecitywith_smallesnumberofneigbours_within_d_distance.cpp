@@ -52,93 +52,81 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-tuple<int, int, vvi> takematrixinput()
-{
-    int n, m;
-    cin >> n >> m;
-    vvi mat(n, vi(m, 0));
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            cin >> mat[i][j];
-        }
-    }
-    return {n, m, mat};
-}
-void printmatrix(vvi &mat)
-{
-    int row = mat.size();
-    if (row == 0)
-    {
-        print("empty matrix:");
-        return;
-    }
-    int column = mat[0].size();
-    nline;
-    for (int i = 0; i < row; i++)
-    {
-        for (int j = 0; j < column; j++)
-        {
-            print(mat[i][j]);
-        }
-        nline;
-    }
-}
-
-//          up down left right
-//          ⬆️⬇️⬅️➡️ ↖️↗️ ↙️↘️
-//           0 1  2 3   4 5   6 7
-int x[8] = {-1, +1, 0, 0, -1, +1, -1, +1};
-int y[8] = {0, 0, -1, +1, -1, -1, +1, +1};
 
 void solve()
 {
-    int n, m;
-    vvi v;
-    tie(n, m, v) = takematrixinput();
-    printmatrix(v);
-    pii s, dd;
-    cin >> s.first >> s.second >> dd.first >> dd.second;
+    int nodes, e, d;
+    cin >> nodes >> e >> d;
+    vvi edgelist;
 
-    // simply perfrom bfs:-
-    vvb visited(n, vb(m, 0));
-    queue<vi> q;
-    q.push({s.first, s.second, 0});
-    bool bb = 0;
-
-    while (!q.empty())
+    for (int i = 0; i < e; i++)
     {
-        vi f = q.front();
-        q.pop();
-        int i = f[0], j = f[1];
-        visited[i][j] = 1;
-
-        for (int d = 0; d < 8; d++)
+        int a, b, w;
+        cin >> a >> b >> w;
+        edgelist.push_back({a, b, w});
+    }
+    vvi v(nodes + 1, vi(nodes + 1, 1e8));
+    int n = nodes;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
         {
-            int i1 = i + x[d];
-            int j1 = j + y[d];
-            if (i1 >= 0 and i1 < v.size() and j1 >= 0 and j1 < v[0].size() and v[i1][j1] == 1)
+            if (i == j)
+                v[i][j] = 0;
+        }
+    }
+    for (auto x : edgelist)
+    {
+        v[x[0]][x[0]] = 0;
+        v[x[1]][x[1]] = 0;
+        v[x[0]][x[1]] = x[2];
+        v[x[1]][x[0]] = x[2];
+    }
+
+    trav(v)
+    {
+        trav2(x) print(y);
+        nline;
+    }
+    linebreak1;
+    for (int k = 0; k < nodes; k++)
+    {
+        for (int i = 0; i < nodes; i++)
+        {
+            for (int j = 0; j < nodes; j++)
             {
-                if (i1 == dd.first and j1 == dd.second)
-                {
-                    deb("hi");
-                    bb = 1;
-                }
-                if (!visited[i1][j1])
-                {
-
-                    // deb(v[i1][j1]);
-                    v[i1][j1] = f[2] + 1;
-
-                    q.push({i1, j1, f[2] + 1});
-                }
+                v[i][j] = min(v[i][j], (v[i][k] + v[k][j]));
             }
         }
     }
-    if (bb == 0)
-        debline("-1");
-    debline(v[dd.first][dd.second]);
+
+    linebreak1;
+    trav(v)
+    {
+        trav2(x) print(y);
+        nline;
+    }
+    linebreak1;
+
+    int mini = nodes + 1;
+    int ans = -1;
+    for (int i = 0; i < nodes; i++)
+    {
+        int cnt = 0;
+        for (int j = 0; j < nodes; j++)
+        {
+            if (v[i][j] <= d)
+                cnt++;
+        }
+        // deb(cnt);
+        deb2(i, cnt);
+        if (cnt <= mini)
+        {
+            mini = cnt;
+            ans = i;
+        }
+    }
+    debline(ans);
 }
 
 int main()

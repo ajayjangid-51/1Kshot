@@ -52,93 +52,74 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-tuple<int, int, vvi> takematrixinput()
+void inputMatrix(int &n, int &m, vvi &M)
 {
-    int n, m;
     cin >> n >> m;
-    vvi mat(n, vi(m, 0));
+    M.resize(n, vi(m));
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < m; j++)
         {
-            cin >> mat[i][j];
+            cin >> M[i][j];
         }
     }
-    return {n, m, mat};
 }
-void printmatrix(vvi &mat)
-{
-    int row = mat.size();
-    if (row == 0)
-    {
-        print("empty matrix:");
-        return;
-    }
-    int column = mat[0].size();
-    nline;
-    for (int i = 0; i < row; i++)
-    {
-        for (int j = 0; j < column; j++)
-        {
-            print(mat[i][j]);
-        }
-        nline;
-    }
-}
-
-//          up down left right
-//          ⬆️⬇️⬅️➡️ ↖️↗️ ↙️↘️
-//           0 1  2 3   4 5   6 7
-int x[8] = {-1, +1, 0, 0, -1, +1, -1, +1};
-int y[8] = {0, 0, -1, +1, -1, -1, +1, +1};
-
+int x[4] = {-1, +1, 0, 0};
+int y[4] = {0, 0, -1, +1};
 void solve()
 {
     int n, m;
     vvi v;
-    tie(n, m, v) = takematrixinput();
-    printmatrix(v);
-    pii s, dd;
-    cin >> s.first >> s.second >> dd.first >> dd.second;
-
-    // simply perfrom bfs:-
-    vvb visited(n, vb(m, 0));
-    queue<vi> q;
-    q.push({s.first, s.second, 0});
-    bool bb = 0;
-
-    while (!q.empty())
+    inputMatrix(n, m, v);
+    linebreak1;
+    trav(v)
     {
-        vi f = q.front();
-        q.pop();
-        int i = f[0], j = f[1];
-        visited[i][j] = 1;
+        trav2(x) print(y);
+        nline;
+    }
+    vvb visited(n, vb(m, 0));
 
-        for (int d = 0; d < 8; d++)
+    set<vector<pii>> s;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
         {
-            int i1 = i + x[d];
-            int j1 = j + y[d];
-            if (i1 >= 0 and i1 < v.size() and j1 >= 0 and j1 < v[0].size() and v[i1][j1] == 1)
+            if (!visited[i][j] and v[i][j] == 1)
             {
-                if (i1 == dd.first and j1 == dd.second)
+                vector<pii> a;
+                queue<pii> q;
+                q.push({i, j});
+                visited[i][j] = 1;
+                a.push_back({0, 0});
+                while (!q.empty())
                 {
-                    deb("hi");
-                    bb = 1;
+                    pii f = q.front();
+                    q.pop();
+                    for (int d = 0; d < 4; d++)
+                    {
+                        int i1 = f.first + x[d], j1 = f.second + y[d];
+                        if (i1 >= 0 and j1 >= 0 and i1 < n and j1 < m and !visited[i1][j1] and v[i1][j1] == 1)
+                        {
+                            visited[i1][j1] = 1;
+                            q.push({i1, j1});
+                            a.push_back({i1 - i, j1 - j});
+                        }
+                    }
                 }
-                if (!visited[i1][j1])
-                {
-
-                    // deb(v[i1][j1]);
-                    v[i1][j1] = f[2] + 1;
-
-                    q.push({i1, j1, f[2] + 1});
-                }
+                deb2(i, j);
+                s.insert(a);
             }
         }
     }
-    if (bb == 0)
-        debline("-1");
-    debline(v[dd.first][dd.second]);
+    trav(s)
+    {
+        trav(x)
+        {
+            print(x.first), print(','), print(x.second);
+        }
+        nline;
+    }
+    debline(siz(s));
 }
 
 int main()

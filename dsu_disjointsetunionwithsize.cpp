@@ -52,93 +52,85 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-tuple<int, int, vvi> takematrixinput()
-{
-    int n, m;
-    cin >> n >> m;
-    vvi mat(n, vi(m, 0));
-    for (int i = 0; i < n; i++)
-    {
-        for (int j = 0; j < m; j++)
-        {
-            cin >> mat[i][j];
-        }
-    }
-    return {n, m, mat};
-}
-void printmatrix(vvi &mat)
-{
-    int row = mat.size();
-    if (row == 0)
-    {
-        print("empty matrix:");
-        return;
-    }
-    int column = mat[0].size();
-    nline;
-    for (int i = 0; i < row; i++)
-    {
-        for (int j = 0; j < column; j++)
-        {
-            print(mat[i][j]);
-        }
-        nline;
-    }
-}
 
-//          up down left right
-//          ⬆️⬇️⬅️➡️ ↖️↗️ ↙️↘️
-//           0 1  2 3   4 5   6 7
-int x[8] = {-1, +1, 0, 0, -1, +1, -1, +1};
-int y[8] = {0, 0, -1, +1, -1, -1, +1, +1};
+class dsu
+{
+private:
+    /* data */
+public:
+    int n;
+    vi justparent;
+    vi size;
+    dsu(int N)
+    {
+        // cin >> n; // no.of individual nodes in graph:-
+        n = N;
+        justparent.resize(n);
+        for (int i = 0; i < n; i++)
+            justparent[i] = i;
+        size.assign(n, 1);
+        print("hello");
+    }
+
+    int find(int x)
+    {
+        while (justparent[x] != x)
+            x = justparent[x];
+        return x;
+    }
+
+    bool same(int nodea, int nodeb)
+    {
+        return find(nodea) == find(nodeb);
+    }
+
+    void unite(int nodea, int nodeb)
+    {
+        int c1 = find(nodea);
+        int c2 = find(nodeb);
+        if (size[c1] < size[c2])
+            swap(c1, c2);
+
+        size[c1] += size[c2];
+        justparent[c2] = c1;
+    }
+
+    int sizee(int component)
+    {
+        return size[component];
+    }
+};
 
 void solve()
 {
-    int n, m;
-    vvi v;
-    tie(n, m, v) = takematrixinput();
-    printmatrix(v);
-    pii s, dd;
-    cin >> s.first >> s.second >> dd.first >> dd.second;
-
-    // simply perfrom bfs:-
-    vvb visited(n, vb(m, 0));
-    queue<vi> q;
-    q.push({s.first, s.second, 0});
-    bool bb = 0;
-
-    while (!q.empty())
+    int n;
+    cin >> n;
+    dsu d1(n);
+    int e;
+    cin >> e;
+    vvi edgelist;
+    for (int i = 0; i < e; i++)
     {
-        vi f = q.front();
-        q.pop();
-        int i = f[0], j = f[1];
-        visited[i][j] = 1;
-
-        for (int d = 0; d < 8; d++)
+        int a, b;
+        cin >> a >> b;
+        edgelist.push_back({a, b});
+    }
+    int cnt = 0;
+    int cmps = d1.n;
+    trav(edgelist)
+    {
+        if (d1.same(x[0], x[1]))
         {
-            int i1 = i + x[d];
-            int j1 = j + y[d];
-            if (i1 >= 0 and i1 < v.size() and j1 >= 0 and j1 < v[0].size() and v[i1][j1] == 1)
-            {
-                if (i1 == dd.first and j1 == dd.second)
-                {
-                    deb("hi");
-                    bb = 1;
-                }
-                if (!visited[i1][j1])
-                {
-
-                    // deb(v[i1][j1]);
-                    v[i1][j1] = f[2] + 1;
-
-                    q.push({i1, j1, f[2] + 1});
-                }
-            }
+            cnt++;
+        }
+        else
+        {
+            d1.unite(x[0], x[1]);
+            cmps--;
         }
     }
-    if (bb == 0)
-        debline("-1");
-    debline(v[dd.first][dd.second]);
+    debline(cnt);
+    debline(cmps);
 }
 
 int main()

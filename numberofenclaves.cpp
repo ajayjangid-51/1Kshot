@@ -52,93 +52,77 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-tuple<int, int, vvi> takematrixinput()
+void inputMatrix(int &n, int &m, vvi &M)
 {
-    int n, m;
     cin >> n >> m;
-    vvi mat(n, vi(m, 0));
+    M.resize(n, vi(m));
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < m; j++)
         {
-            cin >> mat[i][j];
+            cin >> M[i][j];
         }
     }
-    return {n, m, mat};
 }
-void printmatrix(vvi &mat)
+int x[4] = {-1, +1, 0, 0};
+int y[4] = {0, 0, -1, +1};
+
+void dfs(int i, int j, vvb &visited, vvi &v)
 {
-    int row = mat.size();
-    if (row == 0)
+    v[i][j] = 0;
+    for (int d = 0; d < 4; d++)
     {
-        print("empty matrix:");
-        return;
-    }
-    int column = mat[0].size();
-    nline;
-    for (int i = 0; i < row; i++)
-    {
-        for (int j = 0; j < column; j++)
+        int i1 = i + x[d];
+        int j1 = j + y[d];
+        if (i1 >= 0 and i1 < v.size() and j1 >= 0 and j1 < v[0].size() and v[i1][j1] == 1)
         {
-            print(mat[i][j]);
+            dfs(i1, j1, visited, v);
         }
-        nline;
     }
 }
-
-//          up down left right
-//          ⬆️⬇️⬅️➡️ ↖️↗️ ↙️↘️
-//           0 1  2 3   4 5   6 7
-int x[8] = {-1, +1, 0, 0, -1, +1, -1, +1};
-int y[8] = {0, 0, -1, +1, -1, -1, +1, +1};
-
 void solve()
 {
     int n, m;
     vvi v;
-    tie(n, m, v) = takematrixinput();
-    printmatrix(v);
-    pii s, dd;
-    cin >> s.first >> s.second >> dd.first >> dd.second;
-
-    // simply perfrom bfs:-
+    inputMatrix(n, m, v);
     vvb visited(n, vb(m, 0));
-    queue<vi> q;
-    q.push({s.first, s.second, 0});
-    bool bb = 0;
-
-    while (!q.empty())
+    for (int i = 0; i < n; i++)
     {
-        vi f = q.front();
-        q.pop();
-        int i = f[0], j = f[1];
-        visited[i][j] = 1;
+        /*  for (int j = i; (i == 0) ? j < m : (i == n - 1) ? j >= 0
+                                                         : j < 0;
+              (i == 0) ? j++ : j--)
+         {
+             print(v[i][j]);
+         } */
 
-        for (int d = 0; d < 8; d++)
+        for (int j = 0; j < m; j++)
         {
-            int i1 = i + x[d];
-            int j1 = j + y[d];
-            if (i1 >= 0 and i1 < v.size() and j1 >= 0 and j1 < v[0].size() and v[i1][j1] == 1)
+            if (v[0][j] == 1)
+                dfs(0, j, visited, v);
+            if (v[n - 1][j] == 1)
             {
-                if (i1 == dd.first and j1 == dd.second)
-                {
-                    deb("hi");
-                    bb = 1;
-                }
-                if (!visited[i1][j1])
-                {
-
-                    // deb(v[i1][j1]);
-                    v[i1][j1] = f[2] + 1;
-
-                    q.push({i1, j1, f[2] + 1});
-                }
+                dfs(n - 1, j, visited, v);
+            }
+        }
+        for (int i = 1; i < n - 1; i++)
+        {
+            if (v[i][m - 1] == 1)
+            {
+                dfs(i, m - 1, visited, v);
+            }
+            if (v[i][0] == 1)
+            {
+                dfs(i, 0, visited, v);
             }
         }
     }
-    if (bb == 0)
-        debline("-1");
-    debline(v[dd.first][dd.second]);
+    linebreak1;
+    trav(v)
+    {
+        trav2(x) print(y);
+        nline;
+    }
+    linebreak1;
 }
 
 int main()
