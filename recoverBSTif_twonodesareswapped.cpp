@@ -52,14 +52,64 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+struct TreeNode
+{
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
 
+class Solution
+{
+public:
+    TreeNode *a = NULL, *b = NULL, *c = NULL;
+    int f = 0;
+    void fn(TreeNode *root, TreeNode *&prev)
+    {
+        if (!root)
+            return;
+        fn(root->left, prev);
+        if (prev)
+        {
+            if (root->val < prev->val)
+            {
+                // cout << prev->val;
+
+                if (f == 1)
+                {
+                    // swap(a->val, root->val);
+                    c = root;
+                    f++;
+                    return;
+                }
+                a = prev;
+                b = root;
+                f++;
+                // prev = root;
+            }
+        }
+        // else{
+        prev = root;
+        // }
+        fn(root->right, prev);
+    }
+    void recoverTree(TreeNode *root)
+    {
+        TreeNode *prev = NULL;
+        fn(root, prev);
+        // cout << f;
+        if (f == 2)
+            swap(a->val, c->val);
+
+        else
+            swap(a->val, b->val);
+    }
+};
 void solve()
 {
-    int t = 1e9;
-    int t2 = INT_MAX;
-    print(t);
-    nline;
-    print(t2);
 }
 
 int main()

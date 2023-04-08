@@ -55,11 +55,54 @@ void file()
 
 void solve()
 {
-    int t = 1e9;
-    int t2 = INT_MAX;
-    print(t);
+    int n, sum;
+    cin >> n >> sum;
+    vi v(n);
+    int tsum = 0;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> v[i];
+        tsum += v[i];
+    }
+    trav(v) print(x);
+
+    vb s(sum + 1, 0);
+    s[0] = 1;
+    vi cnt(sum + 1, 0);
+    cnt[0] = 1;
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        vi tmp;
+        // vi cnt2(tsum, 0);
+        vi cnt2 = cnt;
+        for (int j = 0; j <= sum; j++)
+        {
+            if (s[j])
+                tmp.push_back(j);
+        }
+        trav(tmp)
+        {
+            if (x + v[i] <= sum)
+            {
+                s[x + v[i]] = 1;
+                cnt2[x + v[i]] += cnt[x];
+            }
+        }
+        cnt = cnt2;
+        // for(int i= 0;)
+    }
     nline;
-    print(t2);
+    for (int i = 0; i <= tsum; i++)
+        print(i);
+    if (sum > tsum)
+        return;
+    nline;
+    trav(s) print(x);
+    nline;
+    trav(cnt) print(x);
+    nline;
+    debline(cnt[sum]);
 }
 
 int main()

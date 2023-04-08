@@ -54,12 +54,73 @@ void file()
 }
 
 void solve()
+
 {
-    int t = 1e9;
-    int t2 = INT_MAX;
-    print(t);
-    nline;
-    print(t2);
+    int n;
+    cin >> n;
+    vi v(n);
+    int k = 0;
+    while (cin >> v[k])
+        k++;
+    linebreak1;
+    trav(v) print(x);
+    vi lis(n, 1);
+    vi cnt(n, 1);
+    // int cnt = 0;
+    int maxi = 1;
+    for (int i = n - 2; i >= 0; i--)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            if (v[j] > v[i])
+            {
+                lis[i] = max(lis[i], lis[j] + 1);
+            }
+        }
+        maxi = max(maxi, lis[i]);
+        // if (lis[i] == maxi)
+        // {
+        //     cnt++;
+        // }
+    }
+    debline(maxi);
+    linebreak1;
+    trav(lis) print(x);
+    linebreak1;
+    for (int i = n - 2; i >= 0; i--)
+    {
+        int c = 0;
+        for (int j = i + 1; j < n; j++)
+        {
+            if (v[j] > v[i] and lis[j] == lis[i] - 1)
+            {
+                c += cnt[j];
+            }
+        }
+        // deb(c);
+        cnt[i] = (c == 0) ? 1 : c;
+        // cnt[i] = c;
+    }
+    linebreak1;
+    trav(cnt) print(x);
+    linebreak1;
+    // trav(lis)
+    // {
+    //     if (x == maxi)
+    //         cnt++;
+    // }
+    int maxx = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (lis[i] == maxi)
+        {
+            // maxx = max(maxx, cnt[i]);
+            maxx += cnt[i];
+        }
+    }
+
+    // debline(cnt[0]);
+    debline(maxx);
 }
 
 int main()

@@ -52,14 +52,15 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-
+struct TreeNode
+{
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
 void solve()
 {
-    int t = 1e9;
-    int t2 = INT_MAX;
-    print(t);
-    nline;
-    print(t2);
 }
 
 int main()

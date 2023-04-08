@@ -55,11 +55,84 @@ void file()
 
 void solve()
 {
-    int t = 1e9;
-    int t2 = INT_MAX;
-    print(t);
+    int n;
+    cin >> n;
+    vi v(n);
+    for (int i = 0; i < n; i++)
+        cin >> v[i];
+    linebreak1;
+    trav(v) print(x);
+
+    vi lis(n, 1);
+    vi next(n);
+    for (int i = 0; i < n; i++)
+        next[i] = i;
+
+    int maxi;
+    int maxx = 1;
+    for (int i = n - 2; i >= 0; i--)
+    {
+        int mxdiff = 0;
+        for (int j = i + 1; j < n; j++)
+        {
+            if (v[j] > v[i])
+            {
+                if (lis[i] == lis[j] + 1)
+                {
+                    if (v[next[i]] < v[j])
+                    {
+
+                        next[i] = j;
+                    }
+                }
+                else
+                {
+
+                    if (lis[i] < lis[j] + 1)
+                    {
+
+                        // lis[i] = max(lis[i], lis[j] + 1);
+                        lis[i] = lis[j] + 1;
+                        next[i] = j;
+                    }
+                }
+            }
+        }
+        if (maxx == lis[i])
+        {
+            if (v[maxi] < v[i])
+            {
+                maxi = i;
+            }
+            // maxi = max(maxi, i);
+        }
+        if (maxx < lis[i])
+        {
+            maxx = lis[i];
+            maxi = i;
+        }
+        // maxx = max(maxx, lis[i]);
+    }
     nline;
-    print(t2);
+    trav(lis) print(x);
+    nline;
+    trav(next) print(x);
+    nline;
+    vi ans;
+
+    debline(maxx);
+    debline(maxi);
+    debline(v[maxi]);
+
+    while (next[maxi] != maxi)
+    {
+        ans.push_back(v[maxi]);
+        maxi = next[maxi];
+    }
+    ans.push_back(v[maxi]);
+    linebreak1;
+    trav(ans) print(x);
+    linebreak1;
 }
 
 int main()

@@ -55,11 +55,49 @@ void file()
 
 void solve()
 {
-    int t = 1e9;
-    int t2 = INT_MAX;
-    print(t);
+    int n;
+    cin >> n;
+    vi v(n);
+    int k = 0;
+    while (cin >> v[k])
+        k++;
+    linebreak1;
+    trav(v) print(x);
+
+    vi lis(n, 1); // lis[i] here mtlb length of lis which is ending at i'th index.
+    vi lds(n, 1); // lds[i] mtlb length of lds which is starting from i'th index.
+
+    for (int i = 1; i < n; i++)
+    {
+        for (int j = i - 1; j >= 0; j--)
+        {
+            if (v[j] < v[i])
+            {
+                lis[i] = max(lis[i], lis[j] + 1);
+            }
+        }
+    }
+    for (int i = n - 2; i >= 0; i--)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            if (v[j] < v[i])
+            {
+                lds[i] = max(lds[i], lds[j] + 1);
+            }
+        }
+    }
+    linebreak1;
+    trav(lis) print(x);
     nline;
-    print(t2);
+    trav(lds) print(x);
+    int ans = 1;
+    for (int i = 1; i < n - 1; i++)
+    {
+        if (lis[i] != 1 and lds[i] != 1)
+            ans = max(ans, ((lis[i] + lds[i]) - 1));
+    }
+    debline(ans);
 }
 
 int main()

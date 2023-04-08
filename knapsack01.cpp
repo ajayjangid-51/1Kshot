@@ -55,11 +55,77 @@ void file()
 
 void solve()
 {
-    int t = 1e9;
-    int t2 = INT_MAX;
-    print(t);
+    int n, m;
+    cin >> n >> m;
+    vi c(n), w(n);
+    for (int i = 0; i < n; i++)
+        cin >> c[i];
+    for (int i = 0; i < n; i++)
+        cin >> w[i];
     nline;
-    print(t2);
+    trav(c) print(x);
+    nline;
+    trav(w) print(x);
+    nline;
+
+    int tsum = 0;
+    trav(c) tsum += x;
+    debline(tsum);
+
+    vb dp(tsum + 1, 0);
+    dp[0] = 1;
+    vi remW(tsum + 1, -1);
+    remW[0] = m;
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        vi p;
+        // vi rem2(tsum + 1, -1);
+        vi rem2 = remW;
+        for (int j = 0; j < dp.size(); j++)
+        {
+            if (dp[j])
+            {
+                p.push_back(j);
+            }
+        }
+        trav(p)
+        {
+            // print(x);
+            if (remW[x] - w[i] >= 0)
+            {
+                // if (x + c[i] <= tsum)
+                // {
+
+                dp[x + c[i]] = 1;
+                // remW[x + c[i]] = max(remW[x + c[i]], remW[x] - w[i]);
+                rem2[x + c[i]] = max(rem2[x + c[i]], remW[x] - w[i]);
+
+                // }
+            }
+        }
+        remW = rem2;
+        // linebreak1;
+    }
+
+    nline;
+    deb("hi");
+    trav(dp) print(x);
+    nline;
+    trav(remW) print(x);
+    nline;
+
+    int maxx = 0;
+    for (int i = 0; i < dp.size(); i++)
+    {
+        // if (remW[i] != -1)
+        // {
+        //     maxx = max(maxx, i);
+        // }
+        if (dp[i])
+            maxx = i;
+    }
+    debline(maxx);
 }
 
 int main()

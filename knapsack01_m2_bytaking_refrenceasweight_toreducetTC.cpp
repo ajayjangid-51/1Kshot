@@ -55,11 +55,56 @@ void file()
 
 void solve()
 {
-    int t = 1e9;
-    int t2 = INT_MAX;
-    print(t);
+    int n, m;
+    cin >> n >> m;
+    vi c(n), w(n);
+    for (int i = 0; i < n; i++)
+        cin >> c[i];
+    for (int i = 0; i < n; i++)
+        cin >> w[i];
     nline;
-    print(t2);
+    trav(c) print(x);
+    nline;
+    trav(w) print(x);
+    nline;
+
+    vb dp(m + 1, 0);
+    dp[0] = 1;
+    vi profit(m + 1, 0);
+    profit[0] = 0;
+    int maxx = 0;
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        vi copy = profit;
+        // vi copy(m + 1, 0);
+        vi tmp;
+        for (int j = 0; j < dp.size(); j++)
+        {
+            if (dp[j])
+                tmp.push_back(j);
+        }
+        trav(tmp)
+        {
+            if (w[i] + x <= m)
+            {
+                dp[w[i] + x] = 1;
+                copy[w[i] + x] = max((copy[w[i] + x]), (c[i] + profit[x]));
+                // copy[w[i] + x] = c[i] + profit[x];
+                maxx = max(maxx, copy[w[i] + x]);
+            }
+        }
+        // for (int i = 0; i <= m; i++)
+        // {
+        //     profit[i] = max(profit[i], copy[i]);
+        //     maxx = max(maxx, profit[i]);
+        // }
+        profit = copy;
+    }
+    linebreak1;
+    trav(profit) print(x);
+    linebreak1;
+    debline(maxx);
 }
 
 int main()

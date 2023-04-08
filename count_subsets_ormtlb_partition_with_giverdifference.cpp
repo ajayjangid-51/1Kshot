@@ -52,14 +52,76 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-
+const int mod = 1e9 + 7;
 void solve()
 {
-    int t = 1e9;
-    int t2 = INT_MAX;
-    print(t);
-    nline;
-    print(t2);
+    int n, d;
+    cin >> n >> d;
+    vi v(n);
+    for (int i = 0; i < n; i++)
+        cin >> v[i];
+
+    int summ = 0;
+    for (int i = 0; i < n; i++)
+    {
+        // cin >> v[i];
+        summ += v[i];
+    }
+    deb(summ);
+    int sum = (summ + d) / 2;
+    // sum--;
+    // sum/=2;
+    // trav(v) print(x);
+
+    vb s(sum + 1, 0);
+    s[0] = 1;
+    vector<long long> cnt(sum + 1, 0);
+    cnt[0] = 1;
+    deb(sum);
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        vi tmp;
+        // vector<long long> cnt2 = cnt;
+        vector<long long> cnt2(sum + 1, 0);
+        for (int j = 0; j <= sum; j++)
+        {
+            if (s[j])
+                tmp.push_back(j);
+        }
+        trav(tmp)
+        {
+            if (x + v[i] <= sum)
+            {
+                s[x + v[i]] = 1;
+                cnt2[x + v[i]] = cnt[x];
+            }
+        }
+        // cnt = cnt2;
+        for (int i = 0; i <= sum; i++)
+        {
+            cnt[i] = (cnt[i] + cnt2[i]) % mod;
+            // cnt[i] = cnt2[i] + 1;
+        }
+        // cnt[0] = 1;
+    }
+    int c = 0;
+    linebreak1;
+    trav(s) print(x);
+    linebreak1;
+    // trav(cnt) print(x);
+    linebreak1;
+
+    // for (int i = 0; i <= sum; i++)
+    // {
+    //     int s2 = summ - i;
+    //     if (abs(s2 - i) == d)
+    //     {
+    //         c += cnt[i];
+    //     }
+    // }
+    // deb(c);
+    debline(cnt[sum]);
 }
 
 int main()

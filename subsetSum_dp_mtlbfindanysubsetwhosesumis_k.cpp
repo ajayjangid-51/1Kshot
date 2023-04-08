@@ -55,11 +55,41 @@ void file()
 
 void solve()
 {
-    int t = 1e9;
-    int t2 = INT_MAX;
-    print(t);
-    nline;
-    print(t2);
+    int n, t;
+    cin >> n >> t;
+    vi v(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> v[i];
+    }
+    linebreak1;
+    trav(v) print(x);
+
+    vb sum(t + 1, 0);
+    sum[0] = 1;
+
+    for (int i = n - 1; i >= 0; i--)
+    {
+        vi tmp;
+        for (int j = 0; j < t; j++)
+        {
+            if (sum[j])
+                tmp.push_back(j);
+        }
+        trav(tmp)
+        {
+            if (x + v[i] <= t)
+            {
+                if (x + v[i] == t)
+                {
+                    debline("1");
+                    return;
+                }
+                sum[x + v[i]] = 1;
+            }
+        }
+    }
+    debline("0");
 }
 
 int main()

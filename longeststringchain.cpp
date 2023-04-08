@@ -55,11 +55,71 @@ void file()
 
 void solve()
 {
-    int t = 1e9;
-    int t2 = INT_MAX;
-    print(t);
-    nline;
-    print(t2);
+    int n;
+    cin >> n;
+    int k = 0;
+    vs v(n);
+    while (cin >> v[k])
+        k++;
+    sort(range(v), [](string a, string b)
+         { return a.size() < b.size(); });
+    linebreak1;
+    trav(v) print(x);
+
+    // trav(v)
+
+    vi lis(n, 1);
+    int maxi = 1;
+    for (int i = n - 2; i >= 0; i--)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            // int s = abs((int)v[i].size() - (int)v[j].size());
+            // int s = 0;
+            // deb(s);
+
+            // if ((int)(abs((v[i].size()) - v[j].size())) > 1)
+            // if (s > 1)
+            //     continue;
+            if (v[j].size() - v[i].size() > 1)
+                continue;
+
+            if (v[j].size() == v[i].size() and v[j] != v[i])
+                continue;
+            int k = min(v[i].size(), v[j].size());
+            int cnt = k;
+            for (int l = 0; l < k; l++)
+            {
+                if (v[i][l] != v[j][l])
+                {
+                    cnt = l;
+                    break;
+                }
+            }
+            int cnt2 = k;
+            int l1 = v[i].size() - 1, l2 = v[j].size() - 1;
+            for (int l = 0; l < k; l++)
+            {
+                if (v[i][l1] != v[j][l2])
+                {
+                    cnt2 = l;
+                    break;
+                }
+                l1--;
+                l2--;
+            }
+            // cnt++;
+            // deb2(cnt, cnt2);
+            if ((v[j].size() - (cnt2 + cnt)) == 1 or v[i] == v[j])
+            {
+                print(v[j]);
+                lis[i] = max(lis[i], lis[j] + 1);
+            }
+        }
+        // nline;
+        maxi = max(maxi, lis[i]);
+    }
+    debline(maxi);
 }
 
 int main()

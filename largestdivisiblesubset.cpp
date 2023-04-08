@@ -55,11 +55,59 @@ void file()
 
 void solve()
 {
-    int t = 1e9;
-    int t2 = INT_MAX;
-    print(t);
-    nline;
-    print(t2);
+    int n;
+    cin >> n;
+    vi arr(n);
+    int k = 0;
+    while (cin >> arr[k])
+        k++;
+    sort(arr.begin(), arr.end());
+    vi len(n, 1);
+    vi inx(n);
+    for (int i = 0; i < n; i++)
+        inx[i] = i;
+    int maxi_inx = 0;
+    int maxi = 1;
+
+    // Code here
+
+    for (int i = n - 2; i >= 0; i--)
+    {
+        int tinx = i, tlen = 1;
+        print(arr[i]), print("-");
+        for (int j = i + 1; j < n; j++)
+        {
+            if (arr[j] % arr[i] == 0)
+            {
+                if (tlen < len[j] + 1)
+                {
+                    print(arr[j]);
+                    tlen = len[j] + 1;
+                    // tinx = j;
+                    inx[i] = j;
+                }
+            }
+        }
+        nline;
+        len[i] = tlen;
+
+        if (maxi < tlen)
+        {
+            maxi = tlen;
+            maxi_inx = i;
+        }
+    }
+    debline(len[0]);
+    vector<int> ans;
+    while (inx[maxi_inx] != maxi_inx)
+    {
+        ans.push_back(arr[maxi_inx]);
+        maxi_inx = inx[maxi_inx];
+    }
+    ans.push_back(arr[maxi_inx]);
+    linebreak1;
+    trav(ans) print(x);
+    linebreak1;
 }
 
 int main()

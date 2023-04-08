@@ -55,11 +55,27 @@ void file()
 
 void solve()
 {
-    int t = 1e9;
-    int t2 = INT_MAX;
-    print(t);
-    nline;
-    print(t2);
+    // vi v = {10, 9, 2, 5, 3, 7, 101, 18};
+    // vi v = {3, 4, 6};
+    vi v = {10, 9, 2, 5, 3, 7, 101, 18};
+    int n = v.size();
+    vector<int> s;
+    s.push_back(v[0]);
+    for (int i = 1; i < n; i++)
+    {
+        auto inx = lower_bound(s.begin(), s.end(), v[i]) - s.begin();
+        deb(inx);
+        if (inx == s.size())
+        {
+            s.push_back(v[i]);
+        }
+        else
+        {
+
+            s[inx] = v[i];
+        }
+    }
+    debline(s.size());
 }
 
 int main()
