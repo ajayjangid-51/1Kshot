@@ -58,17 +58,30 @@ void file()
 
 void solve()
 {
-    // char key[] = {'t', 'h', 'e', '\n'};
-    char key[] = "the";
-    int n = sizeof(key) / sizeof(char);
-    deb(n);
-    int m = strlen(key);
-    deb(m);
-    linebreak1;
-    for (int i = 0; i < m; i++)
+    int N;
+    cin >> N;
+    vector<vector<int>> intervals(N, vi(2));
+    for (int i = 0; i < N; i++)
     {
-        print(key[i]);
+        //  int a , b;
+        cin >> intervals[i][0] >> intervals[i][1];
     }
+    int cnt = 0;
+    sort(intervals.begin(), intervals.end());
+    for (int i = 0; i < N;)
+    {
+        int j = i + 1;
+        while (j < N and intervals[j][0] == intervals[i][0])
+        {
+            j++;
+            cnt++;
+            // i++;
+        }
+        i = j;
+    }
+    linebreak1;
+    trav(intervals) print(x[0]), print(x[1]), nline;
+    // return cnt;
 }
 
 int main()

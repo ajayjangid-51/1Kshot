@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+
 using namespace std;
 
 #define ll long long
@@ -55,6 +56,178 @@ void file()
 
 void solve()
 {
+    int n;
+    cin >> n;
+    vvi v(n, vi(n));
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cin >> v[i][j];
+        }
+    }
+    vvi v2 = v;
+    vi back_row(n, -1);
+    back_row[0] = v[0][0];
+    for (int i = 1; i < n; i++)
+    {
+        if (v[0][i] != -1 and back_row[i - 1] != -1)
+        {
+            back_row[i] = v[0][i] + back_row[i - 1];
+            v[0][i] = 0;
+        }
+    }
+    linebreak1;
+    trav(back_row) print(x);
+    linebreak1;
+    for (int i = 1; i < n; i++)
+    {
+        vi curr_row(n, -1);
+        // vi curr_col(n);
+        for (int j = 0; j < n; j++)
+        {
+            if (v[i][j] != -1)
+
+                if (j - 1 >= 0)
+                {
+                    int max1 = INT_MIN;
+                    if (back_row[j] != -1)
+                        max1 = back_row[j];
+                    int max2 = INT_MIN;
+                    if (curr_row[j - 1] != -1)
+                        max2 = curr_row[j - 1];
+
+                    int maxi = max(max1, max2);
+                    if (maxi == max1 and max1 != INT_MIN)
+                    {
+                        curr_row[j] = maxi + v[i][j];
+                        v[i - 1][j] = 0;
+                        // v[i][j - 1] = curr_row[j - 1];
+                        v[i][j - 1] = v2[i][j - 1];
+
+                        // curr_col[j] = maxi;
+                    }
+                    else if (max2 != INT_MIN)
+                    {
+                        curr_row[j] = maxi + v[i][j];
+                        v[i][j - 1] = 0;
+                        // v[i - 1][j] = back_row[j];
+                        v[i - 1][j] = v2[i - 1][j];
+                        // curr_col[j] = maxi;
+                    }
+                }
+                else
+                {
+                    if (v[i][0] != -1 and back_row[j] != -1)
+                    {
+                        curr_row[0] = v[i][0] + back_row[0];
+                        v[i - 1][0] = 0;
+                    }
+                }
+        }
+        // print(smile2);
+        print("🥊");
+        trav(curr_row) print(x);
+        linebreak1;
+        back_row = curr_row;
+        // back_col = curr_col;
+    }
+
+    v[n - 1][n - 1] = 0;
+
+    linebreak1;
+    debline(back_row[n - 1]);
+    // debline(back_col[n - 1]);
+    linebreak1;
+    trav(v)
+    {
+        trav2(x) print(y);
+        nline;
+    }
+    linebreak1;
+    // now go from [n-1][n-1] to back again to [0][0].
+    // back_row.assign()
+    back_row.assign(n, -1);
+    back_row[n - 1] = v[n - 1][n - 1];
+    for (int i = n - 2; i >= 0; i--)
+    {
+        if (v[0][i] != -1 and back_row[i + 1] != -1)
+        {
+            back_row[i] = v[n - 1][i] + back_row[i + 1];
+            v[0][i] = 0;
+        }
+    }
+
+    print("backrow");
+    linebreak1;
+    trav(back_row) print(x);
+    linebreak1;
+    for (int i = n - 2; i >= 0; i--)
+    {
+        vi curr_row(n, -1);
+        // vi curr_col(n);
+        for (int j = n - 1; j >= 0; j--)
+        {
+            if (v[i][j] != -1)
+
+                if (j + 1 < n)
+                {
+                    int max1 = INT_MIN;
+                    if (back_row[j] != -1)
+                        max1 = back_row[j];
+                    int max2 = INT_MIN;
+                    if (curr_row[j + 1] != -1)
+                        max2 = curr_row[j + 1];
+
+                    if (i == 0 and j == 0)
+                    {
+                        deb2(max1, max2);
+                    }
+
+                    int maxi = max(max1, max2);
+                    if (maxi == max1 and max1 != INT_MIN)
+                    {
+                        curr_row[j] = maxi + v[i][j];
+                        v[i + 1][j] = 0;
+                        // v[i][j + 1] = curr_row[j + 1];
+                        v[i][j + 1] = v2[i][j + 1];
+
+                        // curr_col[j] = maxi;
+                    }
+                    else if (max2 != INT_MIN)
+                    {
+                        curr_row[j] = maxi + v[i][j];
+                        v[i][j + 1] = 0;
+                        // v[i + 1][j] = back_row[j];
+                        v[i + 1][j] = v2[i + 1][j];
+                        // curr_col[j] = maxi;
+                    }
+                }
+                else
+                {
+                    if (v[i][n - 1] != -1 and back_row[j] != -1)
+                    {
+                        curr_row[n - 1] = v[i][n - 1] + back_row[n - 1];
+                        v[i + 1][n - 1] = 0;
+                    }
+                }
+        }
+        // print(smile2);
+        print("🥊");
+        trav(curr_row) print(x);
+        linebreak1;
+        back_row = curr_row;
+        // back_col = curr_col;
+    }
+    debline(back_row[0]);
+
+    trav(v)
+    {
+        trav2(x) print(y);
+        nline;
+    }
+
+    linebreak1;
 }
 
 int main()

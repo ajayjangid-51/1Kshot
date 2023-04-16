@@ -17,17 +17,14 @@ using namespace std;
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
-#define onered cout << "🔴"
-#define twoblue cout << "🔵"
-#define threeyellow cout << "🟡"
-#define fourpurple cout << "🟣"
-#define fivebrown cout << "🟤"
-#define sixgreen cout << "🟢"
-#define sevenwhite cout << "⚪"
-#define eightwheel cout << "🛞"
-#define ninering cout << "⭕"
-#define tenpoint cout << "👉"
-#define elevenhand cout << "🤚🏻"
+#define leftpoint "👈"
+#define rightpoint "👉"
+#define downpoint "👇"
+#define uppoint "👆"
+#define fire "🔥"
+#define star "⭐"
+#define smile "😃"
+#define smile2 "👺"
 #define debline(x) cout << "👉Line-" << __LINE__ << ": " << #x << " = " << x << endl
 #define linebreak2(x) cout << "🟢" << #x << " = " << x << "________________🟢 " << endl
 #define all(x) x.begin() x.end()
@@ -58,16 +55,31 @@ void file()
 
 void solve()
 {
-    // char key[] = {'t', 'h', 'e', '\n'};
-    char key[] = "the";
-    int n = sizeof(key) / sizeof(char);
-    deb(n);
-    int m = strlen(key);
-    deb(m);
-    linebreak1;
-    for (int i = 0; i < m; i++)
+    string s;
+    cin >> s;
+    int n = s.size();
+    char l = s[n - 1];
+
+    int b = 1;
+    for (int i = 1; i < n; i++)
     {
-        print(key[i]);
+        if (s[i] != s[i - 1])
+        {
+            b = 0;
+            break;
+        }
+    }
+    if (b)
+    {
+        debline("0");
+        return;
+    }
+
+    vi dp(n, 0);
+    dp[n - 1] = 0;
+
+    for (int i = n - 2; i >= 0; i--)
+    {
     }
 }
 

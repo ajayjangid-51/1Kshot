@@ -56,19 +56,35 @@ void file()
 #endif
 }
 
+int fn(int i, int j, string s, vector<vector<int>> &dp)
+{
+    if (i > j)
+        return 0;
+    if (i == j)
+        return 1;
+    if (dp[i][j] != -1)
+        return dp[i][j];
+    if (s[i] == s[j])
+    {
+        return dp[i][j] = 1 + fn(i + 1, j, s, dp) + fn(i, j - 1, s, dp);
+        // (1+ (fn(i+1, j , s , dp)%mod+ fn(i , j-1 , s , dp)%mod)%mod)%mod
+    }
+    else
+    {
+        return dp[i][j] = ((fn(i + 1, j, s, dp) + fn(i, j - 1, s, dp)) - (fn(i + 1, j - 1, s, dp)));
+
+        // ((fn(i+1 , j , s, dp)+fn(i , j -1 , s , dp))%mod - (fn(i+1 , j-1 , s , dp)%mod))%mod;
+    }
+}
 void solve()
 {
-    // char key[] = {'t', 'h', 'e', '\n'};
-    char key[] = "the";
-    int n = sizeof(key) / sizeof(char);
-    deb(n);
-    int m = strlen(key);
-    deb(m);
-    linebreak1;
-    for (int i = 0; i < m; i++)
-    {
-        print(key[i]);
-    }
+    string s;
+    cin >> s;
+    int n = s.size();
+    vector<vector<int>> dp(n + 1, vector<int>(n + 1, -1));
+    int ans = fn(0, n - 1, s, dp);
+    debline(ans);
+    long long int_64 ajli;
 }
 
 int main()

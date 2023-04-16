@@ -17,17 +17,14 @@ using namespace std;
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
-#define onered cout << "🔴"
-#define twoblue cout << "🔵"
-#define threeyellow cout << "🟡"
-#define fourpurple cout << "🟣"
-#define fivebrown cout << "🟤"
-#define sixgreen cout << "🟢"
-#define sevenwhite cout << "⚪"
-#define eightwheel cout << "🛞"
-#define ninering cout << "⭕"
-#define tenpoint cout << "👉"
-#define elevenhand cout << "🤚🏻"
+#define leftpoint "👈"
+#define rightpoint "👉"
+#define downpoint "👇"
+#define uppoint "👆"
+#define fire "🔥"
+#define star "⭐"
+#define smile "😃"
+#define smile2 "👺"
 #define debline(x) cout << "👉Line-" << __LINE__ << ": " << #x << " = " << x << endl
 #define linebreak2(x) cout << "🟢" << #x << " = " << x << "________________🟢 " << endl
 #define all(x) x.begin() x.end()
@@ -55,20 +52,76 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+void dfs(int i, int j, string s, string &s1, string &s2, vvi &dp, set<string> &ans, int cnt)
+{
+    if (cnt == 0)
+    {
+        ans.insert(s);
+        return;
+    }
+    if (i >= s1.size() or j >= s2.size())
+        return;
+
+    // if (i == s1.size() or j == s2.size())
+    // {
+    //     deb(s);
+    //     ans.push_back(s);
+    //     return;
+    // }
+    if (s1[i] == s2[j])
+    {
+        dfs(i + 1, j + 1, s + s1[i], s1, s2, dp, ans, cnt - 1);
+    }
+    else
+    {
+        int maxi = max(dp[i + 1][j], dp[i][j + 1]);
+        if (maxi == dp[i + 1][j])
+        {
+            dfs(i + 1, j, s, s1, s2, dp, ans, cnt);
+        }
+        if (maxi == dp[i][j + 1])
+        {
+            dfs(i, j + 1, s, s1, s2, dp, ans, cnt);
+        }
+    }
+}
 
 void solve()
 {
-    // char key[] = {'t', 'h', 'e', '\n'};
-    char key[] = "the";
-    int n = sizeof(key) / sizeof(char);
-    deb(n);
-    int m = strlen(key);
-    deb(m);
-    linebreak1;
-    for (int i = 0; i < m; i++)
+    string s1, s2;
+    cin >> s1 >> s2;
+
+    int n = s1.size(), m = s2.size();
+    vvi dp(n + 1, vi(m + 1, 0));
+    for (int i = n - 1; i >= 0; i--)
     {
-        print(key[i]);
+        for (int j = m - 1; j >= 0; j--)
+        {
+            if (s1[i] == s2[j])
+            {
+                dp[i][j] = 1 + dp[i + 1][j + 1];
+            }
+            else
+            {
+                dp[i][j] = max(dp[i + 1][j], dp[i][j + 1]);
+            }
+        }
     }
+
+    linebreak1;
+    trav(dp)
+    {
+        trav2(x) print(y);
+        nline;
+    }
+
+    //
+    set<string> ans;
+    int cnt = dp[0][0];
+    dfs(0, 0, "", s1, s2, dp, ans, cnt);
+    linebreak1;
+    trav(ans) print(x);
+    linebreak1;
 }
 
 int main()

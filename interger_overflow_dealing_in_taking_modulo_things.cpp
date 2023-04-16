@@ -17,17 +17,14 @@ using namespace std;
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
-#define onered cout << "🔴"
-#define twoblue cout << "🔵"
-#define threeyellow cout << "🟡"
-#define fourpurple cout << "🟣"
-#define fivebrown cout << "🟤"
-#define sixgreen cout << "🟢"
-#define sevenwhite cout << "⚪"
-#define eightwheel cout << "🛞"
-#define ninering cout << "⭕"
-#define tenpoint cout << "👉"
-#define elevenhand cout << "🤚🏻"
+#define leftpoint "👈"
+#define rightpoint "👉"
+#define downpoint "👇"
+#define uppoint "👆"
+#define fire "🔥"
+#define star "⭐"
+#define smile "😃"
+#define smile2 "👺"
 #define debline(x) cout << "👉Line-" << __LINE__ << ": " << #x << " = " << x << endl
 #define linebreak2(x) cout << "🟢" << #x << " = " << x << "________________🟢 " << endl
 #define all(x) x.begin() x.end()
@@ -58,17 +55,45 @@ void file()
 
 void solve()
 {
-    // char key[] = {'t', 'h', 'e', '\n'};
-    char key[] = "the";
-    int n = sizeof(key) / sizeof(char);
-    deb(n);
-    int m = strlen(key);
-    deb(m);
-    linebreak1;
-    for (int i = 0; i < m; i++)
-    {
-        print(key[i]);
-    }
+    int b = 1e7, c = 1e3;
+    int bc = b * c;
+    deb(bc);
+    int d = (b * c) % MOD;
+    deb(d);
+    long long e = (long long)b * c;
+    deb(e);
+    long long f = e % MOD;
+    deb(f);
+    int g = ((long long)(b % MOD) * (c % MOD)) % MOD; // so first always typecast it into long long and do multiply and mode.
+    deb(g);
+    int h = b % MOD;
+    deb(h);
+    int l = c % MOD;
+    deb(l);
+
+    //
+
+    int a = 1e7, b = 1e3;
+    int ab = a * b;
+    deb(ab);
+    long long c = a * b;
+    deb(c);
+    long long e = (long long)a * b;
+    deb(e);
+
+    long long d = 1e14 - INT_MAX;
+    int max1 = INT_MAX + 1;
+    deb(max1);
+    max1--;
+    deb(max1);
+    deb((int)1e9);
+    deb(d);
+    // int t =
+
+    long long f = pow(2, 31);
+    long long g = pow(2, 32);
+    deb(f);
+    deb(g);
 }
 
 int main()

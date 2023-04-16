@@ -17,17 +17,14 @@ using namespace std;
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
-#define onered cout << "🔴"
-#define twoblue cout << "🔵"
-#define threeyellow cout << "🟡"
-#define fourpurple cout << "🟣"
-#define fivebrown cout << "🟤"
-#define sixgreen cout << "🟢"
-#define sevenwhite cout << "⚪"
-#define eightwheel cout << "🛞"
-#define ninering cout << "⭕"
-#define tenpoint cout << "👉"
-#define elevenhand cout << "🤚🏻"
+#define leftpoint "👈"
+#define rightpoint "👉"
+#define downpoint "👇"
+#define uppoint "👆"
+#define fire "🔥"
+#define star "⭐"
+#define smile "😃"
+#define smile2 "👺"
 #define debline(x) cout << "👉Line-" << __LINE__ << ": " << #x << " = " << x << endl
 #define linebreak2(x) cout << "🟢" << #x << " = " << x << "________________🟢 " << endl
 #define all(x) x.begin() x.end()
@@ -58,17 +55,43 @@ void file()
 
 void solve()
 {
-    // char key[] = {'t', 'h', 'e', '\n'};
-    char key[] = "the";
-    int n = sizeof(key) / sizeof(char);
-    deb(n);
-    int m = strlen(key);
-    deb(m);
-    linebreak1;
-    for (int i = 0; i < m; i++)
+    int n, m;
+    cin >> n >> m;
+    vi c(n);
+    vi w(n);
+
+    for (int i = 0; i < n; i++)
+        cin >> c[i];
+    for (int i = 0; i < n; i++)
+        cin >> w[i];
+
+    // sort(range(w));
+
+    vb dp(m + 1, 0);
+    dp[0] = 1;
+    vi profit(m + 1, 0);
+    profit[0] = 0;
+    int maxx = 0;
+
+    for (int i = n - 1; i >= 0; i--)
     {
-        print(key[i]);
+        for (int j = 0; j < dp.size(); j++)
+        {
+            if (dp[j])
+            {
+                if (w[i] + j <= m)
+                {
+                    dp[w[i] + j] = 1;
+                    profit[w[i] + j] = max(profit[w[i] + j], (profit[j] + c[i]));
+                }
+            }
+        }
     }
+    debline(profit[m]);
+
+    linebreak1;
+    trav(profit) print(x);
+    linebreak1;
 }
 
 int main()

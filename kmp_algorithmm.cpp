@@ -17,17 +17,14 @@ using namespace std;
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
-#define onered cout << "🔴"
-#define twoblue cout << "🔵"
-#define threeyellow cout << "🟡"
-#define fourpurple cout << "🟣"
-#define fivebrown cout << "🟤"
-#define sixgreen cout << "🟢"
-#define sevenwhite cout << "⚪"
-#define eightwheel cout << "🛞"
-#define ninering cout << "⭕"
-#define tenpoint cout << "👉"
-#define elevenhand cout << "🤚🏻"
+#define leftpoint "👈"
+#define rightpoint "👉"
+#define downpoint "👇"
+#define uppoint "👆"
+#define fire "🔥"
+#define star "⭐"
+#define smile "😃"
+#define smile2 "👺"
 #define debline(x) cout << "👉Line-" << __LINE__ << ": " << #x << " = " << x << endl
 #define linebreak2(x) cout << "🟢" << #x << " = " << x << "________________🟢 " << endl
 #define all(x) x.begin() x.end()
@@ -58,17 +55,63 @@ void file()
 
 void solve()
 {
-    // char key[] = {'t', 'h', 'e', '\n'};
-    char key[] = "the";
-    int n = sizeof(key) / sizeof(char);
-    deb(n);
-    int m = strlen(key);
-    deb(m);
-    linebreak1;
-    for (int i = 0; i < m; i++)
+    string s, p;
+    cin >> s >> p;
+    int n = s.size(), m = p.size();
+
+    vector<int> lps(m, 0);
+    int len = 0;
+    for (int i = 1; i < m; i++)
     {
-        print(key[i]);
+        if (p[i] == p[len])
+        {
+            len++;
+            lps[i] = len;
+        }
+        else
+        {
+            if (len != 0)
+            {
+                len = lps[len - 1];
+                i--;
+            }
+        }
     }
+    linebreak1;
+    trav(lps) print(x);
+    vector<int> ans;
+    // now kmp;
+    int i = 0;
+    int j = 0;
+    while (1)
+    {
+        if (j < m and s[i] == p[j])
+        {
+            i++;
+            j++;
+        }
+        else
+        {
+            if (j == m)
+            {
+                ans.push_back((i - m) + 1);
+                if (i == n)
+                {
+                    break;
+                }
+            }
+            if (j != 0)
+            {
+                j = lps[j - 1];
+            }
+            else
+            {
+                i++;
+            }
+        }
+    }
+    debline(ans.size());
+    trav(ans) print(x);
 }
 
 int main()

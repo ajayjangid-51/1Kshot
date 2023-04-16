@@ -17,17 +17,14 @@ using namespace std;
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
-#define onered cout << "🔴"
-#define twoblue cout << "🔵"
-#define threeyellow cout << "🟡"
-#define fourpurple cout << "🟣"
-#define fivebrown cout << "🟤"
-#define sixgreen cout << "🟢"
-#define sevenwhite cout << "⚪"
-#define eightwheel cout << "🛞"
-#define ninering cout << "⭕"
-#define tenpoint cout << "👉"
-#define elevenhand cout << "🤚🏻"
+#define leftpoint "👈"
+#define rightpoint "👉"
+#define downpoint "👇"
+#define uppoint "👆"
+#define fire "🔥"
+#define star "⭐"
+#define smile "😃"
+#define smile2 "👺"
 #define debline(x) cout << "👉Line-" << __LINE__ << ": " << #x << " = " << x << endl
 #define linebreak2(x) cout << "🟢" << #x << " = " << x << "________________🟢 " << endl
 #define all(x) x.begin() x.end()
@@ -58,17 +55,62 @@ void file()
 
 void solve()
 {
-    // char key[] = {'t', 'h', 'e', '\n'};
-    char key[] = "the";
-    int n = sizeof(key) / sizeof(char);
-    deb(n);
-    int m = strlen(key);
-    deb(m);
-    linebreak1;
-    for (int i = 0; i < m; i++)
+    int n, target;
+    cin >> n >> target;
+
+    vi v(n);
+    for (int i = 0; i < n; i++)
+        cin >> v[i];
+
+    int tsum = 0;
+    for (int i = 0; i < n; i++)
     {
-        print(key[i]);
+        tsum += v[i];
     }
+    map<int, bool> m;
+    map<int, int> cnt;
+    m[v[n - 1]] = 1;
+    m[-v[n - 1]] = 1;
+    cnt[v[n - 1]] = 1;
+    cnt[-v[n - 1]] = 1;
+
+    debline(tsum);
+
+    for (int i = n - 2; i >= -1; i--)
+    {
+        vector<int> tmp;
+        map<int, int> cnt2;
+        for (auto x : m)
+        {
+            if (cnt[x.first] != 0)
+                tmp.push_back(x.first);
+        }
+        for (auto x : tmp)
+        {
+            print(x);
+            if (v[i] + x >= -tsum and x + v[i] <= tsum)
+            {
+
+                m[x + v[i]] = 1;
+                cnt2[x + v[i]] += cnt[x];
+                // if (cnt2[x + v[i]] == 0)
+                //     m.erase(x + v[i]);
+            }
+            if (-v[i] + x >= -tsum and x - v[i] <= tsum)
+            {
+
+                m[x - v[i]] = 1;
+
+                cnt2[x - v[i]] += cnt[x];
+                // if (cnt2[x - v[i]] == 0)
+                //     m.erase(x - v[i]);
+            }
+        }
+        nline;
+        cnt = cnt2;
+    }
+    // trav(m) print()
+    debline(cnt[target]);
 }
 
 int main()

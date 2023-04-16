@@ -17,17 +17,14 @@ using namespace std;
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
-#define onered cout << "🔴"
-#define twoblue cout << "🔵"
-#define threeyellow cout << "🟡"
-#define fourpurple cout << "🟣"
-#define fivebrown cout << "🟤"
-#define sixgreen cout << "🟢"
-#define sevenwhite cout << "⚪"
-#define eightwheel cout << "🛞"
-#define ninering cout << "⭕"
-#define tenpoint cout << "👉"
-#define elevenhand cout << "🤚🏻"
+#define leftpoint "👈"
+#define rightpoint "👉"
+#define downpoint "👇"
+#define uppoint "👆"
+#define fire "🔥"
+#define star "⭐"
+#define smile "😃"
+#define smile2 "👺"
 #define debline(x) cout << "👉Line-" << __LINE__ << ": " << #x << " = " << x << endl
 #define linebreak2(x) cout << "🟢" << #x << " = " << x << "________________🟢 " << endl
 #define all(x) x.begin() x.end()
@@ -58,17 +55,61 @@ void file()
 
 void solve()
 {
-    // char key[] = {'t', 'h', 'e', '\n'};
-    char key[] = "the";
-    int n = sizeof(key) / sizeof(char);
-    deb(n);
-    int m = strlen(key);
-    deb(m);
-    linebreak1;
-    for (int i = 0; i < m; i++)
+    string s, p;
+    cin >> s >> p;
+    int n = s.size(), m = p.size();
+    int L, R, k;
+    // string str(p + '$' + s);
+    string str;
+    str = p + '$' + s;
+    n = str.size();
+    // string str(s);
+    vector<int> Z(str.size(), 0);
+
+    L = R = 0;
+    for (int i = 1; i < n; ++i)
     {
-        print(key[i]);
+        if (i > R)
+        {
+            L = R = i;
+
+            while (R < n && str[R - L] == str[R])
+                R++;
+            Z[i] = R - L;
+            R--;
+        }
+        else
+        {
+
+            k = i - L;
+
+            if (Z[k] < R - i + 1)
+                Z[i] = Z[k];
+
+            else
+            {
+                // else start from R and check manually
+                L = i;
+                while (R < n && str[R - L] == str[R])
+                    R++;
+                Z[i] = R - L;
+                R--;
+            }
+        }
     }
+    vector<int> ans;
+    linebreak1;
+    for (int i = 0; i < Z.size(); i++)
+    {
+        if (Z[i] == p.size())
+        {
+            ans.push_back(i - (m));
+        }
+        print(Z[i]);
+    }
+    linebreak1;
+    debline(ans.size());
+    trav(ans) print(x);
 }
 
 int main()
