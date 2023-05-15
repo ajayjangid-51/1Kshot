@@ -58,15 +58,22 @@ void file()
 
 void solve()
 {
-    int n = 6;
-    if ((n & (1 << 0)) == 0)
-    {
-        deb("yes");
-    }
-    int t = 1 << 0;
+    int n, i;
+    cin >> n >> i;
+    int t = 1;
     deb(t);
-    int t2 = (n & (1 << 0));
-    deb(t2);
+    t <<= 1;
+    deb(t);
+    t <<= 1;
+    deb(t);
+    t = 1;
+    t <<= (i - 1);
+    deb(t);
+    int a = (n & t);
+    deb(a);
+    int b = n | t;
+    deb(b);
+    // int c =
 }
 
 int main()

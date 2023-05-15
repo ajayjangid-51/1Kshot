@@ -56,17 +56,69 @@ void file()
 #endif
 }
 
+class Twitter
+{
+    map<int, set<int>> fmp;
+    map<int, vector<pair<int, int>>> tmp;
+    int time = 0;
+
+public:
+    Twitter() {}
+    void postTweet(int userId, int tweetId)
+    {
+        tmp[userId].push_back({time++, tweetId});
+    }
+    vector<int> getNewsFeed(int userId)
+    {
+        // print("hi");
+        // priority_queue<pii, vector<pii>, greater<pii>> pq;
+        priority_queue<pii> pq;
+        for (auto x : fmp[userId])
+        {
+            // print(x);
+            for (auto y : tmp[x])
+            {
+                pq.push({y.first, y.second});
+                if (pq.size() > 10)
+                    break;
+            }
+        }
+        for (auto y : tmp[userId])
+        {
+            pq.push({y.first, y.second});
+            if (pq.size() > 10)
+                break;
+        }
+        vi ans;
+        for (int i = 0; i < 10 and !pq.empty(); i++)
+        {
+            ans.push_back(pq.top().second);
+            pq.pop();
+        }
+        linebreak1;
+        trav(ans) print(x);
+        linebreak1;
+        return ans;
+    }
+    void Follow(int followerId, int followeeId)
+    {
+        fmp[followerId].insert(followeeId);
+    }
+    void unFollow(int followerId, int followeeId)
+    {
+        fmp[followerId].erase(followeeId);
+    }
+};
 void solve()
 {
-    int n = 6;
-    if ((n & (1 << 0)) == 0)
-    {
-        deb("yes");
-    }
-    int t = 1 << 0;
-    deb(t);
-    int t2 = (n & (1 << 0));
-    deb(t2);
+    Twitter t1;
+    t1.postTweet(1, 5);
+    t1.getNewsFeed(1);
+    t1.Follow(1, 2);
+    t1.postTweet(2, 6);
+    t1.getNewsFeed(1);
+    t1.unFollow(1, 2);
+    t1.getNewsFeed(1);
 }
 
 int main()

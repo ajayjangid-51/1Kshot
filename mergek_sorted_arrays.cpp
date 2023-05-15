@@ -56,17 +56,69 @@ void file()
 #endif
 }
 
+vi merge(vi &v1, vi &v2)
+{
+    int i = 0;
+    vi v(v1.size() + v2.size());
+    int j = 0, k = 0;
+    while (j < v1.size() and k < v2.size())
+    {
+        if (v1[j] <= v2[k])
+        {
+            v[i++] = v1[j++];
+        }
+        else
+        {
+            v[i++] = v2[k++];
+        }
+    }
+    while (j < v1.size())
+    {
+        v[i++] = v1[j++];
+    }
+    while (k < v2.size())
+    {
+        v[i++] = v2[k++];
+    }
+    linebreak1;
+    trav(v) print(x);
+    return v;
+}
+vi fn(int s, int e, vvi &v)
+{
+    if (s == e)
+        return v[s];
+    int mid = (s + e) / 2;
+
+    vi v1 = fn(s, mid, v);
+    vi v2 = fn(mid + 1, e, v);
+    return merge(v1, v2);
+}
 void solve()
 {
-    int n = 6;
-    if ((n & (1 << 0)) == 0)
+    int k;
+    cin >> k;
+    vvi v(k, vi(k));
+    for (int i = 0; i < k; i++)
     {
-        deb("yes");
+        for (int j = 0; j < k; j++)
+        {
+            cin >> v[i][j];
+        }
     }
-    int t = 1 << 0;
-    deb(t);
-    int t2 = (n & (1 << 0));
-    deb(t2);
+    linebreak1;
+    trav(v)
+    {
+        trav2(x) print(y);
+        nline;
+    }
+
+    vi ans = fn(0, k - 1, v);
+    print("hi");
+
+    linebreak1;
+    trav(ans) print(x);
+    linebreak1;
 }
 
 int main()

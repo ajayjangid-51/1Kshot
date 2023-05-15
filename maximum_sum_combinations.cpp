@@ -58,15 +58,50 @@ void file()
 
 void solve()
 {
-    int n = 6;
-    if ((n & (1 << 0)) == 0)
+    int n, c;
+    cin >> n >> c;
+    vi A(n), B(n);
+    for (int i = 0; i < n; i++)
+        cin >> A[i];
+    for (int i = 0; i < n; i++)
+        cin >> B[i];
+
+    linebreak1;
+    trav(A) print(x);
+    nline;
+    trav(B) print(x);
+    linebreak1;
+    sort(range(A), greater<int>());
+    sort(range(B), greater<int>());
+
+    priority_queue<pair<int, pair<int, int>>> pq;
+    //                 <sum , <Aindex , Bindex>>
+    pq.push({A[0] + B[0], {0, 0}});
+    debline(pq.top().first);
+    vector<vector<bool>> vis(n, vb(n, 0));
+    vi ans;
+
+    while (!pq.empty() and ans.size() < c)
     {
-        deb("yes");
+        pair<int, pii> p = pq.top();
+        int i = p.second.first;
+        int j = p.second.second;
+        deb(p.first);
+        pq.pop();
+        if (vis[i][j])
+            continue;
+        ans.push_back(p.first);
+        if (j + 1 < n)
+            pq.push({(A[i] + B[j + 1]), {i, j + 1}});
+        if (i + 1 < n)
+            pq.push({(B[j] + A[i + 1]), {i + 1, j}});
     }
-    int t = 1 << 0;
-    deb(t);
-    int t2 = (n & (1 << 0));
-    deb(t2);
+
+    linebreak1;
+    for (int i = 0; i < c; i++)
+    {
+        print(ans[i]);
+    }
 }
 
 int main()

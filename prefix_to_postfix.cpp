@@ -55,18 +55,35 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+bool isOperator(char c)
+{
+    if (c == '+' or c == '-' or c == '^' or c == '/' or c == '*')
+        return 1;
+    return 0;
+}
 
 void solve()
 {
-    int n = 6;
-    if ((n & (1 << 0)) == 0)
+    string s("*-A/BC-/AKL");
+    string rev(s.rbegin(), s.rend());
+    stack<string> post;
+    for (auto x : rev)
     {
-        deb("yes");
+        string str(1, x);
+        if (isOperator(x))
+        {
+            string s1 = post.top();
+            post.pop();
+            string s2 = post.top();
+            post.pop();
+            post.push(s1 + s2 + str);
+        }
+        else
+        {
+            post.push(str);
+        }
     }
-    int t = 1 << 0;
-    deb(t);
-    int t2 = (n & (1 << 0));
-    deb(t2);
+    debline(post.top());
 }
 
 int main()

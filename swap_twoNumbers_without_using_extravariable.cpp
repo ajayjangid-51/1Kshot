@@ -58,15 +58,19 @@ void file()
 
 void solve()
 {
-    int n = 6;
-    if ((n & (1 << 0)) == 0)
-    {
-        deb("yes");
-    }
-    int t = 1 << 0;
-    deb(t);
-    int t2 = (n & (1 << 0));
-    deb(t2);
+    int a = 13, b = 9;
+    // method1(using bitmagic)
+    a = a ^ b; // get the bit positions which are different
+    b = a ^ b; // just flip the bits where intial bits were different.
+    a = a ^ b; // now as "b" has the value of "a", so also flip the bits in "a".
+    deb2(a, b);
+
+    // method2(using arithemaic)
+    a = 13, b = 9;
+    a = a + b;
+    b = a - b;
+    a = a - b;
+    deb2(a, b);
 }
 
 int main()

@@ -58,15 +58,41 @@ void file()
 
 void solve()
 {
-    int n = 6;
-    if ((n & (1 << 0)) == 0)
+    int k;
+    cin >> k;
+    vvi v(k, vi(k));
+    for (int i = 0; i < k; i++)
     {
-        deb("yes");
+        for (int j = 0; j < k; j++)
+        {
+            cin >> v[i][j];
+        }
     }
-    int t = 1 << 0;
-    deb(t);
-    int t2 = (n & (1 << 0));
-    deb(t2);
+    linebreak1;
+    trav(v)
+    {
+        trav2(x) print(y);
+        nline;
+    }
+
+    priority_queue<pair<int, pii>, vector<pair<int, pii>>, greater<pair<int, pii>>> pq;
+    for (int i = 0; i < k; i++)
+    {
+        pq.push({v[i][0], {i, 0}});
+    }
+    vi ans;
+    while (!pq.empty())
+    {
+        int t = pq.top().second.first;
+        int i = pq.top().second.second;
+        ans.push_back(pq.top().first);
+        pq.pop();
+        if (i + 1 < v[t].size())
+            pq.push({v[t][i + 1], {t, i + 1}});
+    }
+    linebreak1;
+    trav(ans) print(x);
+    linebreak1;
 }
 
 int main()

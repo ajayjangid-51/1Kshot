@@ -58,15 +58,30 @@ void file()
 
 void solve()
 {
-    int n = 6;
-    if ((n & (1 << 0)) == 0)
+    long long n;
+    cin >> n;
+    vector<long long> v(n);
+    for (int i = 0; i < n; i++)
     {
-        deb("yes");
+        cin >> v[i];
     }
-    int t = 1 << 0;
-    deb(t);
-    int t2 = (n & (1 << 0));
-    deb(t2);
+    priority_queue<long long, vector<long long>, greater<long long>> pq;
+    for (auto x : v)
+        pq.push(x);
+    long long ans = 0;
+    while (!pq.empty())
+    {
+        int a = pq.top();
+        pq.pop();
+        if (pq.size() == 0)
+            break;
+
+        int b = pq.top();
+        pq.pop();
+        pq.push(a + b);
+        ans += (a + b);
+    }
+    debline(ans);
 }
 
 int main()

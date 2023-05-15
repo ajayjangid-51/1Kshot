@@ -55,18 +55,32 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-
+int getMaxPowerof2(int n)
+{
+    int i = 0;
+    while ((1 << i) <= n)
+    {
+        i++;
+    }
+    i - 1;
+}
+int countSetBits(int n)
+{
+    // Your logic here'
+    if (n == 0)
+        return 0;
+    if (n == 1)
+        return 1;
+    int maxp2 = getMaxPowerof2(n);
+    int ans = pow(2, maxp2 - 1) * (maxp2);
+    int rem = n - pow(2, maxp2) + 1;
+    ans += rem;
+    return ans + countSetBits(rem - 1);
+}
 void solve()
 {
-    int n = 6;
-    if ((n & (1 << 0)) == 0)
-    {
-        deb("yes");
-    }
-    int t = 1 << 0;
-    deb(t);
-    int t2 = (n & (1 << 0));
-    deb(t2);
+    int ans = countSetBits(4);
+    debline(ans);
 }
 
 int main()

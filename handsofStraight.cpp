@@ -58,15 +58,62 @@ void file()
 
 void solve()
 {
-    int n = 6;
-    if ((n & (1 << 0)) == 0)
+    int n, g;
+    cin >> n >> g;
+    vector<int> v(n);
+    map<int, int> mp;
+    for (int i = 0; i < n; i++)
     {
-        deb("yes");
+        cin >> v[i];
+        mp[v[i]]++;
     }
-    int t = 1 << 0;
-    deb(t);
-    int t2 = (n & (1 << 0));
-    deb(t2);
+    linebreak1;
+    trav(v) print(x);
+    linebreak1;
+    priority_queue<int, vector<int>, greater<int>> pq(range(v));
+    debline(pq.top());
+    trav(mp) deb2(x.first, x.second);
+
+    // debline(pq.size());
+    linebreak1;
+    while (!pq.empty())
+    {
+        priority_queue<int, vector<int>, greater<int>> pq2 = pq;
+        while (!pq2.empty())
+        {
+            print(pq2.top());
+            pq2.pop();
+        }
+        nline;
+
+        int t = pq.top();
+        debline(t);
+        debline(mp[t]);
+        if (mp[t] == 0)
+        {
+            pq.pop();
+            continue;
+        }
+        mp[t]--;
+
+        for (int i = 1; i < g; i++)
+        {
+            deb(mp[t + i]);
+            if (mp[t + i] == 0)
+            {
+                deb(t);
+                deb(i);
+                deb(pq.size());
+                deb(mp[3]);
+                debline("false");
+                return;
+            }
+            mp[t + i]--;
+            // if(mp[t+i] ==0)
+        }
+        linebreak1;
+    }
+    debline("true");
 }
 
 int main()

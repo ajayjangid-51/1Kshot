@@ -56,17 +56,36 @@ void file()
 #endif
 }
 
+bool isOperator(char c)
+{
+    if (c == '*' or c == '/' or c == '+' or c == '-' or c == '^')
+        return 1;
+    return 0;
+}
 void solve()
 {
-    int n = 6;
-    if ((n & (1 << 0)) == 0)
+    string s("*-A/BC-/AKL");
+    // we can infix from prefix.
+    string rev(s.rbegin(), s.rend());
+    debline(rev);
+    stack<string> in;
+    for (auto x : rev)
     {
-        deb("yes");
+        string str(1, x);
+        if (isOperator(x))
+        {
+            string s1 = in.top();
+            in.pop();
+            string s2 = in.top();
+            in.pop();
+            in.push("(" + s1 + str + s2 + ")");
+        }
+        else
+        {
+            in.push(str);
+        }
     }
-    int t = 1 << 0;
-    deb(t);
-    int t2 = (n & (1 << 0));
-    deb(t2);
+    debline(in.top());
 }
 
 int main()

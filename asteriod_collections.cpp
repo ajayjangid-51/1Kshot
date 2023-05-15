@@ -58,15 +58,55 @@ void file()
 
 void solve()
 {
-    int n = 6;
-    if ((n & (1 << 0)) == 0)
+    int n;
+    cin >> n;
+    vi v(n);
+    for (int i = 0; i < n; i++)
+        cin >> v[i];
+    linebreak1;
+    trav(v) print(x);
+    linebreak1;
+
+    stack<int> stk;
+    for (int i = n - 1; i >= 0; i--)
     {
-        deb("yes");
+        if (v[i] >= 0)
+        {
+            int t = v[i];
+            if (stk.top() > 0)
+            {
+                stk.push(v[i]);
+                continue;
+            }
+
+            while (!stk.empty() and t and t >= abs(stk.top()))
+            {
+                if (t == abs(stk.top()))
+                {
+                    stk.pop();
+                    t = 0;
+                }
+                else
+                {
+                    stk.pop();
+                }
+            }
+            if (stk.empty() and t)
+                stk.push(v[i]);
+            // if(t<abs(stk.top()))
+        }
+        else
+        {
+            stk.push(v[i]);
+        }
     }
-    int t = 1 << 0;
-    deb(t);
-    int t2 = (n & (1 << 0));
-    deb(t2);
+
+    linebreak1;
+    while (!stk.empty())
+    {
+        print(stk.top());
+        stk.pop();
+    }
 }
 
 int main()

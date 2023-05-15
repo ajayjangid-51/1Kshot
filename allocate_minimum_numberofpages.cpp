@@ -55,18 +55,82 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+bool ispossible(int mid, int &m, vector<int> &v)
+{
+    int n = v.size();
+    int pages = 0;
+    int students = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (v[i] > mid)
+            return 0;
+        if (pages + v[i] <= mid)
+        {
+            pages += v[i];
+        }
+        else
+        {
+            students++;
+            pages = v[i];
+        }
+    }
+    // if (students == m - 1)
+    //     return 1;
+    // else
+    //     return 0;
+    if (students >= m)
+    {
+        // low = mid + 1;
+        return false;
+    }
+    else
+    {
+        // mini = min(mini, mid);
+        // high = mid - 1;
+        return 1;
+    }
+}
 
 void solve()
 {
-    int n = 6;
-    if ((n & (1 << 0)) == 0)
+    int n, m;
+    cin >> n >> m;
+
+    vector<int> v(n);
+    for (int i = 0; i < n; i++)
+        cin >> v[i];
+
+    int low = INT_MAX;
+    int high = 0;
+    for (int i = 0; i < n; i++)
     {
-        deb("yes");
+        low = min(low, v[i]);
+        high += v[i];
     }
-    int t = 1 << 0;
-    deb(t);
-    int t2 = (n & (1 << 0));
-    deb(t2);
+    linebreak1;
+    // deb2(low, high);
+    int mini = INT_MAX;
+    // int mid = (low + high) / 2;
+    // deb(mid);
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        deb(mid);
+        if (ispossible(mid, m, v))
+        {
+            print("yes");
+            nline;
+            mini = min(mini, mid);
+            high = mid - 1;
+        }
+        else
+        {
+            print("no");
+            nline;
+            low = mid + 1;
+        }
+    }
+    debline(mini);
 }
 
 int main()

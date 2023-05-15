@@ -55,18 +55,29 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+class Functor
+{
+public:
+    int operator[](int x) { return x * 3; }
+    // int operator<>(int x) { return x * 3; }
+    int operator>>(int x) { return x * 3; }
+};
 
 void solve()
 {
-    int n = 6;
-    if ((n & (1 << 0)) == 0)
-    {
-        deb("yes");
-    }
-    int t = 1 << 0;
-    deb(t);
-    int t2 = (n & (1 << 0));
-    deb(t2);
+    plus<int> p;
+    int i = p(102, 15);
+    debline(i);
+
+    // int i = 1;
+    // assert(i == 1);
+    print("hi hello");
+
+    Functor thricer;
+    int a = thricer[10];
+    debline(a);
+    int b = thricer >> 4;
+    debline(b);
 }
 
 int main()
