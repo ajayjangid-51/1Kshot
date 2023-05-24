@@ -55,56 +55,72 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-int NthRoot(int n, int m)
-{
-    double x = m / 1.0;
-    deb(m);
-    double s = 1, e = x;
-    double t = 1e-8;
-    while (e - s > t)
-    {
-        double mid = (s + e) / 2.0;
-        // deb(mid);
-        double sqr = pow(mid, n);
-        // deb(sqr);
-        if (sqr == x)
-        {
-            // debline(mid);
-            return mid;
-        }
-        if (sqr > x)
-        {
-            e = mid;
-        }
-        else
-        {
-            s = mid;
-        }
-    }
-    // cout << s << ",,,,";
-    // if(s/1.0 != (s)) return -1;
-    // if (s - ceil(s) != 0)
-    //     return -1;
-    // return ceil(s);
-    // cout << s << endl;
-    // s = 2.5;
-    deb(s);
-    deb(e);
-    int t1 = s;
-    deb(t1);
-    int t2 = e;
-    deb(t2);
 
-    // if (s == s / 1.0)
-    // {
-    //     print("hi");
-    // }
-    return s;
-}
 void solve()
 {
-    int ans = NthRoot(2, 4);
-    debline(ans);
+    int n, k;
+    cin >> n >> k;
+    vi v(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> v[i];
+    }
+    linebreak1;
+    trav(v) print(x);
+    linebreak1;
+
+    int s = 0, e = n - 1;
+    while (s <= e)
+    {
+        int mid = (s + e) / 2;
+        deb3(mid, v[mid], v[s]);
+        if (v[mid] == k or v[s] == k)
+        {
+            debline("true");
+            return;
+        }
+        if (v[s] == v[mid])
+        {
+            onered;
+            s++;
+            continue;
+        }
+        // if v[mid]>v[start] then mtlb from start_to_mid the array is sorted.
+        if (k > v[s] and v[mid] > v[s])
+        { // if both are in first-array
+            if (k > v[mid])
+            {
+                s = mid + 1;
+            }
+            else
+            {
+
+                e = mid - 1;
+            }
+        }
+        else if (k < v[s] and v[mid] < v[s])
+        { // if both are in second-array.
+            if (k < v[mid])
+            {
+                e = mid - 1;
+            }
+            else
+            {
+
+                s = mid + 1;
+            }
+        }
+        else if (k > v[s] and v[mid] < v[s])
+        { // if key is in first and v[mid] is in second
+            e = mid - 1;
+        }
+        // else if(k<=v[s] and v[mid]>v[s])
+        else
+        { // if key is in second and v[mid] in first.
+            s = mid + 1;
+        }
+    }
+    debline("false");
 }
 
 int main()

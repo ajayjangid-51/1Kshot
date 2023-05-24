@@ -55,56 +55,79 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-int NthRoot(int n, int m)
+int findFloor(vector<int> v, int n, int x)
 {
-    double x = m / 1.0;
-    deb(m);
-    double s = 1, e = x;
-    double t = 1e-8;
-    while (e - s > t)
+
+    // Your code here
+    int ans = -1;
+    int s = 0, e = n - 1;
+    while (s >= 0 and e <= n - 1 and s <= e)
     {
-        double mid = (s + e) / 2.0;
-        // deb(mid);
-        double sqr = pow(mid, n);
-        // deb(sqr);
-        if (sqr == x)
-        {
-            // debline(mid);
+        int mid = (s + e) / 2;
+        if (v[mid] == x)
             return mid;
-        }
-        if (sqr > x)
+        if (v[mid] < x)
         {
-            e = mid;
+            ans = mid;
+            s = mid + 1;
+        }
+        else
+            e = mid - 1;
+    }
+    return ans;
+}
+// this solution will not work in duplicates elements in array.
+// like:-
+/* 4 5 3
+1 1 1 1 1 1 1 1 1
+ */
+void solve()
+{
+    int n, m, k;
+    cin >> n >> m >> k;
+    vi v1(n), v2(m);
+    for (int i = 0; i < n; i++)
+        cin >> v1[i];
+    for (int j = 0; j < m; j++)
+        cin >> v2[j];
+    linebreak1;
+    trav(v1) print(x);
+    nline;
+    trav(v2) print(x);
+    linebreak1;
+
+    int s = min(v1[0], v2[0]), e = max(v1.back(), v2.back());
+    // auto i1 = lower_bound(v2.begin(), v2.end(), 5) - v2.begin();
+    // debline(i1);
+
+    while (s <= e)
+    {
+        // break;
+        int mid = (s + e) / 2;
+        // deb(mid);
+        auto i1 = findFloor(v1, n, mid);
+        // auto i2 = findFloor(range(v2), mid) - v2.begin();/
+        auto i2 = findFloor(v2, m, mid);
+        int t = i1 + i2 + 2;
+        // deb2(i1, i2);
+        // deb(t);
+        // nline;
+        if (t == k)
+        {
+            debline(max(v1[i1], v2[i2]));
+            return;
+        }
+        if (t < k)
+        {
+            // see in right side
+            s = min(v1[i1 + 1], v2[i2 + 1]);
         }
         else
         {
-            s = mid;
+            e = max(v1[i1 - 1], v2[i2 - 1]);
         }
     }
-    // cout << s << ",,,,";
-    // if(s/1.0 != (s)) return -1;
-    // if (s - ceil(s) != 0)
-    //     return -1;
-    // return ceil(s);
-    // cout << s << endl;
-    // s = 2.5;
-    deb(s);
-    deb(e);
-    int t1 = s;
-    deb(t1);
-    int t2 = e;
-    deb(t2);
-
-    // if (s == s / 1.0)
-    // {
-    //     print("hi");
-    // }
-    return s;
-}
-void solve()
-{
-    int ans = NthRoot(2, 4);
-    debline(ans);
+    debline("-1");
 }
 
 int main()

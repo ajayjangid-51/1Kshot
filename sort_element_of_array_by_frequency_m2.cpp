@@ -55,56 +55,31 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-int NthRoot(int n, int m)
-{
-    double x = m / 1.0;
-    deb(m);
-    double s = 1, e = x;
-    double t = 1e-8;
-    while (e - s > t)
-    {
-        double mid = (s + e) / 2.0;
-        // deb(mid);
-        double sqr = pow(mid, n);
-        // deb(sqr);
-        if (sqr == x)
-        {
-            // debline(mid);
-            return mid;
-        }
-        if (sqr > x)
-        {
-            e = mid;
-        }
-        else
-        {
-            s = mid;
-        }
-    }
-    // cout << s << ",,,,";
-    // if(s/1.0 != (s)) return -1;
-    // if (s - ceil(s) != 0)
-    //     return -1;
-    // return ceil(s);
-    // cout << s << endl;
-    // s = 2.5;
-    deb(s);
-    deb(e);
-    int t1 = s;
-    deb(t1);
-    int t2 = e;
-    deb(t2);
 
-    // if (s == s / 1.0)
-    // {
-    //     print("hi");
-    // }
-    return s;
-}
 void solve()
 {
-    int ans = NthRoot(2, 4);
-    debline(ans);
+    vector<pii> v(61);
+    int n;
+    cin >> n;
+    vi arr(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+        v[arr[i]] = {v[arr[i]].first + 1, arr[i]};
+    }
+    // vector<pii> v = {{2, 4}, {2, 5}, {1, 6}};
+    sort(range(v), [](pii a, pii b)
+         {
+        if(a.first == b.first) return a.second<b.second;
+        return a.first>b.first; });
+    trav(v)
+    {
+        // cout << x.first << "," << x.second << endl;
+        // deb2(x.first, x.second);
+        int t = x.first;
+        while (t--)
+            print(x.second);
+    }
 }
 
 int main()

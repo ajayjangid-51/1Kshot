@@ -55,22 +55,23 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-int NthRoot(int n, int m)
+
+void solve()
 {
-    double x = m / 1.0;
-    deb(m);
+    double x, n;
+    cin >> x >> n;
     double s = 1, e = x;
-    double t = 1e-8;
+    double t = 1e-5;
     while (e - s > t)
     {
         double mid = (s + e) / 2.0;
-        // deb(mid);
+        deb(mid);
         double sqr = pow(mid, n);
-        // deb(sqr);
+        deb(sqr);
         if (sqr == x)
         {
-            // debline(mid);
-            return mid;
+            debline(mid);
+            return;
         }
         if (sqr > x)
         {
@@ -81,30 +82,7 @@ int NthRoot(int n, int m)
             s = mid;
         }
     }
-    // cout << s << ",,,,";
-    // if(s/1.0 != (s)) return -1;
-    // if (s - ceil(s) != 0)
-    //     return -1;
-    // return ceil(s);
-    // cout << s << endl;
-    // s = 2.5;
     deb(s);
-    deb(e);
-    int t1 = s;
-    deb(t1);
-    int t2 = e;
-    deb(t2);
-
-    // if (s == s / 1.0)
-    // {
-    //     print("hi");
-    // }
-    return s;
-}
-void solve()
-{
-    int ans = NthRoot(2, 4);
-    debline(ans);
 }
 
 int main()

@@ -13,6 +13,7 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
+#define printn(x) cout << x << "\n"
 #define siz(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
@@ -55,55 +56,100 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-int NthRoot(int n, int m)
+int kthElement(vi v1, vi v2, int n, int m, int k)
 {
-    double x = m / 1.0;
-    deb(m);
-    double s = 1, e = x;
-    double t = 1e-8;
-    while (e - s > t)
+    // if (k == 1)
+    // {
+    //     if (n > 0)
+    //         return v1[0];
+    //     return v2[0];
+    // }
+    onered;
+    printn(k);
+    v1.push_back(INT_MAX);
+    v2.push_back(INT_MAX);
+    // v1[n] = INT_MAX;
+    // v2[m] = INT_MAX;
+
+    long long s = k - m, e = min(n, k);
+    if (s <= 0)
+        s = 0;
+    while (s <= e)
     {
-        double mid = (s + e) / 2.0;
+        int mid = (s + e) / 2;
+        twoblue;
+        deb(mid);
+        int i1 = mid - 1, i2 = k - mid - 1;
         // deb(mid);
-        double sqr = pow(mid, n);
-        // deb(sqr);
-        if (sqr == x)
+        deb2(i1, i2);
+        // if (i1 < 0)
+        // {
+        //     return v2[i2];
+        // }
+        // if (i2 < 0)
+        //     return v1[i1];
+
+        if (i1 > -1 and v1[i1] > v2[i2 + 1])
         {
-            // debline(mid);
-            return mid;
+            e = mid - 1;
         }
-        if (sqr > x)
+        else if (i2 > -1 and v2[i2] > v1[i1 + 1])
         {
-            e = mid;
+            s = mid + 1;
         }
         else
         {
-            s = mid;
+            if (i1 > -1 and i2 > -1)
+                return (max(v1[i1], v2[i2]));
+            if (i1 > -1)
+                return v1[i1];
+            return v2[i2];
+
+            // if(t == v1[i1]) return i1;
+            // return i2;
+            // return t;
         }
     }
-    // cout << s << ",,,,";
-    // if(s/1.0 != (s)) return -1;
-    // if (s - ceil(s) != 0)
-    //     return -1;
-    // return ceil(s);
-    // cout << s << endl;
-    // s = 2.5;
-    deb(s);
-    deb(e);
-    int t1 = s;
-    deb(t1);
-    int t2 = e;
-    deb(t2);
+    return 0;
+}
+double findMedianSortedArrays(vector<int> &nums1, vector<int> &nums2)
+{
+    int n = nums1.size(), m = nums2.size();
+    vi v1 = nums1;
+    int d = 1e6 + 10;
+    v1.push_back(d);
+    vi v2 = nums2;
+    v2.push_back(d);
 
-    // if (s == s / 1.0)
-    // {
-    //     print("hi");
-    // }
-    return s;
+    double a = kthElement(v1, v2, n, m, ((n + m) / 2) + 1);
+    deb(a);
+    if ((n + m) % 2)
+    {
+        return a;
+    }
+    int mid = (n + m) / 2;
+    deb(mid);
+    linebreak1;
+    double b = kthElement(v1, v2, n, m, mid);
+    deb(b);
+    // double b = 0;
+    // cout << b<< ".";
+    return (a + b) / 2;
+
+    // return
 }
 void solve()
 {
-    int ans = NthRoot(2, 4);
+    int n, m;
+    cin >> n >> m;
+    vi v1(n), v2(m);
+    for (int i = 0; i < n; i++)
+        cin >> v1[i];
+    for (int i = 0; i < m; i++)
+        cin >> v2[i];
+    linebreak1;
+    double ans = findMedianSortedArrays(v1, v2);
+
     debline(ans);
 }
 

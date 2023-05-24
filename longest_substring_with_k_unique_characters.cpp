@@ -55,56 +55,49 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-int NthRoot(int n, int m)
-{
-    double x = m / 1.0;
-    deb(m);
-    double s = 1, e = x;
-    double t = 1e-8;
-    while (e - s > t)
-    {
-        double mid = (s + e) / 2.0;
-        // deb(mid);
-        double sqr = pow(mid, n);
-        // deb(sqr);
-        if (sqr == x)
-        {
-            // debline(mid);
-            return mid;
-        }
-        if (sqr > x)
-        {
-            e = mid;
-        }
-        else
-        {
-            s = mid;
-        }
-    }
-    // cout << s << ",,,,";
-    // if(s/1.0 != (s)) return -1;
-    // if (s - ceil(s) != 0)
-    //     return -1;
-    // return ceil(s);
-    // cout << s << endl;
-    // s = 2.5;
-    deb(s);
-    deb(e);
-    int t1 = s;
-    deb(t1);
-    int t2 = e;
-    deb(t2);
 
-    // if (s == s / 1.0)
-    // {
-    //     print("hi");
-    // }
-    return s;
-}
 void solve()
 {
-    int ans = NthRoot(2, 4);
+    string s;
+    int k;
+    cin >> s >> k;
+    // ———————————————————————————————————————————————————————————————————————————
+
+    // linebreak1;
+    // deb(s);
+    int n = s.size();
+
+    int i = 0, j = 0;
+    map<char, int> mp;
+    int ans = -1;
+    while (j < n)
+    {
+        while (j < n and mp.size() <= k)
+        {
+            mp[s[j]]++;
+            j++;
+        }
+        if (mp.size() < k)
+        {
+            ans = -1;
+            debline(ans);
+            return;
+        }
+        if (j < n or mp.size() > k)
+            ans = max(ans, j - i - 1);
+        else
+            ans = max(ans, j - i);
+
+        while (i < j and mp.size() > k)
+        {
+            mp[s[i]]--;
+            if (mp[s[i]] == 0)
+                mp.erase(s[i]);
+            i++;
+        }
+    }
     debline(ans);
+    linebreak1;
 }
 
 int main()

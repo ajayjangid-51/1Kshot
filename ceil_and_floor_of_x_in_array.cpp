@@ -55,67 +55,39 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-int NthRoot(int n, int m)
-{
-    double x = m / 1.0;
-    deb(m);
-    double s = 1, e = x;
-    double t = 1e-8;
-    while (e - s > t)
-    {
-        double mid = (s + e) / 2.0;
-        // deb(mid);
-        double sqr = pow(mid, n);
-        // deb(sqr);
-        if (sqr == x)
-        {
-            // debline(mid);
-            return mid;
-        }
-        if (sqr > x)
-        {
-            e = mid;
-        }
-        else
-        {
-            s = mid;
-        }
-    }
-    // cout << s << ",,,,";
-    // if(s/1.0 != (s)) return -1;
-    // if (s - ceil(s) != 0)
-    //     return -1;
-    // return ceil(s);
-    // cout << s << endl;
-    // s = 2.5;
-    deb(s);
-    deb(e);
-    int t1 = s;
-    deb(t1);
-    int t2 = e;
-    deb(t2);
 
-    // if (s == s / 1.0)
-    // {
-    //     print("hi");
-    // }
-    return s;
-}
 void solve()
 {
-    int ans = NthRoot(2, 4);
-    debline(ans);
-}
-
-int main()
-{
-    io_faster
-    file();
-    int t = 1;
-    cin >> t;
-    while (t--)
+    int n, x;
+    cin >> n >> x;
+    vi arr(n);
+    for (int i = 0; i < n; i++)
     {
-        solve();
+        cin >> arr[i];
     }
-    return 0;
-}
+    int f = -1, c = -1;
+    for (int i = 0; i < n; i++)
+    {
+        if (arr[i] <= x)
+        {
+            f = max(f, arr[i]);
+        }
+        if (arr[i] >= x)
+        {
+            c = min(c, arr[i]);
+        }
+        // return {f, c};
+    }
+
+    int main()
+    {
+        io_faster
+        file();
+        int t = 1;
+        cin >> t;
+        while (t--)
+        {
+            solve();
+        }
+        return 0;
+    }

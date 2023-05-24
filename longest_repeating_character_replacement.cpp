@@ -55,55 +55,32 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-int NthRoot(int n, int m)
-{
-    double x = m / 1.0;
-    deb(m);
-    double s = 1, e = x;
-    double t = 1e-8;
-    while (e - s > t)
-    {
-        double mid = (s + e) / 2.0;
-        // deb(mid);
-        double sqr = pow(mid, n);
-        // deb(sqr);
-        if (sqr == x)
-        {
-            // debline(mid);
-            return mid;
-        }
-        if (sqr > x)
-        {
-            e = mid;
-        }
-        else
-        {
-            s = mid;
-        }
-    }
-    // cout << s << ",,,,";
-    // if(s/1.0 != (s)) return -1;
-    // if (s - ceil(s) != 0)
-    //     return -1;
-    // return ceil(s);
-    // cout << s << endl;
-    // s = 2.5;
-    deb(s);
-    deb(e);
-    int t1 = s;
-    deb(t1);
-    int t2 = e;
-    deb(t2);
 
-    // if (s == s / 1.0)
-    // {
-    //     print("hi");
-    // }
-    return s;
-}
 void solve()
 {
-    int ans = NthRoot(2, 4);
+    string s;
+    int k;
+    cin >> s >> k;
+    deb2(s, k);
+    linebreak1;
+    int i = 0, j = 0;
+    int n = s.size();
+    int maxfreq = 0;
+    int mp[26] = {0};
+    int ans = 0;
+    while (j < n)
+    {
+        maxfreq = max(maxfreq, ++mp[s[j] - 'A']);
+
+        if (((j - i + 1) - maxfreq) > k)
+        {
+            mp[s[i] - 'A']--;
+            // maxfreq
+            i++;
+        }
+        ans = max(ans, ((j - i) + 1));
+        j++;
+    }
     debline(ans);
 }
 

@@ -13,18 +13,21 @@ using namespace std;
 #define endl "\n"
 #define nline cout << "\n"
 #define print(x) cout << x << " "
-// #define size(x) x.size()
+#define siz(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
 #define range(arr) arr.begin(), arr.end()
-#define leftpoint "👈"
-#define rightpoint "👉"
-#define downpoint "👇"
-#define uppoint "👆"
-#define fire "🔥"
-#define star "⭐"
-#define smile "😃"
-#define smile2 "👺"
+#define onered cout << "🔴"
+#define twoblue cout << "🔵"
+#define threeyellow cout << "🟡"
+#define fourpurple cout << "🟣"
+#define fivebrown cout << "🟤"
+#define sixgreen cout << "🟢"
+#define sevenwhite cout << "⚪"
+#define eightwheel cout << "🛞"
+#define ninering cout << "⭕"
+#define tenpoint cout << "👉"
+#define elevenhand cout << "🤚🏻"
 #define debline(x) cout << "👉Line-" << __LINE__ << ": " << #x << " = " << x << endl
 #define linebreak2(x) cout << "🟢" << #x << " = " << x << "________________🟢 " << endl
 #define all(x) x.begin() x.end()
@@ -52,96 +55,14 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-#include <bits/stdc++.h>
 
-class Node
-{
-public:
-    char data;
-    Node *child[26];
-    int wordEnd;
-    int wordCount;
-    Node(char data)
-    {
-        // char data = '/';
-        wordEnd = 0;
-        wordCount = 0;
-        // this->data = data;
-        for (int i = 0; i < 26; i++)
-        {
-            child[i] = NULL;
-        }
-    }
-};
-class Trie
-{
-
-private:
-    Node *root = NULL;
-
-public:
-    Trie()
-    {
-        // Write your code here.
-        root = new Node('/');
-    }
-
-    void insert(string &word)
-    {
-        Node *curr = root;
-        for (int i = 0; i < word.length(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (curr->child[ind] == NULL)
-            {
-                curr->child[ind] = new Node(word[i]);
-            }
-            curr = curr->child[ind];
-            curr->wordCount++;
-        }
-        curr->wordEnd++;
-    }
-
-    int countWordsEqualTo(string &word)
-    {
-        Node *curr = root;
-        for (int i = 0; i < word.length(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (!curr->child[ind] || curr->child[ind]->wordCount <= 0)
-                return 0;
-            curr = curr->child[ind];
-        }
-        return curr->wordEnd;
-    }
-
-    int countWordsStartingWith(string &word)
-    {
-        Node *curr = root;
-        for (int i = 0; i < word.length(); i++)
-        {
-            int ind = word[i] - 'a';
-            if (curr->child[ind] == NULL || curr->child[ind]->wordCount <= 0)
-                return 0;
-            curr = curr->child[ind];
-        }
-        return curr->wordCount;
-    }
-
-    void erase(string &word)
-    {
-        Node *curr = root;
-        for (int i = 0; i < word.length(); i++)
-        {
-            int ind = word[i] - 'a';
-            curr = curr->child[ind];
-            curr->wordCount--;
-        }
-        curr->wordEnd--;
-    }
-};
 void solve()
 {
+    double a = 2.00001;
+    a = 2;
+    cout << a << endl;
+    int b = a;
+    cout << b << endl;
 }
 
 int main()
@@ -149,7 +70,7 @@ int main()
     io_faster
     file();
     int t = 1;
-    //	cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();

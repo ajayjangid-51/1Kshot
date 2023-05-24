@@ -55,56 +55,48 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-int NthRoot(int n, int m)
+
+void solve()
 {
-    double x = m / 1.0;
-    deb(m);
-    double s = 1, e = x;
-    double t = 1e-8;
-    while (e - s > t)
+    int n, m, k;
+    cin >> n >> m >> k;
+    vi v1(n), v2(m);
+    for (int i = 0; i < n; i++)
+        cin >> v1[i];
+    for (int i = 0; i < m; i++)
+        cin >> v2[i];
+    trav(v1) print(x);
+    nline;
+    trav(v2) print(x);
+    linebreak1;
+    // vi t = v1;
+    // v1 = v2;
+    // v2 = t;
+    v1.push_back(INT_MAX);
+    v2.push_back(INT_MAX);
+    int s = k - m, e = min(n, k);
+    deb2(s, e);
+    while (s <= e)
     {
-        double mid = (s + e) / 2.0;
+        int mid = (s + e) / 2;
+        int i1 = mid - 1, i2 = k - mid - 1;
         // deb(mid);
-        double sqr = pow(mid, n);
-        // deb(sqr);
-        if (sqr == x)
+
+        if (v1[i1] > v2[i2 + 1])
         {
-            // debline(mid);
-            return mid;
+            e = mid - 1;
         }
-        if (sqr > x)
+        else if (v2[i2] > v1[i1 + 1])
         {
-            e = mid;
+            s = mid + 1;
         }
         else
         {
-            s = mid;
+            debline(max(v1[i1], v2[i2]));
+            return;
         }
     }
-    // cout << s << ",,,,";
-    // if(s/1.0 != (s)) return -1;
-    // if (s - ceil(s) != 0)
-    //     return -1;
-    // return ceil(s);
-    // cout << s << endl;
-    // s = 2.5;
-    deb(s);
-    deb(e);
-    int t1 = s;
-    deb(t1);
-    int t2 = e;
-    deb(t2);
-
-    // if (s == s / 1.0)
-    // {
-    //     print("hi");
-    // }
-    return s;
-}
-void solve()
-{
-    int ans = NthRoot(2, 4);
-    debline(ans);
+    debline("-1");
 }
 
 int main()

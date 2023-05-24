@@ -55,55 +55,68 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-int NthRoot(int n, int m)
-{
-    double x = m / 1.0;
-    deb(m);
-    double s = 1, e = x;
-    double t = 1e-8;
-    while (e - s > t)
-    {
-        double mid = (s + e) / 2.0;
-        // deb(mid);
-        double sqr = pow(mid, n);
-        // deb(sqr);
-        if (sqr == x)
-        {
-            // debline(mid);
-            return mid;
-        }
-        if (sqr > x)
-        {
-            e = mid;
-        }
-        else
-        {
-            s = mid;
-        }
-    }
-    // cout << s << ",,,,";
-    // if(s/1.0 != (s)) return -1;
-    // if (s - ceil(s) != 0)
-    //     return -1;
-    // return ceil(s);
-    // cout << s << endl;
-    // s = 2.5;
-    deb(s);
-    deb(e);
-    int t1 = s;
-    deb(t1);
-    int t2 = e;
-    deb(t2);
 
-    // if (s == s / 1.0)
-    // {
-    //     print("hi");
-    // }
-    return s;
-}
 void solve()
 {
-    int ans = NthRoot(2, 4);
+    string s;
+    int k;
+    cin >> s >> k;
+    deb2(s, k);
+
+    int mplast[26] = {0};
+    int siz1 = 0;
+    int mpcurr[26] = {0};
+    int siz2 = 0;
+    int n = s.size();
+    int j = 0;
+    int ans = 0;
+    // for (int i = 0; i < n;)
+    int i = 0;
+    int f = 0;
+    while (j < n)
+    {
+        while (i < n and siz2 <= k)
+        {
+            int t = s[i] - 'a';
+            if (mpcurr[t] == 0)
+                siz2++;
+            mpcurr[t]++;
+            i++;
+        }
+        if (siz2 > k)
+        {
+            i--;
+            int t = s[i] - 'a';
+            mpcurr[t]--;
+            siz2--;
+        }
+        while (j < n and siz1 <= k - 1)
+        {
+            int t = s[j] - 'a';
+            if (mplast[t] == 0)
+                siz1++;
+            mplast[t]++;
+            j++;
+        }
+        if (siz1 > k - 1)
+        {
+            j--;
+            int t = s[j] - 'a';
+            mplast[t]--;
+            siz1--;
+        }
+        deb2(i, j);
+        ans += (i - j);
+        int t = s[f] - 'a';
+        mplast[t]--;
+        if (mplast[t] == 0)
+            siz1--;
+        mpcurr[t]--;
+        if (mpcurr[t] == 0)
+            siz2--;
+        deb2(siz1, siz2);
+        f++;
+    }
     debline(ans);
 }
 

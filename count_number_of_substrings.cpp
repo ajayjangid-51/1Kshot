@@ -55,55 +55,36 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-int NthRoot(int n, int m)
-{
-    double x = m / 1.0;
-    deb(m);
-    double s = 1, e = x;
-    double t = 1e-8;
-    while (e - s > t)
-    {
-        double mid = (s + e) / 2.0;
-        // deb(mid);
-        double sqr = pow(mid, n);
-        // deb(sqr);
-        if (sqr == x)
-        {
-            // debline(mid);
-            return mid;
-        }
-        if (sqr > x)
-        {
-            e = mid;
-        }
-        else
-        {
-            s = mid;
-        }
-    }
-    // cout << s << ",,,,";
-    // if(s/1.0 != (s)) return -1;
-    // if (s - ceil(s) != 0)
-    //     return -1;
-    // return ceil(s);
-    // cout << s << endl;
-    // s = 2.5;
-    deb(s);
-    deb(e);
-    int t1 = s;
-    deb(t1);
-    int t2 = e;
-    deb(t2);
 
-    // if (s == s / 1.0)
-    // {
-    //     print("hi");
-    // }
-    return s;
-}
 void solve()
 {
-    int ans = NthRoot(2, 4);
+    int k;
+    cin >> k;
+
+    string s;
+    cin >> s;
+
+    int ans = 0;
+
+    for (int i = 0; i < s.size(); i++)
+    {
+        int v[26] = {0};
+        for (int j = i; j < s.size(); j++)
+        {
+            int inx = s[j] - 'a';
+            v[inx]++;
+            int cnt = 0;
+            for (int k = 0; k < 26; k++)
+            {
+                if (v[k] >= 1)
+                    cnt++;
+            }
+            if (cnt == k)
+            {
+                ans++;
+            }
+        }
+    }
     debline(ans);
 }
 
