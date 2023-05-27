@@ -58,43 +58,47 @@ void file()
 
 void solve()
 {
-    // string s("cccaaa");
-    // string s("tree");
-    string s;
-    cin >> s;
-    vector<pair<int, char>> mp(150, {0, 0});
-    trav(s)
+    int n;
+    cin >> n;
+    vi arr(n);
+    for (int i = 0; i < n; i++)
+        cin >> arr[i];
+    linebreak1;
+    trav(arr) print(x);
+
+    int i = 0, j = 0;
+    vector<int> v;
+
+    while (i < n and j < n)
     {
-        int t = x - '0';
-        // deb(t);
-        mp[t] = {mp[t].first + 1, x};
+        while (i < n and arr[i] < 0)
+            i++;
+        if (i < n)
+            v.push_back(arr[i++]);
+        // cout << arr[i++]  << ' ';
+        while (j < n and arr[j] >= 0)
+            j++;
+        if (j < n)
+            v.push_back(arr[j++]);
+        // cout << arr[j++] << ' ';
     }
     linebreak1;
-    // trav(mp)
-    // {
-    //     if (x.first)
-    //     {
-    //         deb2(x.first, x.second);
-    //     }
-    // }
-    sort(mp.begin(), mp.end(), [](pair<int, char> &x, pair<int, char> &y)
-         {
-         if(x.first == y.first){
-             return x.second<y.second;
-         }
-         return x.first>y.first; });
-    string ans;
-    trav(mp)
-    {
-        int t = x.first;
-        while (t--)
-        {
-            // cout << x.second;
-            ans.push_back(x.second);
-        }
-        // nline;
-    }
-    debline(ans);
+    deb2(i, j);
+    while (i < n and arr[i] < 0)
+        i++;
+    while (i < n and arr[i] >= 0)
+        v.push_back(arr[i++]);
+    while (j < n and arr[j] >= 0)
+        j++;
+    debline(j);
+    while (j < n and arr[j] < 0)
+        v.push_back(arr[j++]);
+    for (int i = 0; i < n; i++)
+        arr[i] = v[i];
+
+    linebreak1;
+    trav(v) print(x);
+    linebreak1;
 }
 
 int main()

@@ -58,43 +58,43 @@ void file()
 
 void solve()
 {
-    // string s("cccaaa");
-    // string s("tree");
-    string s;
-    cin >> s;
-    vector<pair<int, char>> mp(150, {0, 0});
-    trav(s)
+    int n;
+    cin >> n;
+    vi v(n);
+    for (int i = 0; i < n; i++)
+        cin >> v[i];
+    trav(v) print(x);
+    int t = 1e5 + 1;
+    vector<pair<int, int>> m(t, {0, 0});
+    trav(v)
     {
-        int t = x - '0';
-        // deb(t);
-        mp[t] = {mp[t].first + 1, x};
+        // deb(x);
+        m[x] = {m[x].first + 1, x};
+        // debpair(m[x]);
     }
-    linebreak1;
-    // trav(mp)
-    // {
-    //     if (x.first)
-    //     {
-    //         deb2(x.first, x.second);
-    //     }
-    // }
-    sort(mp.begin(), mp.end(), [](pair<int, char> &x, pair<int, char> &y)
+    sort(range(m), [](pii &a, pii &b)
          {
-         if(x.first == y.first){
-             return x.second<y.second;
-         }
-         return x.first>y.first; });
-    string ans;
-    trav(mp)
-    {
-        int t = x.first;
-        while (t--)
-        {
-            // cout << x.second;
-            ans.push_back(x.second);
+
+        if(a.first == b.first){
+           a.second = max(a.second , b.second);
+           b.first=0;
+           return   a.first>b.first;
         }
-        // nline;
+        else{
+            return a.first>b.first;
+        } });
+    // print("hi");
+    int k = 2;
+    trav(m)
+    {
+        if (k < 1)
+            break;
+        k--;
+        if (x.first)
+            print(x.first), print(x.second), nline;
+        // else
+        //     print("..");
     }
-    debline(ans);
 }
 
 int main()

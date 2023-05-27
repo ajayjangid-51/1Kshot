@@ -58,43 +58,50 @@ void file()
 
 void solve()
 {
-    // string s("cccaaa");
-    // string s("tree");
-    string s;
-    cin >> s;
-    vector<pair<int, char>> mp(150, {0, 0});
-    trav(s)
-    {
-        int t = x - '0';
-        // deb(t);
-        mp[t] = {mp[t].first + 1, x};
-    }
+    int n;
+    cin >> n;
+    vi v(n);
+    for (int i = 0; i < n; i++)
+        cin >> v[i];
+    trav(v) print(x);
     linebreak1;
-    // trav(mp)
-    // {
-    //     if (x.first)
-    //     {
-    //         deb2(x.first, x.second);
-    //     }
-    // }
-    sort(mp.begin(), mp.end(), [](pair<int, char> &x, pair<int, char> &y)
-         {
-         if(x.first == y.first){
-             return x.second<y.second;
-         }
-         return x.first>y.first; });
-    string ans;
-    trav(mp)
+    int maxi = v[0];
+    int curr = v[0];
+    int cnt = 0;
+    for (int i = 1; i < n; i++)
     {
-        int t = x.first;
-        while (t--)
+        if (v[i] > 0 and i + v[i] > maxi)
         {
-            // cout << x.second;
-            ans.push_back(x.second);
+            maxi = i + v[i];
+            // deb2(i, v[i]);
         }
-        // nline;
+        if (i == curr)
+        {
+            if (curr == maxi)
+            {
+                debline("-1");
+                return;
+            }
+            // return -1;
+            deb(maxi);
+            curr = maxi;
+            cnt++;
+            // if (curr == n - 1)
+            // {
+            //     cnt++;
+            //     break;
+            // }
+            if (curr >= n - 1)
+            {
+                // onered;
+                cnt++;
+                break;
+            }
+            // break;
+        }
     }
-    debline(ans);
+    debline(cnt);
+    linebreak1;
 }
 
 int main()
