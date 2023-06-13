@@ -58,7 +58,32 @@ void file()
 
 void solve()
 {
-    print("hello ..j");
+    int n, k;
+    cin >> n >> k;
+    vi v(n);
+    for (int i = 0; i < n; i++)
+        cin >> v[i];
+    linebreak1;
+    trav(v) print(x);
+
+    unordered_map<int, int> mp;
+    int sum = 0;
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        sum += v[i];
+        if (sum == k)
+            ans = max(ans, i);
+        if (mp.find(sum) == mp.end())
+        {
+            mp[sum] = i;
+        }
+        if (mp.find(sum - k) != mp.end())
+        {
+            ans = max(ans, i - mp[sum - k]);
+        }
+    }
+    debline(ans);
 }
 
 int main()

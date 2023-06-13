@@ -56,9 +56,25 @@ void file()
 #endif
 }
 
-void solve()
+bool solve()
 {
-    print("hello ..j");
+    string s, t;
+    cin >> s >> t;
+    map<char, char> mp;
+    map<char, char> mp2;
+    if (s.size() != t.size())
+        return 0;
+    int n = s.size();
+    for (int i = 0; i < n; i++)
+    {
+        if (mp.find(s[i]) != mp.end() and mp[s[i]] != t[i])
+            return 0;
+        if (mp2.find(t[i]) != mp2.end() and mp2[t[i]] != s[i])
+            return 0;
+        mp[s[i]] = t[i];
+        mp2[t[i]] = s[i];
+    }
+    return 1;
 }
 
 int main()

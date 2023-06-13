@@ -56,9 +56,41 @@ void file()
 #endif
 }
 
+void fn2(int i, int n, vi &v)
+{
+    if (i == n)
+        return;
+    if (v[i] < v[i - 1])
+        swap(v[i], v[i - 1]);
+    fn2(i + 1, n, v);
+}
+void fn(int n, vi &v)
+{
+    if (n == 0)
+        return;
+    /*  for (int i = 1; i < n; i++)
+     {
+         if (v[i] < v[i - 1])
+         {
+             swap(v[i], v[i - 1]);
+         }
+     } */
+    fn2(1, n, v);
+    fn(n - 1, v);
+}
 void solve()
 {
-    print("hello ..j");
+    int n;
+    cin >> n;
+    vi v(n);
+    for (int i = 0; i < n; i++)
+        cin >> v[i];
+    linebreak1;
+    trav(v) print(x);
+
+    fn(n, v);
+    linebreak1;
+    trav(v) print(x);
 }
 
 int main()

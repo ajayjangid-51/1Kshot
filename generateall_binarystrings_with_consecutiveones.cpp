@@ -56,9 +56,28 @@ void file()
 #endif
 }
 
+void fn(int ind, string prevstr, int &k, vector<string> &ans)
+{
+    if (ind == k)
+    {
+        ans.push_back(prevstr);
+        return;
+    }
+
+    // now we have two options ki we can add "0" or "1" but if already "1" is present in prevstr then we will take only "0"
+    fn(ind + 1, prevstr + '0', k, ans);
+    if (ind == 0 or (ind > 0 and prevstr.back() == '0'))
+        fn(ind + 1, prevstr + '1', k, ans);
+}
 void solve()
 {
-    print("hello ..j");
+    int k;
+    cin >> k;
+    vector<string> ans;
+    fn(0, "", k, ans);
+    debline(ans.size());
+    trav(ans) print(x);
+    nline;
 }
 
 int main()

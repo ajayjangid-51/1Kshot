@@ -58,7 +58,35 @@ void file()
 
 void solve()
 {
-    print("hello ..j");
+    int n;
+    cin >> n;
+    vvi v(n, vi(2));
+    for (int i = 0; i < n; i++)
+        cin >> v[i][0] >> v[i][1];
+    trav(v) print(x[0]), print(x[1]), nline;
+    // sort(range(v) , [](vi &a , vi &b){
+
+    // })
+    sort(range(v));
+    linebreak1;
+    trav(v) print(x[0]), print(x[1]), nline;
+    vi prev = v[0];
+    int rmvcnt = 0;
+    for (int i = 1; i < n; i++)
+    {
+        // check of overlap of current with prev.
+        if (v[i][0] < prev[1])
+        {
+            // if overlapped then remove interval which ends longer and on basis of that keep/update the prev.
+            rmvcnt++;
+            prev[1] = min(prev[1], v[i][1]);
+        }
+        else
+        {
+            prev = v[i];
+        }
+    }
+    debline(rmvcnt);
 }
 
 int main()

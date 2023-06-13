@@ -56,9 +56,58 @@ void file()
 #endif
 }
 
+void fn(int ind, int prevsum, int prevnum, string prevstr, string &s, vector<string> &ans, int &target)
+{
+    deb2(ind, prevsum);
+    if (ind == s.size())
+    {
+        if (prevsum == target)
+        {
+            deb("yes");
+            ans.push_back(prevstr);
+        }
+        return;
+    }
+    string sbstr;
+    for (int i = ind; i < s.size(); i++)
+    {
+        // string sbstr = s.substr(ind, i + 1);
+        // string sbst
+        sbstr += s[i];
+        // do +
+        // int num = s[ind] - '0';
+        int num = stoi(sbstr);
+        if (ind == 0)
+        {
+            fn(i + 1, num, num, sbstr, s, ans, target);
+        }
+        else
+        {
+            // linebreak1;
+            // deb3(prevsum + num, prevsum - num, num);
+            // linebreak1;
+
+            fn(i + 1, prevsum + num, num, prevstr + "+" + sbstr, s, ans, target);
+            fn(i + 1, prevsum - num, -num, prevstr + "-" + sbstr, s, ans, target);
+            int netsum = prevsum - prevnum;
+            int totalsum = netsum + (num * prevnum);
+            fn(i + 1, totalsum, prevnum * num, prevstr + "*" + sbstr, s, ans, target);
+        }
+    }
+}
+
 void solve()
 {
-    print("hello ..j");
+    string s;
+    int target;
+    cin >> s >> target;
+    deb2(s, target);
+    vector<string> ans;
+    fn(0, 0, 0, "", s, ans, target);
+
+    linebreak1;
+    linebreak1;
+    trav(ans) deb(x);
 }
 
 int main()

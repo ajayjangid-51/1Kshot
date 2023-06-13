@@ -55,10 +55,39 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
+// ess problem ko chahiyeeh aviable-options wali statergy se kre yan take-nottake wali statergy se kre dono ek hi baat hai.
+void fn(int ind, int sum, int st, vi &v, vvi &ans, int &k, int &n)
+{
+    if (sum > n)
+        return;
+    if (ind == k)
+    {
+        if (sum == n)
+            ans.push_back(v);
+        return;
+    }
+    for (int i = st; i <= 9; i++)
+    {
+
+        v.push_back(i);
+        fn(ind + 1, sum + i, i + 1, v, ans, k, n);
+        v.pop_back();
+    }
+}
 
 void solve()
 {
-    print("hello ..j");
+    int k, n;
+    cin >> k >> n;
+    vector<vector<int>> ans;
+    vector<int> v;
+    fn(0, 0, 1, v, ans, k, n);
+    debline(ans.size());
+    trav(ans)
+    {
+        trav2(x) print(y);
+        nline;
+    }
 }
 
 int main()

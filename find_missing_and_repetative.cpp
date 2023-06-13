@@ -58,7 +58,29 @@ void file()
 
 void solve()
 {
-    print("hello ..j");
+    int n;
+    cin >> n;
+    vi v(n);
+    for (int i = 0; i < n; i++)
+        cin >> v[i];
+    trav(v) print(x);
+    linebreak1;
+    int miss = -1, rep = -1;
+    for (int i = 0; i < n; i++)
+    {
+        if (v[(abs(v[i]) - 1)] > 0)
+        {
+            v[abs(v[i]) - 1] *= -1;
+        }
+        else
+        {
+            rep = abs(v[i]);
+        }
+    }
+    for (int i = 0; i < n; i++)
+        if (v[i] > 0)
+            miss = i + 1;
+    deb2(rep, miss);
 }
 
 int main()

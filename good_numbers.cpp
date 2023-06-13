@@ -55,10 +55,49 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-
+void fn(int &l, int &r, int &d, vector<int> &ans)
+{
+    for (int i = l; i <= r; i++)
+    {
+        int n = i;
+        // deb(n);
+        int sum = n % 10;
+        n /= 10;
+        if (sum == d)
+            continue;
+        bool dyes = 0;
+        bool take = 1;
+        while (n)
+        {
+            int digit = n % 10;
+            if (digit == d)
+            {
+                dyes = 1;
+                break;
+            }
+            if (digit <= sum)
+            {
+                take = 0;
+                break;
+            }
+            sum += digit;
+            n /= 10;
+        }
+        if (!dyes and take)
+        {
+            // debline(i);
+            ans.push_back(i);
+        }
+    }
+}
 void solve()
 {
-    print("hello ..j");
+    int l, r, d;
+    cin >> l >> r >> d;
+    vector<int> ans;
+    fn(l, r, d, ans);
+    linebreak1;
+    trav(ans) print(x);
 }
 
 int main()

@@ -58,7 +58,28 @@ void file()
 
 void solve()
 {
-    print("hello ..j");
+    string s("bac");
+    s.length();
+    char c = s.length() + '0';
+    deb(c);
+
+    s = "4#lint4#code4#love3#you";
+    int i = 0;
+    while (i < s.size())
+    {
+        int j = i;
+        int num = 0;
+        while (j < s.size() and s[j] != '#')
+        {
+            int t = s[j] - '0';
+            deb(t);
+            num = num * 10 + t;
+            j++;
+        }
+        j++;
+        deb3(num, j, i);
+        i = j + num;
+    }
 }
 
 int main()

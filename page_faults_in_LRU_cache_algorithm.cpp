@@ -58,7 +58,40 @@ void file()
 
 void solve()
 {
-    print("hello ..j");
+    int n, c;
+    cin >> n >> c;
+    vi v(n);
+    for (int i = 0; i < n; i++)
+        cin >> v[i];
+    // trav(v) print(x);
+    int f = n - 1, e = n - 1;
+    vi s(n);
+    int pfault_count = 1;
+    s[n - 1] = v[0];
+    for (int i = 1; i < n; i++)
+    {
+
+        // phle search for element in current cache.
+        bool found = 0;
+        for (int j = f; j <= e; j++)
+        {
+            if (s[j] == v[i])
+            {
+                found = 1;
+            }
+            if (found)
+            {
+                s[j] = s[j + 1];
+            }
+        }
+        if (!found)
+            pfault_count++;
+        f--;
+        s[f] = v[i];
+        if (((e - f) + 1) > c)
+            e--;
+    }
+    debline(pfault_count);
 }
 
 int main()

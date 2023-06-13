@@ -58,7 +58,57 @@ void file()
 
 void solve()
 {
-    print("hello ..j");
+    string s1, s2;
+    cin >> s1 >> s2;
+
+    int start = 0;     // start is "start of our answer required substring"
+    int len = INT_MAX; // len is "required substring length"
+    int j = 0;
+    // for (int i = 0; i < s1.size(); i++)
+    int i = 0;
+    while (i < s1.size())
+    {
+        if (j < s2.size() and s1[i] == s2[j])
+        {
+
+            j++;
+            i++;
+        }
+        else
+            i++;
+        if (j == s2.size()) // mtlb we have found some substring which can be s2'ssubsequence.
+        {
+            int l1 = i - 1, l2 = j - 1;
+            while (l2 >= 0)
+            {
+                if (s1[l1] == s2[l2])
+                {
+                    l1--;
+                    l2--;
+                }
+                else
+                    l1--;
+            }
+            // int t = i - (l1 + 1);
+            // deb(t);
+            if (len > (i - (l1 + 1)))
+            {
+                // print(onered);
+                // onered;
+                start = l1 + 1;
+                len = i - (l1 + 1);
+            }
+        }
+    }
+
+    if (len == INT_MAX)
+    {
+        debline("no");
+    }
+    else
+    {
+        debline(s1.substr(start, len));
+    }
 }
 
 int main()

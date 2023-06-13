@@ -58,7 +58,6 @@ void file()
 
 void solve()
 {
-    print("hello ..j");
 }
 
 int main()

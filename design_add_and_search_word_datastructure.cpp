@@ -56,9 +56,102 @@ void file()
 #endif
 }
 
+class trieNode
+{
+public:
+    trieNode *v[26] = {NULL};
+    bool end = 0;
+};
+class WordDictionary
+{
+public:
+    trieNode *root = NULL;
+
+    WordDictionary()
+    {
+        root = new trieNode();
+    }
+
+    void addWord(string word)
+    {
+        trieNode *p = root;
+        for (int i = 0; i < word.size(); i++)
+        {
+            int ind = word[i] - 'a';
+            if (p->v[ind] == NULL)
+            {
+                p->v[ind] = new trieNode();
+                //    if(i ==word.size()-1) p->end = 1;
+            }
+
+            p = p->v[ind];
+        }
+        //    if(i ==word.size()-1) p->end = 1;
+        p->end = 1;
+    }
+
+    bool find(int i, trieNode *p, string &word)
+    {
+        if (!p)
+            return 0;
+        if (i == word.size() - 1)
+        {
+            // cout << word[i] <<  '-' << word<< endl;
+            int ind = word[i] - 'a';
+            if (word[i] == '.')
+            {
+                for (int j = 0; j < 26; j++)
+                {
+                    if (p->v[j] and p->v[j]->end)
+                        return 1;
+                }
+            }
+            else
+            {
+                if (p->v[ind] and p->v[ind]->end)
+                    return 1;
+            }
+            return 0;
+        }
+        int ind = word[i] - 'a';
+        bool b = 0;
+        if (word[i] == '.')
+        {
+            bool ans = 0;
+            for (int j = 0; j < 26; j++)
+            {
+                if (p->v[j])
+                {
+                    ans |= find(i + 1, p->v[j], word);
+                    if (ans)
+                        return 1;
+                }
+            }
+        }
+        else
+        {
+
+            if (p->v[ind] != NULL)
+                b |= find(i + 1, p->v[ind], word);
+        }
+        return b;
+    }
+
+    bool search(string word)
+    {
+        return find(0, root, word);
+        // return 0;
+    }
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary* obj = new WordDictionary();
+ * obj->addWord(word);
+ * bool param_2 = obj->search(word);
+ */
 void solve()
 {
-    print("hello ..j");
 }
 
 int main()

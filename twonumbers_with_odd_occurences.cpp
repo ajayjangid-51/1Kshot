@@ -55,10 +55,35 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-
+vector<long long int> twoOddNum(long long int v[], long long int n)
+{
+    // code here
+    long long int a = 0, b = 0;
+    long long int totalxor = v[0];
+    for (long long int i = 1; i < n; i++)
+        totalxor ^= v[i];
+    // cout << totalxor << endl;
+    // now to get the rightmost setbit , we can do num&(-num).
+    long long int rightsetbit = totalxor & (-totalxor);
+    // cout << rightsetbit << endl;
+    for (long long int i = 0; i < n; i++)
+    {
+        if ((v[i] & rightsetbit) == 0)
+            a ^= v[i];
+        else
+            b ^= v[i];
+    }
+    if (a < b)
+        swap(a, b);
+    return {a, b};
+}
 void solve()
 {
-    print("hello ..j");
+    int a = 7, b = 1;
+    int c = a ^ b;
+    deb(c);
+    int d = c & (-c);
+    deb(d);
 }
 
 int main()

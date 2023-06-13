@@ -58,7 +58,58 @@ void file()
 
 void solve()
 {
-    print("hello ..j");
+    int n;
+    cin >> n;
+    vvi v(n, vi(2));
+    for (int i = 0; i < n; i++)
+    {
+        cin >> v[i][0] >> v[i][1];
+    }
+
+    vi nv(2);
+    cin >> nv[0] >> nv[1];
+    trav(v)
+    {
+        print(x[0]), print(x[1]), nline;
+    }
+    // print(nv[0]), print(nv[1]), nline;
+
+    vvi ans;
+    int i = 0;
+    bool b = 0;
+    for (; i < n; i++)
+    {
+        if (nv[1] < v[i][0])
+        { // before
+            ans.push_back({nv});
+            b = 1;
+            break;
+        }
+        else if (nv[0] > v[i][1])
+        { // after
+            ans.push_back(v[i]);
+            // ans.push_back({nv});
+            // i++;
+            // break;
+        }
+        else
+        { // overlap
+            nv[0] = min(nv[0], v[i][0]);
+            nv[1] = max(nv[1], v[i][1]);
+        }
+    }
+    while (i < n)
+    {
+        ans.push_back(v[i]);
+        i++;
+    }
+    if (!b)
+        ans.push_back(nv);
+    linebreak1;
+    trav(ans)
+    {
+        print(x[0]), print(x[1]), nline;
+    }
 }
 
 int main()

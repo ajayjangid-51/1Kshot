@@ -56,9 +56,46 @@ void file()
 #endif
 }
 
+int check(float mid, vi &v)
+{
+
+    int req = 0;
+    for (int i = 1; i < v.size(); i++)
+    {
+        req += (ceil((v[i] - v[i - 1]) / (mid)) - 1);
+    }
+    return req;
+}
+
 void solve()
 {
-    print("hello ..j");
+    int n, k;
+    cin >> n >> k;
+    vi v(n);
+    for (int i = 0; i < n; i++)
+        cin >> v[i];
+
+    float minn = 0, maxx = v.back() - v.front();
+    deb2(minn, maxx);
+    float ans = maxx;
+
+    while (maxx - minn >= 1e-2)
+    {
+        float mid = (minn + maxx) / 2.0;
+        int req = check(mid, v);
+        // cout << req;
+        // deb(req);
+        if (req > k)
+        {
+            minn = mid;
+        }
+        else
+        {
+            ans = mid;
+            maxx = mid;
+        }
+    }
+    debline(ans);
 }
 
 int main()

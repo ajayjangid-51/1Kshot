@@ -58,7 +58,44 @@ void file()
 
 void solve()
 {
-    print("hello ..j");
+    int n, k;
+    cin >> n >> k;
+    vi v(n);
+    for (int i = 0; i < n; i++)
+        cin >> v[i];
+    linebreak1;
+    trav(v) print(x);
+    int m = 1;
+    while (m < *max_element(range(v)))
+        m <<= 1;
+    debline(m);
+    m--;
+    vvi dp(n + 1, vi(m + 2, 0));
+    dp[0][0] = 1;
+    // dp[0][v[0]] = 1;
+    for (int i = 1; i <= n; i++)
+    {
+        vi t = dp[i - 1];
+        for (int j = 0; j <= m + 1; j++)
+        {
+            if (dp[i - 1][j])
+            {
+                // int d = j ^ v[i - 1];
+                // deb(d);
+                // deb(j ^ v[i]);
+                t[j ^ v[i - 1]] += dp[i - 1][j];
+            }
+        }
+        dp[i] = t;
+    }
+    debline(dp[n][k]);
+
+    linebreak1;
+    trav(dp)
+    {
+        trav2(x) print(y);
+        nline;
+    }
 }
 
 int main()

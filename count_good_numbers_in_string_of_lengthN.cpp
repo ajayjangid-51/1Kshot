@@ -45,7 +45,8 @@ using namespace std;
     cin.tie(0);                       \
     cout.tie(0);
 
-const int MOD = 1000000007;
+// const int MOD = 1000000007;
+const int MOD = 1e9 + 7;
 double PI = 4 * atan(1);
 
 void file()
@@ -55,10 +56,29 @@ void file()
     freopen("output.txt", "w", stdout);
 #endif
 }
-
+long long power(int a, int b)
+{
+    if (b == 0)
+        return 1;
+    int t = power(a, b / 2);
+    if (b % 2 == 0)
+    {
+        t = (t * t) % MOD;
+    }
+    else
+    {
+        t = (((a * t) % MOD) * t) % MOD;
+    }
+    return t;
+}
 void solve()
 {
-    print("hello ..j");
+    long long a = pow(5, 25);
+    long long b = pow(4, 25);
+    deb2(a, b);
+    deb(LONG_LONG_MAX);
+    long long c = ((a % MOD) * (b % MOD)) % MOD;
+    deb(c);
 }
 
 int main()
