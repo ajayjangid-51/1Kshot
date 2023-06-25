@@ -56,73 +56,10 @@ void file()
 #endif
 }
 
-//
 class Graph
 {
-private:
-    int n;
-
-    // graph representations:-
-    vector<vector<int>> adj;   // adjacency list
-    vector<vector<bool>> mat;  // adjacency matrix
-    vector<vector<int>> edges; // edgelist
-    vector<bool> visited;
-    vector<bool> fullvisited;
-
-public:
-    Graph(int noOfNodes)
-    {
-        // "n" is per 0-based indexing
-        n = noOfNodes;
-        adj.resize(n);
-        mat.resize(n, vector<bool>(n, 0));
-    }
-
-    // void create
-
-    void dfs(int node, vector<int> adj[], vector<bool> &visited, vector<int> &ans)
-    {
-        if (visited[node])
-            return;
-        visited[node] = 1;
-        ans.push_back(node);
-        for (auto x : adj[node])
-        {
-            dfs(x, adj, visited, ans);
-        }
-    }
-
-    vector<int> bfsOfGraph(int V, vector<int> adj[])
-    {
-        // Code here
-        vector<bool> visited(V, 0);
-        vector<int> ans;
-        queue<int> q;
-        visited[0] = 1;
-        q.push(0);
-        while (!q.empty())
-        {
-            int s = q.size();
-            for (int i = 0; i < s; i++)
-            {
-                int front = q.front();
-                q.pop();
-                ans.push_back(front);
-                for (auto x : adj[front])
-                {
-                    if (visited[x])
-                        continue;
-                    visited[x] = 1;
-                    q.push(x);
-                }
-            }
-        }
-        return ans;
-    }
 };
-
 void solve()
-
 {
 }
 
