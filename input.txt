@@ -1,4 +1,6 @@
 1
-3
-.
-one.two.three four.five six
+4 4 
+0 1 
+1 2
+2 3
+3 3

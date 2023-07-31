@@ -16,6 +16,7 @@ using namespace std;
 #define siz(x) x.size()
 #define trav(a) for (auto x : a)
 #define trav2(a) for (auto y : a)
+#define travcin(a) for (auto &x : a)
 #define range(arr) arr.begin(), arr.end()
 #define onered cout << "🔴"
 #define twoblue cout << "🔵"
@@ -56,106 +57,57 @@ void file()
 #endif
 }
 
-class Graph1
+void solve()
 {
-
-    // 1.take graph in input.
-    void takeGraphInInput()
-    {
-        int n, e;
-        cin >> n >> e;
-        vvi edges;
-        vvi adj(n);
-        for (int i = 0; i < e; i++)
-        {
-            int a, b;
-            cin >> a >> b;
-            edges.push_back({a, b});
-            adj[a].push_back(b);
-
-            // for undirected:-
-            // adj[b].push_back(a);
-        }
-        for (int i = 0; i < e; i++)
-        {
-            cout << edges[i][0] << ' ' << edges[i][1] << endl;
-        }
-        for (int i = 0; i < n; i++)
-        {
-            print(i), print(" - ");
-            trav(adj[i]) print(x);
-            nline;
-        }
-    }
-};
-//
-class Graph
-{
-private:
+    string b, e;
+    cin >> b >> e;
     int n;
-
-    // graph representations:-
-    vector<vector<int>> adj;   // adjacency list
-    vector<vector<bool>> mat;  // adjacency matrix
-    vector<vector<int>> edges; // edgelist
-    vector<bool> visited;
-    vector<bool> fullvisited;
-
-public:
-    Graph(int noOfNodes)
+    cin >> n;
+    vs wl(n);
+    map<string, int> mp;
+    travcin(wl)
     {
-        // "n" is per 0-based indexing
-        n = noOfNodes;
-        adj.resize(n);
-        mat.resize(n, vector<bool>(n, 0));
+        cin >> x;
+        mp[x]++;
     }
+    trav(wl) print(x);
 
-    // void create
+    //
+    queue<string> q;
+    q.push(b);
 
-    void dfs(int node, vector<int> adj[], vector<bool> &visited, vector<int> &ans)
+    map<string, bool> visited;
+    visited[b] = 1;
+    vector<string> v;
+    vector<vs> ans;
+
+    while (!q.empty())
     {
-        if (visited[node])
-            return;
-        visited[node] = 1;
-        ans.push_back(node);
-        for (auto x : adj[node])
+        int sz = q.size();
+        while (sz--)
         {
-            dfs(x, adj, visited, ans);
-        }
-    }
+            string f = q.front();
+            q.pop();
 
-    vector<int> bfsOfGraph(int V, vector<int> adj[])
-    {
-        // Code here
-        vector<bool> visited(V, 0);
-        vector<int> ans;
-        queue<int> q;
-        visited[0] = 1;
-        q.push(0);
-        while (!q.empty())
-        {
-            int s = q.size();
-            for (int i = 0; i < s; i++)
+            for (int i = 0; i < f.size(); i++)
             {
-                int front = q.front();
-                q.pop();
-                ans.push_back(front);
-                for (auto x : adj[front])
+                for (char c = 'a'; c <= 'z'; c++)
                 {
-                    if (visited[x])
-                        continue;
-                    visited[x] = 1;
-                    q.push(x);
+                    if (c != f[i])
+                    {
+                        string tmp(f);
+                        f[i] = c;
+                        if (mp.count(tmp) and visited[tmp] == 0)
+                        {
+                            visited[tmp] = 1;
+                            q.push(tmp);
+                            v.push_back(tmp);
+                        }
+                    }
                 }
             }
         }
-        return ans;
     }
-};
-
-void solve()
-
-{
 }
 
 int main()
